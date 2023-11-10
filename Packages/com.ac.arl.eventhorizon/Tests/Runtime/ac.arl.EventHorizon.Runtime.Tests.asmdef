@@ -1,0 +1,22 @@
+{
+    "name": "ac.arl.EventHorizon.Runtime.Tests",
+    "rootNamespace": "ac.arl.EventHorizon.Runtime.Tests",
+    "references": [
+        "UnityEngine.TestRunner",
+        "ac.arl.EventHorizon"
+    ],
+    "includePlatforms": [
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
