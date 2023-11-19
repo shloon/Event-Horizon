@@ -3,10 +3,10 @@
     "rootNamespace": "ac.arl.EventHorizon.Runtime.Tests",
     "references": [
         "UnityEngine.TestRunner",
-        "ac.arl.EventHorizon"
+        "ac.arl.EventHorizon",
+        "Unity.PerformanceTesting"
     ],
-    "includePlatforms": [
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,
