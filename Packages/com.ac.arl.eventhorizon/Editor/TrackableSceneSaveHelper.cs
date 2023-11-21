@@ -9,7 +9,7 @@ namespace EventHorizon.Editor
 	{
 		public static void ValidateSceneTrackableIds(Scene scene, bool fix = true)
 		{
-			var trackableIDManager = new TrackableManagerInternal();
+			var trackableIDManager = new TrackableManager();
 			
 			// simulate a game scene, and try finding and fixing problems
 			// TODO: should we refactor this to a warning-detection and warning-fixing method for future extendibility?

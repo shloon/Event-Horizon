@@ -9,7 +9,7 @@ using Object = UnityEngine.Object;
 
 namespace EventHorizon.Tests
 {
-	public class TrackableManagerTests
+	public class TrackableManagerComponentTests
 	{
 		private GameObject testObject;
 
@@ -17,7 +17,7 @@ namespace EventHorizon.Tests
 		public void Setup()
 		{
 			// Ensure no instance exists before each test
-			var existingInstance = GameObject.FindObjectOfType<TrackableManager>();
+			var existingInstance = Object.FindObjectOfType<TrackableManagerComponent>();
 			if (existingInstance != null)
 			{
 				Object.DestroyImmediate(existingInstance.gameObject);
@@ -41,18 +41,18 @@ namespace EventHorizon.Tests
 		[Test]
 		public void TestInitialInstanceCreation()
 		{
-			testObject.AddComponent<TrackableManager>();
-			Assert.IsNotNull(TrackableManager.Instance);
+			testObject.AddComponent<TrackableManagerComponent>();
+			Assert.IsNotNull(TrackableManagerComponent.Instance);
 		}
 
 		[UnityTest]
 		public IEnumerator TestSingletonUniqueness()
 		{
-			var testManager = testObject.AddComponent<TrackableManager>();
+			var testManager = testObject.AddComponent<TrackableManagerComponent>();
 			yield return null;
 
 			var anotherManagerObject = new GameObject("AnotherTestObject");
-			var anotherManager = anotherManagerObject.AddComponent<TrackableManager>();
+			var anotherManager = anotherManagerObject.AddComponent<TrackableManagerComponent>();
 
 			LogAssert.Expect(LogType.Exception,
 				"InvalidOperationException: Another instance of TrackableManager already exists.");
@@ -67,22 +67,22 @@ namespace EventHorizon.Tests
 		[UnityTest]
 		public IEnumerator TestPersistenceAcrossScenes()
 		{
-			testObject.AddComponent<TrackableManager>();
+			testObject.AddComponent<TrackableManagerComponent>();
 			yield return null;
 			
 			yield return SceneManager.LoadSceneAsync("EmptyScene");
 			
-			Assert.IsNotNull(TrackableManager.Instance);
+			Assert.IsNotNull(TrackableManagerComponent.Instance);
 		}
 
 		[Test]
 		public void TestInstanceNullAfterDestruction()
 		{
-			testObject.AddComponent<TrackableManager>();
+			testObject.AddComponent<TrackableManagerComponent>();
 			Object.DestroyImmediate(testObject);
 
 			LogAssert.Expect(LogType.Error, "An instance of TrackableManager is needed in the scene, but there is none.");
-			Assert.IsNull(TrackableManager.Instance);
+			Assert.IsNull(TrackableManagerComponent.Instance);
 		}
 	}
 }

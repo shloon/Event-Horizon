@@ -1,22 +1,17 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using UnityEngine;
 
 namespace EventHorizon
 {
-	public sealed class TrackableManagerInternal : ITrackableManager
+	public sealed class TrackableManager : ITrackableManager
 	{
-		private Dictionary<TrackableID, Trackable> registeredTrackables;
-		private const int MaxGenerateAttempts = 128;
-
+		private Dictionary<TrackableID, Trackable> registeredTrackables = new();
 		public IReadOnlyDictionary<TrackableID, Trackable> RegisteredTrackables => registeredTrackables;
 
-		public TrackableManagerInternal()
-		{
-			registeredTrackables = new Dictionary<TrackableID, Trackable>();
-		}
-		
+		private readonly IRandomNumberGenerator rngProvider;
+
+		public TrackableManager(IRandomNumberGenerator provider = null) => rngProvider = provider ?? new PcgRng();
+
 		public void Register(Trackable trackable)
 		{
 			if (!trackable.id.IsValid)
@@ -47,66 +42,22 @@ namespace EventHorizon
 			registeredTrackables.Remove(trackable.id);
 		}
 
+		private const int MaxGenerateAttempts = 128;
+
 		public TrackableID GenerateId()
 		{
-			return new TrackableID();
+			var attempts = 0;
+			while (attempts < MaxGenerateAttempts)
+			{
+				var identity = new TrackableID((uint) rngProvider.Next());
+				if (identity.IsValid && !registeredTrackables.ContainsKey(identity))
+					return identity;
+
+				attempts++;
+			}
+
+			throw new InvalidOperationException(
+				$"Failed to generate a unique ID after {MaxGenerateAttempts} attempts");
 		}
 	}
-
-	[ExecuteAlways]
-    [DisallowMultipleComponent]
-    public sealed class TrackableManager : MonoBehaviour, ITrackableManager
-    {
-	    private TrackableManagerInternal internalManager;
-
-	    private static TrackableManager instance;
-	    public static TrackableManager Instance
-	    {
-		    get
-		    {
-			    if (instance != null) return instance;
-
-			    instance = FindObjectOfType<TrackableManager>();
-			    if (instance == null)
-				    Debug.LogError("An instance of TrackableManager is needed in the scene, but there is none.");
-
-			    return instance;
-		    }
-	    }
-	    
-	    // public so we could run EventHorizon.Tests.TrackableManagerTests.TestSingletonUniqueness
-        public void Awake()
-        {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(this);
-                throw new InvalidOperationException("Another instance of TrackableManager already exists.");
-            }
-
-            instance = this;
-            internalManager = new TrackableManagerInternal();
-            if (Application.isPlaying)
-            {
-	            DontDestroyOnLoad(this.gameObject);
-            }
-        }
-
-        private void OnDestroy()
-        {
-            if (Instance == this) instance = null;
-        }
-
-        public IReadOnlyDictionary<TrackableID, Trackable> RegisteredTrackables => internalManager.RegisteredTrackables;
-        public void Register(Trackable trackable) => internalManager.Register(trackable);
-        public void Unregister(Trackable trackable) => internalManager.Unregister(trackable);
-        public TrackableID GenerateId() => internalManager.GenerateId();
-    }
-
-    public interface ITrackableManager
-    {
-	    public IReadOnlyDictionary<TrackableID, Trackable> RegisteredTrackables { get; }
-        void Register(Trackable trackable);
-        void Unregister(Trackable trackable);
-        public TrackableID GenerateId();
-    }
 }

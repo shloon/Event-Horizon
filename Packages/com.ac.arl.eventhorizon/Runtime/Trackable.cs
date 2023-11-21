@@ -7,8 +7,8 @@ namespace EventHorizon
 	public sealed class Trackable : MonoBehaviour
 	{
 		[SerializeField] public TrackableID id;
-		
-		private void Awake() => TrackableManager.Instance.Register(this);
-		private void OnDestroy() => TrackableManager.Instance.Unregister(this);
+	
+		private void Awake() => TrackableManagerComponent.Instance.Register(this);
+		private void OnDestroy() => TrackableManagerComponent.Instance.Unregister(this);
 	}
 }

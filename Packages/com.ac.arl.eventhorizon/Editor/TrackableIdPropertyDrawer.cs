@@ -39,7 +39,7 @@ namespace EventHorizon.Editor
 				// Button to regenerate GUID
 				if (GUI.Button(buttonRect, char.ConvertFromUtf32(0x000021BA)))
 				{
-					var trackableManager = UnityEngine.Object.FindObjectOfType<TrackableManager>();
+					var trackableManager = UnityEngine.Object.FindObjectOfType<TrackableManagerComponent>();
 					if (trackableManager == null)
 					{
 						Debug.LogWarning("Event Horizon: No TrackableManager was found in the current scene. Bailing out...");
