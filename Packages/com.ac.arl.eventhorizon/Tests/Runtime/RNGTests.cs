@@ -2,6 +2,7 @@
 
 namespace EventHorizon.Tests
 {
+	[Parallelizable]
 	public class PcgRngTests
 	{
 		[Test]
@@ -30,9 +31,7 @@ namespace EventHorizon.Tests
 			var secondResult = rng.Next();
 			var thirdResult = rng.Next();
 
-			Assert.AreNotEqual(firstResult, secondResult);
-			Assert.AreNotEqual(firstResult, thirdResult);
-			Assert.AreNotEqual(secondResult, thirdResult);
+			CollectionAssert.AllItemsAreUnique(new int[] {firstResult, secondResult, thirdResult});
 		}
 
 		[Test]
@@ -42,6 +41,7 @@ namespace EventHorizon.Tests
 			var rng1 = new PcgRng(seed);
 			var rng2 = new PcgRng(seed);
 
+			// two calls to next
 			Assert.AreEqual(rng1.Next(), rng2.Next());
 			Assert.AreEqual(rng1.Next(), rng2.Next());
 		}
