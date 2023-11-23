@@ -42,7 +42,7 @@ namespace EventHorizon
 			registeredTrackables.Remove(trackable.id);
 		}
 
-		private const int MaxGenerateAttempts = 128;
+		public const int MaxGenerateAttempts = 128;
 
 		public TrackableID GenerateId()
 		{
