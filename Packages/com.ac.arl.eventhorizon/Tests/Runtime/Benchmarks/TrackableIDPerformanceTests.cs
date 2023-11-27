@@ -4,7 +4,7 @@ using Unity.PerformanceTesting;
 
 namespace EventHorizon.Tests.Benchmarks
 {
-	public class TrackableIDPerfomanceTests
+	public class TrackableIDPerformanceTests
 	{
 		[Test, Performance]
 		public void ConstructorPerformanceTest()
