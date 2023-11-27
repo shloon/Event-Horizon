@@ -1,18 +1,18 @@
 {
-    "name": "ac.arl.EventHorizon.Editor",
-    "rootNamespace": "ac.arl.EventHorizon.Editor",
-    "references": [
-        "ac.arl.EventHorizon"
-    ],
-    "includePlatforms": [
-        "Editor"
-    ],
-    "excludePlatforms": [],
-    "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
+  "name": "ac.arl.EventHorizon.Editor",
+  "rootNamespace": "ac.arl.EventHorizon.Editor",
+  "references": [
+    "ac.arl.EventHorizon"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
 }
