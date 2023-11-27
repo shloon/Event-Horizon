@@ -1,11 +1,9 @@
 using NUnit.Framework;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
-using Object = UnityEngine.Object;
 
 namespace EventHorizon.Tests
 {
@@ -53,14 +51,13 @@ namespace EventHorizon.Tests
 
 			var anotherManagerObject = new GameObject("AnotherTestObject");
 			var anotherManager = anotherManagerObject.AddComponent<TrackableManagerComponent>();
-
-			LogAssert.Expect(LogType.Exception,
-				"InvalidOperationException: Another instance of TrackableManager already exists.");
+			
 			// ideally, we would `return yield null` to call `Awake` automatically and somehow expect InvalidOperationException here,
 			// but I think that's currently impossible
-			Assert.Throws<InvalidOperationException>(() => { 
-				anotherManager.Awake();
-			});
+			LogAssert.Expect(LogType.Exception,
+				"InvalidOperationException: Another instance of TrackableManager already exists.");
+			Assert.Throws<System.InvalidOperationException>(() => anotherManager.Awake());
+
 			Object.DestroyImmediate(anotherManagerObject);
 		}
 
@@ -69,9 +66,9 @@ namespace EventHorizon.Tests
 		{
 			testObject.AddComponent<TrackableManagerComponent>();
 			yield return null;
-			
+
 			yield return SceneManager.LoadSceneAsync("EmptyScene");
-			
+
 			Assert.IsNotNull(TrackableManagerComponent.Instance);
 		}
 
@@ -81,8 +78,15 @@ namespace EventHorizon.Tests
 			testObject.AddComponent<TrackableManagerComponent>();
 			Object.DestroyImmediate(testObject);
 
-			LogAssert.Expect(LogType.Error, "An instance of TrackableManager is needed in the scene, but there is none.");
-			Assert.IsNull(TrackableManagerComponent.Instance);
+			Assert.Throws<System.NullReferenceException>(() => _ = TrackableManagerComponent.Instance);
+		}
+		
+		[Test]
+		public void TestManagerInitialization()
+		{
+			var component = testObject.AddComponent<TrackableManagerComponent>();
+			Assert.DoesNotThrow(() => _ = component.RegisteredTrackables);
+			Assert.IsNotNull(component.RegisteredTrackables);
 		}
 	}
 }
