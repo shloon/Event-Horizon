@@ -1,8 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace EventHorizon
 {
+	public interface ITrackableManager
+	{
+		public IReadOnlyDictionary<TrackableID, Trackable> RegisteredTrackables { get; }
+		void Register(Trackable trackable);
+		void Unregister(Trackable trackable);
+		public TrackableID GenerateId();
+	} 
+	
 	public sealed class TrackableManager : ITrackableManager
 	{
 		private Dictionary<TrackableID, Trackable> registeredTrackables = new();
