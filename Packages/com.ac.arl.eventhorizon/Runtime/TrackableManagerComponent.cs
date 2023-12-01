@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-using UnityEngine;
 
 namespace EventHorizon
 {
@@ -51,10 +52,58 @@ namespace EventHorizon
 	[DefaultExecutionOrder(-100)]
 	public sealed class TrackableManagerComponent : MonoBehaviour, ITrackableManager
 	{
-		private static TrackableManagerComponent instance;
 		private TrackableManager manager;
 
+		public IReadOnlyDictionary<TrackableID, Trackable> RegisteredTrackables => manager.RegisteredTrackables;
+		public void Register(Trackable trackable) => manager.Register(trackable);
+		public void Unregister(Trackable trackable) => manager.Unregister(trackable);
+		public TrackableID GenerateId() => manager.GenerateId();
+
+		#region Recording logic (only applicable in playmode)
+
+		private static readonly FrameRate frameRate = new FrameRate(60, 1);
+		private Recording recording;
+		
+		public bool isRecording = true;
+
+		private float elapsedTime = 0;
+		private int frames = 0;
+
+		private void Update()
+		{
+			if (!Application.isPlaying || !isRecording) return;
+			
+			elapsedTime += Time.deltaTime;
+			if (!(elapsedTime >= frameRate.GetFrameDuration())) return;
+
+			recording.WriteFrame(recording.SerializeFrame(RegisteredTrackables, frames));
+			frames++;
+			elapsedTime = 0;
+		}
+		
+		private void Start()
+		{
+			if (!Application.isPlaying || !isRecording) return;
+
+			var recordingMetadata = new RecordingMetadata
+			{
+				sceneName = SceneManager.GetActiveScene().name, fps = frameRate
+			};
+			recording = new Recording("Assets/Recordings/recording.evh", recordingMetadata);
+			recording.WriteHeader();
+		}
+
+		private void OnApplicationQuit()
+		{
+			if (!Application.isPlaying || !isRecording) return;
+			recording.WrapStream();
+		}
+
+		#endregion
+
 		#region Singleton Handling
+
+		private static TrackableManagerComponent instance;
 
 		public static TrackableManagerComponent Instance
 		{
@@ -125,7 +174,7 @@ namespace EventHorizon
 		private void InitializeManager() => manager ??= new TrackableManager();
 
 #if UNITY_EDITOR
-		[UnityEditor.InitializeOnLoadMethod]
+		[InitializeOnLoadMethod]
 		private static void OnAfterSceneLoadRuntimeMethod()
 		{
 			// see if there's anything in the scene
@@ -141,10 +190,5 @@ namespace EventHorizon
 #endif
 
 		#endregion
-
-		public IReadOnlyDictionary<TrackableID, Trackable> RegisteredTrackables => manager.RegisteredTrackables;
-		public void Register(Trackable trackable) => manager.Register(trackable);
-		public void Unregister(Trackable trackable) => manager.Unregister(trackable);
-		public TrackableID GenerateId() => manager.GenerateId();
 	}
 }
