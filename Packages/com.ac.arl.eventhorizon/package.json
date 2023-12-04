@@ -21,5 +21,7 @@
     "name": "Shloon",
     "url": "https://github.com/Shloon"
   },
-  "dependencies": {}
+  "dependencies": {
+    "com.unity.timeline": "1.7.6"
+  }
 }
