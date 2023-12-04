@@ -2,7 +2,9 @@
   "name": "ac.arl.EventHorizon.Editor",
   "rootNamespace": "ac.arl.EventHorizon.Editor",
   "references": [
-    "ac.arl.EventHorizon"
+    "ac.arl.EventHorizon",
+    "Unity.Timeline",
+    "Unity.Timeline.Editor"
   ],
   "includePlatforms": [
     "Editor"

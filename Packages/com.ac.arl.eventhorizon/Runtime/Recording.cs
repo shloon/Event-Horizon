@@ -66,7 +66,7 @@ namespace EventHorizon
 			await using var brotliStream =
 				new BrotliStream(fileStream, System.IO.Compression.CompressionLevel.Optimal, false);
 			await brotliStream.WriteAsync(memoryStream.ToArray());
-			
+
 			// dispose of stream
 			Dispose();
 		}
@@ -123,8 +123,15 @@ namespace EventHorizon
 		}
 
 
-		private static RecordingData Load(Stream compressedStream) =>
-			LoadAsync(compressedStream).ConfigureAwait(false).GetAwaiter().GetResult();
+		private static RecordingData Load(Stream compressedStream)
+		{
+			using var uncompressedStream = new MemoryStream();
+			using var brotliStream = new BrotliStream(compressedStream, CompressionMode.Decompress, false);
+			brotliStream.CopyTo(uncompressedStream);
+
+			var json = Encoding.ASCII.GetString(uncompressedStream.ToArray());
+			return JsonUtility.FromJson<RecordingData>(json);
+		}
 
 		private static async Task<RecordingData> LoadAsync(Stream compressedStream)
 		{

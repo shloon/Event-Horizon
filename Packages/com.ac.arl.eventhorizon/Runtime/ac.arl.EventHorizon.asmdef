@@ -2,7 +2,7 @@
   "name": "ac.arl.EventHorizon",
   "rootNamespace": "ac.arl.EventHorizon",
   "references": [
-    ""
+    "Unity.Timeline"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],
