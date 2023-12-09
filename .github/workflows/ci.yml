@@ -1,0 +1,47 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    permissions:
+      checks: write
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Cache
+        uses: actions/cache@v3
+        with:
+          path: Library
+          key: Library-EventHorizon-TargetPlatform
+          restore-keys: |
+            Library-EventHorizon-
+            Library-
+
+      # TODO: switch back to using UNITY_LICENSE once https://github.com/game-ci/unity-actions/issues/186 is resolved
+      - name: Run Tests
+        uses: game-ci/unity-test-runner@v4
+        id: tests
+        env:
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: Test Results
+          path: ${{ steps.tests.outputs.artifactsPath }}
+
+      - name: Upload coverage results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: Coverage Results
+          path: ${{ steps.tests.outputs.coveragePath }}
