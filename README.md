@@ -10,9 +10,10 @@
 </p>
 
 <p align="center">
-    <img alt="Shloon/Event-Horizon" src="https://img.shields.io/badge/shloon-event--horizon-5fc0e1?style=for-the-badge" />
+    <img alt="Shloon/Event-Horizon" src="https://img.shields.io/badge/shloon-event--horizon-2794d9?style=for-the-badge" />
+    <img alt="GitHub License" src="https://img.shields.io/badge/License-MIT/APACHE-548ca4?style=for-the-badge" />
+    <img alt="GitHub CI Status" src="https://img.shields.io/github/actions/workflow/status/shloon/Event-Horizon/ci.yml?style=for-the-badge">
     <img alt="GitHub issues" src="https://img.shields.io/github/issues/Shloon/Event-Horizon?style=for-the-badge" />
-    <img alt="GitHub license" src="https://img.shields.io/github/license/Shloon/Event-Horizon?style=for-the-badge" />
 </p>
 
 Currently work in progress, more details to come...
