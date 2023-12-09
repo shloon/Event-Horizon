@@ -8,14 +8,6 @@
         "com.unity.timeline": "1.7.6"
       }
     },
-    "com.ineatfreak.background-recompiler": {
-      "version": "file:Background Recompiler",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {
-        "com.unity.settings-manager": "1.0.0"
-      }
-    },
     "com.unity.collab-proxy": {
       "version": "2.2.0",
       "depth": 0,
