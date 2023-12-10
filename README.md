@@ -1,5 +1,5 @@
 <h1 align="center">
-    <img src="Packages\com.ac.arl.eventhorizon\Documentation~\images\event-horizon-logo.png" width="180" >
+    <img src="Packages\ac.arl.eventhorizon\Documentation~\images\event-horizon-logo.png" width="180" >
     <br>
     Event Horizon
     <br>

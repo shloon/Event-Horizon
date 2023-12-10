@@ -1,11 +1,13 @@
 {
   "dependencies": {
     "ac.arl.eventhorizon": {
-      "version": "file:com.ac.arl.eventhorizon",
+      "version": "file:ac.arl.eventhorizon",
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.unity.timeline": "1.7.6"
+        "com.unity.timeline": "1.7.6",
+        "com.unity.test-framework.performance": "3.0.3",
+        "nuget.moq": "2.0.0"
       }
     },
     "com.unity.collab-proxy": {

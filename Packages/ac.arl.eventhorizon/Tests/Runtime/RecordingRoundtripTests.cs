@@ -9,16 +9,16 @@ namespace EventHorizon.Tests
 	public class RecordingRoundtripTests
 	{
 		private const string EMPTY_RECORDING_PATH =
-			"Packages/com.ac.arl.eventhorizon/Tests/Runtime/Recordings/EmptyRecording.evh";
+			"Packages/ac.arl.eventhorizon/Tests/Runtime/Recordings/EmptyRecording.evh";
 
 		private const string FRAMES_BUT_ZERO_TRACKABLES_RECORDING_PATH =
-			"Packages/com.ac.arl.eventhorizon/Tests/Runtime/Recordings/FramesButZeroTrackablesRecording.evh";
+			"Packages/ac.arl.eventhorizon/Tests/Runtime/Recordings/FramesButZeroTrackablesRecording.evh";
 
 		private const string SINGLE_TRACKABLE_RECORDING_PATH =
-			"Packages/com.ac.arl.eventhorizon/Tests/Runtime/Recordings/SingleTrackableRecording.evh";
+			"Packages/ac.arl.eventhorizon/Tests/Runtime/Recordings/SingleTrackableRecording.evh";
 
 		private const string MULTI_TRACKABLE_RECORDING_PATH =
-			"Packages/com.ac.arl.eventhorizon/Tests/Runtime/Recordings/MultiTrackableRecording.evh";
+			"Packages/ac.arl.eventhorizon/Tests/Runtime/Recordings/MultiTrackableRecording.evh";
 
 		private const int NUM_MULTIPLE_TRACKABLES = 100;
 		private const int NUM_FRAMES = 100;
@@ -62,7 +62,9 @@ namespace EventHorizon.Tests
 			{
 				r.WriteFrame(new RecordingFrameData
 				{
-					frame = i, timeCode = i, trackers = Array.Empty<RecordingTrackerData>()
+					frame = i,
+					timeCode = i,
+					trackers = Array.Empty<RecordingTrackerData>()
 				});
 			}
 
@@ -143,17 +145,21 @@ namespace EventHorizon.Tests
 				METADATA);
 			RecordingFrameData frameData = new RecordingFrameData
 			{
-				frame = 0, timeCode = 0, trackers = new RecordingTrackerData[NUM_MULTIPLE_TRACKABLES]
+				frame = 0,
+				timeCode = 0,
+				trackers = new RecordingTrackerData[NUM_MULTIPLE_TRACKABLES]
 			};
 
 			for (var i = 0; i < NUM_MULTIPLE_TRACKABLES; ++i)
 			{
 				frameData.trackers[i] = new RecordingTrackerData
 				{
-					id = new TrackableID((uint) i),
+					id = new TrackableID((uint)i),
 					transform = new TransformData()
 					{
-						position = POSITION_DATA, rotation = ROTATION_DATA, scale = SCALE_DATA
+						position = POSITION_DATA,
+						rotation = ROTATION_DATA,
+						scale = SCALE_DATA
 					}
 				};
 			}
@@ -189,7 +195,7 @@ namespace EventHorizon.Tests
 				for (var j = 0; j < NUM_MULTIPLE_TRACKABLES; ++j)
 				{
 					var trackerData = frameData.trackers[j];
-					Assert.AreEqual(new TrackableID((uint) j), trackerData.id);
+					Assert.AreEqual(new TrackableID((uint)j), trackerData.id);
 					Assert.AreEqual(POSITION_DATA, trackerData.transform.position);
 					Assert.AreEqual(ROTATION_DATA, trackerData.transform.rotation);
 					Assert.AreEqual(SCALE_DATA, trackerData.transform.scale);
