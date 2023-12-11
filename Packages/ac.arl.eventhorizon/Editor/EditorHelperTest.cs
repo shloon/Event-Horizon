@@ -19,9 +19,18 @@ namespace EventHorizon.Editor
 		[MenuItem("EH/Inspect File")]
 		public static void TogglePlayModeAndSetupCleanup()
 		{
-			Debug.Log("initiatedByToggleButton changed state to true");
+			Debug.Log($"initiatedByToggleButton changed state to {!EditorApplication.isPlaying}");
 			SessionState.SetBool(ToggleKeyString, !EditorApplication.isPlaying);
+			ToggleRecorder(EditorApplication.isPlaying);
+			
 			EditorApplication.isPlaying = !EditorApplication.isPlaying;
+		}
+
+		private static void ToggleRecorder(bool shouldRecord)
+		{
+			var recorder = TrackableManagerComponent.Instance.GetComponent<RecorderComponent>();
+			if(recorder)
+				recorder.enabled = shouldRecord;
 		}
 
 		private static void OnPlayModeStateChanged(PlayModeStateChange stateChange)
@@ -51,21 +60,9 @@ namespace EventHorizon.Editor
 		private static void OnEnteredPlayMode()
 		{
 			Debug.Log("Now in Play Mode - performing actions (initiated by toggle button).");
-			Fun.OnEnteredPlayMode();
-		}
-
-		private static void OnExitingPlayMode()
-		{
-			Debug.Log("Exiting Play Mode - performing cleanup (initiated by toggle button).");
-			Fun.OnExitingPlayMode();
-		}
-	}
-
-	public static class Fun
-	{
-		public static void OnEnteredPlayMode()
-		{
-			TrackableManagerComponent.Instance.isRecording = false;
+			var recorder = TrackableManagerComponent.Instance.GetComponent<RecorderComponent>();
+			if(recorder)
+				recorder.enabled = false;
 			
 			// read recording
 			var recording = RecordingDataUtilities.Load("Assets/Recordings/recording.evh");
@@ -121,9 +118,10 @@ namespace EventHorizon.Editor
 			EditorWindow.GetWindow<UnityEditor.Timeline.TimelineEditorWindow>().Focus();
 		}
 
-		public static void OnExitingPlayMode()
+		private static void OnExitingPlayMode()
 		{
-			TrackableManagerComponent.Instance.isRecording = false;
+			Debug.Log("Exiting Play Mode - performing cleanup (initiated by toggle button).");
+			ToggleRecorder(true);
 		}
 	}
 }

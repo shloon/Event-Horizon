@@ -47,6 +47,7 @@ namespace EventHorizon
 	 * - `[RuntimeInitializeOnLoadMethod]`: A preemptive static method invoked before any scene
 	 *    loads, ensuring the singleton's integrity, especially after domain reloads.
 	 */
+	[AddComponentMenu("Event Horizon/Trackable Manager")]
 	[ExecuteAlways]
 	[DisallowMultipleComponent]
 	[DefaultExecutionOrder(-100)]
@@ -58,48 +59,6 @@ namespace EventHorizon
 		public void Register(Trackable trackable) => manager.Register(trackable);
 		public void Unregister(Trackable trackable) => manager.Unregister(trackable);
 		public TrackableID GenerateId() => manager.GenerateId();
-
-		#region Recording logic (only applicable in playmode)
-
-		private static readonly FrameRate frameRate = new FrameRate(60, 1);
-		private Recording recording;
-		
-		public bool isRecording = true;
-
-		private float elapsedTime = 0;
-		private int frames = 0;
-
-		private void Update()
-		{
-			if (!Application.isPlaying || !isRecording) return;
-			
-			elapsedTime += Time.deltaTime;
-			if (!(elapsedTime >= frameRate.GetFrameDuration())) return;
-
-			recording.WriteFrame(recording.SerializeFrame(RegisteredTrackables, frames));
-			frames++;
-			elapsedTime = 0;
-		}
-		
-		private void Start()
-		{
-			if (!Application.isPlaying || !isRecording) return;
-
-			var recordingMetadata = new RecordingMetadata
-			{
-				sceneName = SceneManager.GetActiveScene().name, fps = frameRate
-			};
-			recording = new Recording("Assets/Recordings/recording.evh", recordingMetadata);
-			recording.WriteHeader();
-		}
-
-		private void OnApplicationQuit()
-		{
-			if (!Application.isPlaying || !isRecording) return;
-			recording.WrapStream();
-		}
-
-		#endregion
 
 		#region Singleton Handling
 
