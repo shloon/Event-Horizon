@@ -5,23 +5,10 @@ using UnityEngine;
 namespace EventHorizon.Tests
 {
 	// TODO: serialize/deserialize memory
-	[Parallelizable]
 	public class RecordingRoundtripTests
 	{
-		private const string EMPTY_RECORDING_PATH =
-			"Packages/ac.arl.eventhorizon/Tests/Runtime/Recordings/EmptyRecording.evh";
-
-		private const string FRAMES_BUT_ZERO_TRACKABLES_RECORDING_PATH =
-			"Packages/ac.arl.eventhorizon/Tests/Runtime/Recordings/FramesButZeroTrackablesRecording.evh";
-
-		private const string SINGLE_TRACKABLE_RECORDING_PATH =
-			"Packages/ac.arl.eventhorizon/Tests/Runtime/Recordings/SingleTrackableRecording.evh";
-
-		private const string MULTI_TRACKABLE_RECORDING_PATH =
-			"Packages/ac.arl.eventhorizon/Tests/Runtime/Recordings/MultiTrackableRecording.evh";
-
-		private const int NUM_MULTIPLE_TRACKABLES = 100;
-		private const int NUM_FRAMES = 100;
+		private const int NUM_MULTIPLE_TRACKABLES = 16;
+		private const int NUM_FRAMES = 16*16;
 
 		private static readonly RecordingMetadata METADATA =
 			new RecordingMetadata() { fps = new FrameRate(1), sceneName = "Test" };
@@ -33,30 +20,25 @@ namespace EventHorizon.Tests
 		private static readonly TransformData TRANSFORM_DATA =
 			new() { position = POSITION_DATA, rotation = ROTATION_DATA, scale = SCALE_DATA };
 
-		[Test, Ignore("make test")]
+		[Test]
 		public void MakeEmptyRecording()
 		{
-			Recording r = new Recording(EMPTY_RECORDING_PATH, METADATA);
+			using var stream = new System.IO.MemoryStream();
+			RecordingWriter r = new RecordingWriter(stream, METADATA);
 			r.WriteHeader();
 			r.WrapStream();
-		}
-
-		[Test]
-		public void DecodeEmptyRecording()
-		{
-			var data = System.IO.File.ReadAllBytes(EMPTY_RECORDING_PATH);
-			var recording = RecordingDataUtilities.Load(data);
+			
+			var recording = RecordingDataUtilities.Load(stream);
 			Assert.AreEqual(RecordingFormatVersion.V1, recording.version);
 			Assert.AreEqual(METADATA.fps, recording.metadata.fps);
 			Assert.AreEqual(METADATA.sceneName, recording.metadata.sceneName);
 		}
 
-		[Test, Ignore("make test")]
+		[Test]
 		public void MakeFramesButZeroTrackablesRecording()
 		{
-			Recording r = new Recording(FRAMES_BUT_ZERO_TRACKABLES_RECORDING_PATH,
-				METADATA);
-
+			using var stream = new System.IO.MemoryStream();
+			RecordingWriter r = new RecordingWriter(stream, METADATA);
 			r.WriteHeader();
 			for (var i = 0; i < NUM_FRAMES; ++i)
 			{
@@ -67,15 +49,9 @@ namespace EventHorizon.Tests
 					trackers = Array.Empty<RecordingTrackerData>()
 				});
 			}
-
 			r.WrapStream();
-		}
-
-		[Test]
-		public void DecodeFramesButZeroTrackablesRecording()
-		{
-			var data = System.IO.File.ReadAllBytes(FRAMES_BUT_ZERO_TRACKABLES_RECORDING_PATH);
-			var recording = RecordingDataUtilities.Load(data);
+			
+			var recording = RecordingDataUtilities.Load(stream);
 			Assert.AreEqual(RecordingFormatVersion.V1, recording.version);
 			Assert.AreEqual(METADATA.fps, recording.metadata.fps);
 			Assert.AreEqual(METADATA.sceneName, recording.metadata.sceneName);
@@ -88,13 +64,12 @@ namespace EventHorizon.Tests
 				Assert.IsEmpty(frameData.trackers);
 			}
 		}
-
-		[Test, Ignore("make test")]
+		
+		[Test]
 		public void MakeSingleTrackableRecording()
 		{
-			Recording r = new Recording(SINGLE_TRACKABLE_RECORDING_PATH,
-				METADATA);
-
+			using var stream = new System.IO.MemoryStream();
+			RecordingWriter r = new RecordingWriter(stream, METADATA);
 			r.WriteHeader();
 			for (var i = 0; i < NUM_FRAMES; ++i)
 			{
@@ -109,27 +84,21 @@ namespace EventHorizon.Tests
 				};
 				r.WriteFrame(frameData);
 			}
-
 			r.WrapStream();
-		}
-
-		[Test]
-		public void DecodeSingleTrackableRecording()
-		{
-			var data = System.IO.File.ReadAllBytes(SINGLE_TRACKABLE_RECORDING_PATH);
-			var recording = RecordingDataUtilities.Load(data);
+		
+			var recording = RecordingDataUtilities.Load(stream);
 			Assert.AreEqual(RecordingFormatVersion.V1, recording.version);
 			Assert.AreEqual(METADATA.fps, recording.metadata.fps);
 			Assert.AreEqual(METADATA.sceneName, recording.metadata.sceneName);
-
+		
 			for (var i = 0; i < NUM_FRAMES; ++i)
 			{
 				var frameData = recording.frames[i];
-
+		
 				Assert.AreEqual(i, frameData.frame);
 				Assert.AreEqual(i, frameData.timeCode);
 				Assert.IsNotEmpty(frameData.trackers);
-
+		
 				var trackerData = frameData.trackers[0];
 				Assert.AreEqual(new TrackableID(1), trackerData.id);
 				Assert.AreEqual(POSITION_DATA, trackerData.transform.position);
@@ -137,19 +106,18 @@ namespace EventHorizon.Tests
 				Assert.AreEqual(SCALE_DATA, trackerData.transform.scale);
 			}
 		}
-
-		[Test, Ignore("make test")]
+		
+		[Test]
 		public void MakeMultiTrackableRecording()
 		{
-			Recording r = new Recording(MULTI_TRACKABLE_RECORDING_PATH,
-				METADATA);
-			RecordingFrameData frameData = new RecordingFrameData
+			using var stream = new System.IO.MemoryStream();
+			RecordingWriter r = new RecordingWriter(stream, METADATA);
+			var frameData = new RecordingFrameData
 			{
 				frame = 0,
 				timeCode = 0,
 				trackers = new RecordingTrackerData[NUM_MULTIPLE_TRACKABLES]
 			};
-
 			for (var i = 0; i < NUM_MULTIPLE_TRACKABLES; ++i)
 			{
 				frameData.trackers[i] = new RecordingTrackerData
@@ -163,7 +131,6 @@ namespace EventHorizon.Tests
 					}
 				};
 			}
-
 			r.WriteHeader();
 			for (var i = 0; i < NUM_FRAMES; ++i)
 			{
@@ -171,27 +138,21 @@ namespace EventHorizon.Tests
 				frameData.timeCode = i;
 				r.WriteFrame(frameData);
 			}
-
 			r.WrapStream();
-		}
-
-		[Test]
-		public void DecodeMultiTrackableRecording()
-		{
-			var data = System.IO.File.ReadAllBytes(MULTI_TRACKABLE_RECORDING_PATH);
-			var recording = RecordingDataUtilities.Load(data);
+			
+			var recording = RecordingDataUtilities.Load(stream);
 			Assert.AreEqual(RecordingFormatVersion.V1, recording.version);
 			Assert.AreEqual(METADATA.fps, recording.metadata.fps);
 			Assert.AreEqual(METADATA.sceneName, recording.metadata.sceneName);
-
+		
 			for (var i = 0; i < NUM_FRAMES; ++i)
 			{
-				var frameData = recording.frames[i];
-
+				frameData = recording.frames[i];
+		
 				Assert.AreEqual(i, frameData.frame);
 				Assert.AreEqual(i, frameData.timeCode);
 				Assert.IsNotEmpty(frameData.trackers);
-
+		
 				for (var j = 0; j < NUM_MULTIPLE_TRACKABLES; ++j)
 				{
 					var trackerData = frameData.trackers[j];
