@@ -18,8 +18,8 @@ namespace EventHorizon
 			this.denominator = denominator;
 		}
 
-		public readonly double GetAsDouble() => (numerator / (double)denominator);
-		public readonly double GetFrameDuration() => (denominator / (double)numerator);
+		public readonly double GetAsDouble() => (numerator / (double) denominator);
+		public readonly double GetFrameDuration() => (denominator / (double) numerator);
 
 		public bool Equals(FrameRate other) => numerator == other.numerator && denominator == other.denominator;
 		public override bool Equals(object obj) => obj is FrameRate other && Equals(other);
@@ -35,7 +35,7 @@ namespace EventHorizon
 			while (b > 0)
 				(a, b) = (b, a % b);
 			var gcd = a;
-			
+
 			return new FrameRate { denominator = denominator / gcd, numerator = numerator / gcd };
 		}
 
@@ -59,8 +59,8 @@ namespace EventHorizon
 				var denStr = parts[1];
 				if (uint.TryParse(denStr, out var den) && uint.TryParse(numStr, out var num) && num > 0 && den > 0)
 				{
-					output.numerator = (int)num;
-					output.denominator = (int)den;
+					output.numerator = (int) num;
+					output.denominator = (int) den;
 					output = output.Simplify();
 
 					return true;
@@ -83,7 +83,7 @@ namespace EventHorizon
 					var fractionalPart = parts[1];
 
 					output.numerator = int.Parse(integerPart + fractionalPart);
-					output.denominator = (int)Math.Pow(10, fractionalPart.Length);
+					output.denominator = (int) Math.Pow(10, fractionalPart.Length);
 					output = output.Simplify();
 
 					return true;

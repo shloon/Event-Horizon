@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 
 namespace EventHorizon
@@ -6,7 +6,11 @@ namespace EventHorizon
 	[Serializable]
 	public struct TrackableID : IEquatable<TrackableID>, IComparable<TrackableID>
 	{
+
+		// unity serialization requires this to be a non-readonly field
+#pragma warning disable IDE0044
 		[SerializeField] private uint @internal;
+#pragma warning restore IDE0044
 
 		public TrackableID(uint id = 0) => @internal = id;
 		public static TrackableID Unassigned = new TrackableID();

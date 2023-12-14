@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using System;
 using UnityEngine;
 
@@ -8,7 +8,7 @@ namespace EventHorizon.Tests
 	public class RecordingRoundtripTests
 	{
 		private const int NUM_MULTIPLE_TRACKABLES = 16;
-		private const int NUM_FRAMES = 16*16;
+		private const int NUM_FRAMES = 16 * 16;
 
 		private static readonly RecordingMetadata METADATA =
 			new RecordingMetadata() { fps = new FrameRate(1), sceneName = "Test" };
@@ -27,7 +27,7 @@ namespace EventHorizon.Tests
 			RecordingWriter r = new RecordingWriter(stream, METADATA);
 			r.WriteHeader();
 			r.WrapStream();
-			
+
 			var recording = RecordingDataUtilities.Load(stream);
 			Assert.AreEqual(RecordingFormatVersion.V1, recording.version);
 			Assert.AreEqual(METADATA.fps, recording.metadata.fps);
@@ -50,7 +50,7 @@ namespace EventHorizon.Tests
 				});
 			}
 			r.WrapStream();
-			
+
 			var recording = RecordingDataUtilities.Load(stream);
 			Assert.AreEqual(RecordingFormatVersion.V1, recording.version);
 			Assert.AreEqual(METADATA.fps, recording.metadata.fps);
@@ -64,7 +64,7 @@ namespace EventHorizon.Tests
 				Assert.IsEmpty(frameData.trackers);
 			}
 		}
-		
+
 		[Test]
 		public void MakeSingleTrackableRecording()
 		{
@@ -85,20 +85,20 @@ namespace EventHorizon.Tests
 				r.WriteFrame(frameData);
 			}
 			r.WrapStream();
-		
+
 			var recording = RecordingDataUtilities.Load(stream);
 			Assert.AreEqual(RecordingFormatVersion.V1, recording.version);
 			Assert.AreEqual(METADATA.fps, recording.metadata.fps);
 			Assert.AreEqual(METADATA.sceneName, recording.metadata.sceneName);
-		
+
 			for (var i = 0; i < NUM_FRAMES; ++i)
 			{
 				var frameData = recording.frames[i];
-		
+
 				Assert.AreEqual(i, frameData.frame);
 				Assert.AreEqual(i, frameData.timeCode);
 				Assert.IsNotEmpty(frameData.trackers);
-		
+
 				var trackerData = frameData.trackers[0];
 				Assert.AreEqual(new TrackableID(1), trackerData.id);
 				Assert.AreEqual(POSITION_DATA, trackerData.transform.position);
@@ -106,7 +106,7 @@ namespace EventHorizon.Tests
 				Assert.AreEqual(SCALE_DATA, trackerData.transform.scale);
 			}
 		}
-		
+
 		[Test]
 		public void MakeMultiTrackableRecording()
 		{
@@ -122,7 +122,7 @@ namespace EventHorizon.Tests
 			{
 				frameData.trackers[i] = new RecordingTrackerData
 				{
-					id = new TrackableID((uint)i),
+					id = new TrackableID((uint) i),
 					transform = new TransformData()
 					{
 						position = POSITION_DATA,
@@ -139,24 +139,24 @@ namespace EventHorizon.Tests
 				r.WriteFrame(frameData);
 			}
 			r.WrapStream();
-			
+
 			var recording = RecordingDataUtilities.Load(stream);
 			Assert.AreEqual(RecordingFormatVersion.V1, recording.version);
 			Assert.AreEqual(METADATA.fps, recording.metadata.fps);
 			Assert.AreEqual(METADATA.sceneName, recording.metadata.sceneName);
-		
+
 			for (var i = 0; i < NUM_FRAMES; ++i)
 			{
 				frameData = recording.frames[i];
-		
+
 				Assert.AreEqual(i, frameData.frame);
 				Assert.AreEqual(i, frameData.timeCode);
 				Assert.IsNotEmpty(frameData.trackers);
-		
+
 				for (var j = 0; j < NUM_MULTIPLE_TRACKABLES; ++j)
 				{
 					var trackerData = frameData.trackers[j];
-					Assert.AreEqual(new TrackableID((uint)j), trackerData.id);
+					Assert.AreEqual(new TrackableID((uint) j), trackerData.id);
 					Assert.AreEqual(POSITION_DATA, trackerData.transform.position);
 					Assert.AreEqual(ROTATION_DATA, trackerData.transform.rotation);
 					Assert.AreEqual(SCALE_DATA, trackerData.transform.scale);

@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using System;
 using System.Collections;
 using System.IO;
@@ -24,11 +24,11 @@ namespace EventHorizon.Editor.Tests
 			{
 				throw new InvalidOperationException("You must save your scene before continuing");
 			}
-			
+
 			EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
 			testObject = new GameObject("TestObject");
 		}
-		
+
 		[UnityTearDown]
 		public IEnumerator Teardown()
 		{
@@ -38,7 +38,7 @@ namespace EventHorizon.Editor.Tests
 
 			File.Delete(filename);
 			yield return new RecompileScripts();
-			
+
 			// Clean up after each test
 			if (testObject != null)
 			{
@@ -46,13 +46,13 @@ namespace EventHorizon.Editor.Tests
 				testObject = null;
 			}
 		}
-		
+
 		[UnityTest]
 		public IEnumerator Manager_Exists_ReinitializesAfterDomainReload()
 		{
 			var manager = testObject.AddComponent<TrackableManagerComponent>();
 			yield return null;
-			
+
 			File.WriteAllText(filename, "namespace EventHorizon.Test.ReloadTest { public class TestClass {} }");
 			yield return new RecompileScripts();
 
@@ -66,9 +66,9 @@ namespace EventHorizon.Editor.Tests
 		{
 			File.WriteAllText(filename, "namespace EventHorizon.Test.ReloadTest { public class TestClass {} }");
 			Assert.Throws<NullReferenceException>(() => _ = TrackableManagerComponent.Instance);
-			
+
 			yield return new RecompileScripts();
-			
+
 			Assert.Throws<NullReferenceException>(() => _ = TrackableManagerComponent.Instance);
 		}
 	}

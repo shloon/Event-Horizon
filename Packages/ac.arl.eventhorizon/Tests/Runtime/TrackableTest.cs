@@ -1,7 +1,7 @@
-﻿using NUnit.Framework;
-using UnityEngine;
 using Moq;
+using NUnit.Framework;
 using System.Collections;
+using UnityEngine;
 using UnityEngine.TestTools;
 
 namespace EventHorizon.Tests

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using Scene = UnityEngine.SceneManagement.Scene;
@@ -10,7 +10,7 @@ namespace EventHorizon.Editor
 		public static void ValidateSceneTrackableIds(Scene scene, bool fix = true)
 		{
 			var trackableIDManager = new TrackableManager();
-			
+
 			// simulate a game scene, and try finding and fixing problems
 			// TODO: should we refactor this to a warning-detection and warning-fixing method for future extendibility?
 			var rootGOs = scene.GetRootGameObjects();
@@ -49,7 +49,7 @@ namespace EventHorizon.Editor
 			}
 		}
 	}
-	
+
 	// Hook wrapper class that actually registers and properly calls this validation
 	[InitializeOnLoad]
 	public static class TrackableSceneSaveHelperHook

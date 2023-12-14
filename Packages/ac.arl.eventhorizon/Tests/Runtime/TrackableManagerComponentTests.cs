@@ -51,7 +51,7 @@ namespace EventHorizon.Tests
 
 			var anotherManagerObject = new GameObject("AnotherTestObject");
 			var anotherManager = anotherManagerObject.AddComponent<TrackableManagerComponent>();
-			
+
 			// ideally, we would `return yield null` to call `Awake` automatically and somehow expect InvalidOperationException here,
 			// but I think that's currently impossible
 			LogAssert.Expect(LogType.Exception,
@@ -80,7 +80,7 @@ namespace EventHorizon.Tests
 
 			Assert.Throws<System.NullReferenceException>(() => _ = TrackableManagerComponent.Instance);
 		}
-		
+
 		[Test]
 		public void TestManagerInitialization()
 		{

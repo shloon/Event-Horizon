@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using System;
 using System.IO;
 
@@ -38,7 +38,7 @@ namespace EventHorizon.Tests
 			var reader = new StreamReader(stream);
 			return reader.ReadToEnd();
 		}
-		
+
 		[Test]
 		public void Compress_ShouldCorrectlyCompressData()
 		{
@@ -51,7 +51,7 @@ namespace EventHorizon.Tests
 			Assert.Greater(_inputStream.Length, _outputStream.Length);
 		}
 
-		
+
 		[Test]
 		public void Decompress_ShouldCorrectlyDecompressData()
 		{
@@ -71,7 +71,7 @@ namespace EventHorizon.Tests
 			Assert.AreEqual(testData, decompressedData);
 		}
 
-		
+
 		[Test]
 		public void CompressAndDecompress_ShouldReturnOriginalData()
 		{

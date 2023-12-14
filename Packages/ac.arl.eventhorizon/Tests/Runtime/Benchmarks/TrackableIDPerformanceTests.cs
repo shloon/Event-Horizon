@@ -1,4 +1,4 @@
-﻿using EventHorizon;
+using EventHorizon;
 using NUnit.Framework;
 using Unity.PerformanceTesting;
 
@@ -18,7 +18,7 @@ namespace EventHorizon.Tests.Benchmarks
 				.SampleGroup(new SampleGroup("TrackableID Constructor", SampleUnit.Microsecond))
 				.Run();
 
-#pragma warning disable CS0219 
+#pragma warning disable CS0219
 			Measure.Method(() =>
 				{
 					_ = 0;
@@ -27,7 +27,7 @@ namespace EventHorizon.Tests.Benchmarks
 				.MeasurementCount(1000)
 				.SampleGroup(new SampleGroup("UInt Constructor", SampleUnit.Microsecond))
 				.Run();
-#pragma warning restore CS0219 
+#pragma warning restore CS0219
 		}
 
 		[Test, Performance]

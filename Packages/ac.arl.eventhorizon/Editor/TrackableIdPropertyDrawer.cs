@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -29,7 +29,7 @@ namespace EventHorizon.Editor
 				position.width -= 55; // Adjust for button width
 
 				// Display the GUID as a string
-				var propertyValue = (TrackableID)property.boxedValue;
+				var propertyValue = (TrackableID) property.boxedValue;
 				EditorGUI.BeginDisabledGroup(true);
 				EditorGUI.LabelField(position,
 					propertyValue == TrackableID.Unassigned ? "Unassigned" : propertyValue.Internal.ToString(),
@@ -49,7 +49,7 @@ namespace EventHorizon.Editor
 						var guidProp = property.serializedObject.FindProperty(property.propertyPath);
 						property.boxedValue = trackableManager.GenerateId();
 						property.serializedObject.ApplyModifiedProperties();
-						
+
 						// TODO: updating this also updates registry
 					}
 				}

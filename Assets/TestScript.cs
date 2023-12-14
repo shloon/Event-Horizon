@@ -1,10 +1,10 @@
-﻿namespace DefaultNamespace
+namespace DefaultNamespace
 {
 	public class TestScript
 	{
 		void Start()
 		{
-			
+
 		}
 	}
 }

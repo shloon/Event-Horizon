@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -22,14 +22,14 @@ namespace EventHorizon.Editor
 			Debug.Log($"initiatedByToggleButton changed state to {!EditorApplication.isPlaying}");
 			SessionState.SetBool(ToggleKeyString, !EditorApplication.isPlaying);
 			ToggleRecorder(EditorApplication.isPlaying);
-			
+
 			EditorApplication.isPlaying = !EditorApplication.isPlaying;
 		}
 
 		private static void ToggleRecorder(bool shouldRecord)
 		{
 			var recorder = TrackableManagerComponent.Instance.GetComponent<RecorderComponent>();
-			if(recorder)
+			if (recorder)
 				recorder.enabled = shouldRecord;
 		}
 
@@ -61,9 +61,9 @@ namespace EventHorizon.Editor
 		{
 			Debug.Log("Now in Play Mode - performing actions (initiated by toggle button).");
 			var recorder = TrackableManagerComponent.Instance.GetComponent<RecorderComponent>();
-			if(recorder)
+			if (recorder)
 				recorder.enabled = false;
-			
+
 			// read recording
 			var recording = RecordingDataUtilities.Load("Assets/Recordings/recording.evh");
 
@@ -83,8 +83,8 @@ namespace EventHorizon.Editor
 
 				var clip = track.CreateClip<TransformControlAsset>();
 				clip.duration = recording.frames.Length * recording.metadata.fps.GetFrameDuration();
-				
-				var asset = ((TransformControlAsset)clip.asset);
+
+				var asset = ((TransformControlAsset) clip.asset);
 				asset.data = new TransformData[recording.frames.Length];
 				asset.metadata = recording.metadata;
 				transformControlAssets.Add(id, asset);
@@ -110,7 +110,7 @@ namespace EventHorizon.Editor
 				var animationTrack = transformControlTracks[id];
 				director.SetGenericBinding(animationTrack, animator);
 			}
-			
+
 			// focus on gameobject and timeline editor window
 			EditorWindow.GetWindow<UnityEditor.SceneView>().Focus();
 			Selection.activeObject = timeline;

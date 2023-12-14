@@ -1,4 +1,4 @@
-﻿using Pcg;
+using Pcg;
 
 namespace EventHorizon
 {
@@ -6,7 +6,7 @@ namespace EventHorizon
 	{
 		public int Next();
 	}
-	
+
 	public class PcgRng : IRandomNumberGenerator
 	{
 		private readonly PcgRandom random;

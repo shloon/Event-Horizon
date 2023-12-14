@@ -1,4 +1,4 @@
-﻿using EventHorizon;
+using EventHorizon;
 using Moq;
 using NUnit.Framework;
 using System;
@@ -176,7 +176,7 @@ namespace EventHorizon.Tests
 			var trackableManager = new TrackableManager();
 			var uniqueIds = new HashSet<TrackableID>();
 
-			for (int i = 0; i < TrackableManager.MaxGenerateAttempts * 10; i++)
+			for (var i = 0; i < TrackableManager.MaxGenerateAttempts * 10; i++)
 			{
 				var id = trackableManager.GenerateId();
 				Assert.IsTrue(id.IsValid);
@@ -192,7 +192,7 @@ namespace EventHorizon.Tests
 			// Register max-1 trackables
 			for (var i = 0; i < TrackableManager.MaxGenerateAttempts - 1; i++)
 			{
-				var trackable = CreateTrackable(new TrackableID((uint)i + 1));
+				var trackable = CreateTrackable(new TrackableID((uint) i + 1));
 				trackableManager.Register(trackable);
 				DestroyTrackable(trackable);
 			}

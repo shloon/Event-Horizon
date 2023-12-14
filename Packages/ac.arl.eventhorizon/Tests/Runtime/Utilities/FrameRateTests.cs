@@ -1,6 +1,6 @@
-﻿using NUnit.Framework;
-using System;
 using EventHorizon;
+using NUnit.Framework;
+using System;
 using UnityEngine; // Assuming your FrameRate struct is in this namespace
 
 namespace EventHorizon.Tests
@@ -144,14 +144,14 @@ namespace EventHorizon.Tests
 			Assert.AreEqual(original, deserialized);
 		}
 
-		[TestCase(100,100, 1, 1)]
-		[TestCase(1200,1000, 6, 5)]
-		[TestCase(100,200, 1, 2)]
-		[TestCase(50,100, 1, 2)]
-		[TestCase(75,300, 1, 4)]
-		[TestCase(360,60, 6, 1)]
-		[TestCase(500,500, 1, 1)]
-		[TestCase(144,12, 12, 1)]
+		[TestCase(100, 100, 1, 1)]
+		[TestCase(1200, 1000, 6, 5)]
+		[TestCase(100, 200, 1, 2)]
+		[TestCase(50, 100, 1, 2)]
+		[TestCase(75, 300, 1, 4)]
+		[TestCase(360, 60, 6, 1)]
+		[TestCase(500, 500, 1, 1)]
+		[TestCase(144, 12, 12, 1)]
 		public void Simplify_CorrectlySimplifiesFraction(int beforeNum, int beforeDen, int expectedNumerator, int expectedDenominator)
 		{
 			FrameRate original = new FrameRate() { numerator = beforeNum, denominator = beforeDen };

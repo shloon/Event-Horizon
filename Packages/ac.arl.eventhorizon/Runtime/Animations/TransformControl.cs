@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
@@ -37,10 +37,10 @@ namespace EventHorizon
 			if (transform == null)
 				return;
 
-			var playableDirector = (PlayableDirector)playable.GetGraph().GetResolver();
+			var playableDirector = (PlayableDirector) playable.GetGraph().GetResolver();
 
 			var time = playableDirector.time;
-			var frame = (ulong)(time * metadata.fps.GetAsDouble()); // time * fps = frames
+			var frame = (ulong) (time * metadata.fps.GetAsDouble()); // time * fps = frames
 			Debug.Log($"Time: {time}, guessed frame: {frame}, actual frame: {info.frameId}, output: {info.evaluationType}");
 
 			transform.position = data[frame].position;
@@ -53,12 +53,12 @@ namespace EventHorizon
 			var graph = playable.GetGraph();
 			var director = ((PlayableDirector) graph.GetResolver());
 			if (director == null) return;
-			
+
 			for (var i = 0; i < graph.GetOutputCount(); ++i)
 			{
 				var track = graph.GetOutput(i).GetReferenceObject();
-				var go = ((Animator)director.GetGenericBinding(track))?.gameObject;
-				if(go) action(go);
+				var go = ((Animator) director.GetGenericBinding(track))?.gameObject;
+				if (go) action(go);
 			}
 		}
 
@@ -70,10 +70,10 @@ namespace EventHorizon
 		}
 
 		private State state = State.Unknown;
-		
+
 		public override void OnBehaviourPause(Playable playable, FrameData info)
 		{
-			if(state!=State.BehaviourPaused)
+			if (state != State.BehaviourPaused)
 				RunOnAllBoundObjects(playable, go => ToggleDangerousComponents(go, true));
 			state = State.BehaviourPlay;
 			base.OnBehaviourPause(playable, info);
@@ -81,7 +81,7 @@ namespace EventHorizon
 
 		public override void OnBehaviourPlay(Playable playable, FrameData info)
 		{
-			if(state!=State.BehaviourPlay)
+			if (state != State.BehaviourPlay)
 				RunOnAllBoundObjects(playable, go => ToggleDangerousComponents(go, false));
 			state = State.BehaviourPlay;
 			base.OnBehaviourPlay(playable, info);

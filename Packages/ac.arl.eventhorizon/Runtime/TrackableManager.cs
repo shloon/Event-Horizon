@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,11 +10,11 @@ namespace EventHorizon
 		void Register(Trackable trackable);
 		void Unregister(Trackable trackable);
 		public TrackableID GenerateId();
-	} 
-	
+	}
+
 	public sealed class TrackableManager : ITrackableManager
 	{
-		private Dictionary<TrackableID, Trackable> registeredTrackables = new();
+		private readonly Dictionary<TrackableID, Trackable> registeredTrackables = new();
 		public IReadOnlyDictionary<TrackableID, Trackable> RegisteredTrackables => registeredTrackables;
 
 		private readonly IRandomNumberGenerator rngProvider;

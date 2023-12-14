@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 
 namespace EventHorizon.Tests
 {
@@ -31,7 +31,7 @@ namespace EventHorizon.Tests
 			var secondResult = rng.Next();
 			var thirdResult = rng.Next();
 
-			CollectionAssert.AllItemsAreUnique(new int[] {firstResult, secondResult, thirdResult});
+			CollectionAssert.AllItemsAreUnique(new int[] { firstResult, secondResult, thirdResult });
 		}
 
 		[Test]
