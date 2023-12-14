@@ -15,5 +15,6 @@ jobs:
         uses: actions/checkout@v4
       - name: update upm branch
         run: |
+          git remote set-url origin https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}
           git subtree split -P "$PKG_ROOT" -b upm
           git push -u origin upm
