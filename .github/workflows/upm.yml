@@ -1,0 +1,19 @@
+name: UPM branch
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  split-upm:
+    name: Update UPM branches (latest git)
+    runs-on: ubuntu-latest
+    env:
+      PKG_ROOT: Packages/ac.arl.eventhorizon
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: update upm branch
+        run: |
+          git subtree split -P "$PKG_ROOT" -b upm
+          git push -u origin upm
