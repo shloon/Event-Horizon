@@ -89,7 +89,9 @@ namespace EventHorizon.Tests
 		public void ToString_ValidFrameRate_ShouldReturnCorrectString()
 		{
 			var frameRate = new FrameRate(24, 1);
-			Assert.AreEqual("24/1 FPS", frameRate.ToString());
+			var frameRate2 = new FrameRate(24000, 1001);
+			Assert.AreEqual("24 FPS", frameRate.ToString());
+			Assert.AreEqual("24000/1001 FPS", frameRate2.ToString());
 		}
 
 		[Test]
@@ -177,6 +179,9 @@ namespace EventHorizon.Tests
 		[TestCase("360/60", 6, 1)]
 		[TestCase("500/500", 1, 1)]
 		[TestCase("144/12", 12, 1)]
+		[TestCase("30 FPS", 30, 1)]
+		[TestCase("29.97 FPS", 2997, 100)]
+		[TestCase("30000/1001 FPS", 30000, 1001)]
 		public void TryParse_WithProperInput_ReturnsValidFrameRate(string input, int expectedNumerator, int expectedDenominator)
 		{
 			var result = FrameRate.TryParse(input, out FrameRate frameRate);

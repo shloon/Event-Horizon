@@ -24,7 +24,7 @@ namespace EventHorizon
 		public bool Equals(FrameRate other) => numerator == other.numerator && denominator == other.denominator;
 		public override bool Equals(object obj) => obj is FrameRate other && Equals(other);
 		public override int GetHashCode() => HashCode.Combine(numerator, denominator);
-		public override string ToString() => $"{numerator}/{denominator} FPS";
+		public override string ToString() => $"{numerator}" + (denominator == 1 ? "" : $"/{denominator}") + " FPS";
 
 		public static bool operator ==(FrameRate left, FrameRate right) => left.Equals(right);
 		public static bool operator !=(FrameRate left, FrameRate right) => !left.Equals(right);
@@ -41,6 +41,7 @@ namespace EventHorizon
 
 		public static bool TryParse(string input, out FrameRate output)
 		{
+			input = input?.Replace(" FPS", "");
 			input = input?.Trim();
 			if (string.IsNullOrEmpty(input))
 			{
