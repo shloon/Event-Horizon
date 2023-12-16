@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 
 namespace EventHorizon
 {
@@ -9,8 +8,10 @@ namespace EventHorizon
 	[DefaultExecutionOrder(-100)]
 	public class RecorderComponent : MonoBehaviour
 	{
+		public string outputFileName = "Assets/Recordings/recording.evh";
 		public FrameRate frameRate = new FrameRate(60, 1);
 
+		private RecordingMetadata recordingMetadata;
 		private ITrackableManager manager;
 		private System.IO.Stream fileStream;
 		private RecordingWriter recordingWriter;
@@ -20,13 +21,14 @@ namespace EventHorizon
 
 		private void Start()
 		{
-			var recordingMetadata = new RecordingMetadata
+			recordingMetadata = new RecordingMetadata
 			{
 				sceneName = SceneManager.GetActiveScene().name,
 				fps = frameRate
 			};
+
 			manager = TrackableManagerComponent.Instance;
-			fileStream = System.IO.File.Create("Assets/Recordings/recording.evh");
+			fileStream = System.IO.File.Create(outputFileName);
 			recordingWriter = new RecordingWriter(fileStream, recordingMetadata);
 			recordingWriter.WriteHeader();
 		}
@@ -36,7 +38,7 @@ namespace EventHorizon
 			elapsedTime += Time.deltaTime;
 			if (!(elapsedTime >= frameRate.GetFrameDuration())) return;
 
-			recordingWriter.WriteFrame(recordingWriter.SerializeFrame(manager.RegisteredTrackables, frames));
+			recordingWriter.WriteFrame(RecordingFrameData.FromCurrentFrame(manager.RegisteredTrackables, recordingMetadata, frames));
 			frames++;
 			elapsedTime = 0;
 		}

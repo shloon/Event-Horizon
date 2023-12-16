@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -13,18 +13,16 @@ namespace EventHorizon
 		private readonly Stream outputStream;
 		private readonly RecordingMetadata metadata;
 		private readonly ConcurrentQueue<Task<string>> tasks;
-		private MemoryStream memoryStream;
-		private TextWriter streamWriter;
+		private readonly StreamWriter streamWriter;
 
-		public RecordingWriter(Stream outStream, RecordingMetadata metadata)
+		public RecordingWriter(Stream outputStream, RecordingMetadata metadata)
 		{
 			tasks = new();
 
-			this.outputStream = outStream;
+			this.outputStream = new BrotliStream(outputStream, System.IO.Compression.CompressionLevel.Optimal, leaveOpen: true);
 			this.metadata = metadata;
 
-			memoryStream = new MemoryStream();
-			streamWriter = TextWriter.Synchronized(new StreamWriter(memoryStream));
+			streamWriter = new StreamWriter(this.outputStream);
 		}
 
 		public void WriteHeader()
@@ -55,49 +53,17 @@ namespace EventHorizon
 
 			streamWriter.Write("]}");
 			streamWriter.Flush();
+		}
 
-			// compress using brotli
-			BrotliUtils.Compress(memoryStream, outputStream);
-			outputStream.Flush();
+		public void Flush() => outputStream.Flush();
 
-			// dispose of stream
+		public void Close()
+		{
+			Flush();
 			Dispose();
 		}
 
-		public RecordingFrameData SerializeFrame(in IReadOnlyDictionary<TrackableID, Trackable> trackables,
-			int frameNumber)
-		{
-			RecordingFrameData frameData = new RecordingFrameData
-			{
-				frame = frameNumber,
-				timeCode = metadata.fps.GetFrameDuration() * frameNumber,
-				trackers = new RecordingTrackerData[trackables.Count]
-			};
-
-			// safety: 0 <= i <= trackables.Count
-			var i = 0;
-			foreach (var (trackableID, trackable) in trackables)
-			{
-				var trackableTransform = trackable.gameObject.transform;
-				frameData.trackers[i].id = trackableID;
-				frameData.trackers[i].transform.position = trackableTransform.position;
-				frameData.trackers[i].transform.rotation = trackableTransform.rotation;
-				frameData.trackers[i].transform.scale = trackableTransform.localScale;
-				i++;
-			}
-
-			return frameData;
-		}
-
-		public void Dispose()
-		{
-			streamWriter?.Dispose();
-			streamWriter = null;
-
-			memoryStream?.Dispose();
-			memoryStream = null;
-		}
-
-		~RecordingWriter() => Dispose();
+		public void Dispose() => streamWriter?.Dispose();
+		~RecordingWriter() => Close();
 	}
 }

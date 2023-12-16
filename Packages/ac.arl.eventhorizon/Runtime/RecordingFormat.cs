@@ -24,7 +24,7 @@ namespace EventHorizon
 	}
 
 	[Serializable]
-	public struct RecordingFrameData
+	public partial struct RecordingFrameData
 	{
 		public int frame;
 		public double timeCode;
