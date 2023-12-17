@@ -2,11 +2,8 @@ using NUnit.Framework;
 using System;
 using System.Collections;
 using System.IO;
-using System.Threading.Tasks;
-using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using Object = UnityEngine.Object;
 

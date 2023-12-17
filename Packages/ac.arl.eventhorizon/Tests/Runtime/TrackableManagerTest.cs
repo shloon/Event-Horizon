@@ -1,12 +1,8 @@
-using EventHorizon;
+using EventHorizon.Tests.Utilities;
 using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
-using Object = UnityEngine.Object;
-
-using EventHorizon.Tests.Utilities;
 
 namespace EventHorizon.Tests
 {

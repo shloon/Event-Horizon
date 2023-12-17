@@ -1,4 +1,3 @@
-using EventHorizon;
 using NUnit.Framework;
 using Unity.PerformanceTesting;
 

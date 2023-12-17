@@ -1,4 +1,3 @@
-using EventHorizon;
 using NUnit.Framework;
 using System;
 using UnityEngine; // Assuming your FrameRate struct is in this namespace
