@@ -28,7 +28,16 @@ namespace EventHorizon
 			};
 
 			manager = TrackableManagerComponent.Instance;
+
+			// create subfolder
+			var parentDirectory = System.IO.Path.GetDirectoryName(outputFileName);
+			if (!System.IO.Directory.Exists(parentDirectory))
+				System.IO.Directory.CreateDirectory(parentDirectory);
+
+			// create filestream
 			fileStream = System.IO.File.Create(outputFileName);
+
+			// initialize writer
 			recordingWriter = new RecordingWriter(fileStream, recordingMetadata);
 			recordingWriter.WriteHeader();
 		}
