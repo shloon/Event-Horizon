@@ -11,16 +11,45 @@ namespace EventHorizon.Editor
 	{
 		private const string ToggleKeyString = "isCurrentlyInspectingEventHorizon";
 
+		#region Playmode Toggle Logic
 		static EventHorizonInspectionStateToggler() => EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
 
-		[MenuItem("EH/Inspect File")]
+		private static void TogglePlaymode(bool startPlaing)
+		{
+			Debug.Log($"initiatedByToggleButton changed state to {startPlaing}");
+			SessionState.SetBool(ToggleKeyString, startPlaing);
+			ToggleRecorder(!startPlaing);
+			EditorApplication.isPlaying = startPlaing;
+		}
+
+		private static void OnPlayModeStateChanged(PlayModeStateChange stateChange)
+		{
+			switch (stateChange)
+			{
+				case PlayModeStateChange.EnteredPlayMode:
+					if (SessionState.GetBool(ToggleKeyString, false))
+						OnEnteredPlayMode();
+
+					break;
+
+				case PlayModeStateChange.ExitingPlayMode:
+					// No need for a separate flag, the action will be triggered when exiting play mode
+					break;
+
+				case PlayModeStateChange.EnteredEditMode:
+					if (SessionState.GetBool(ToggleKeyString, false))
+						OnExitingPlayMode();
+
+					SessionState.SetBool(ToggleKeyString, false);
+					break;
+			}
+		}
+
+		#endregion
+
 		public static void TogglePlayModeAndSetupCleanup()
 		{
-			Debug.Log($"initiatedByToggleButton changed state to {!EditorApplication.isPlaying}");
-			SessionState.SetBool(ToggleKeyString, !EditorApplication.isPlaying);
-			ToggleRecorder(EditorApplication.isPlaying);
-
-			EditorApplication.isPlaying = !EditorApplication.isPlaying;
+			TogglePlaymode(true);
 		}
 
 		private static void ToggleRecorder(bool shouldRecord)
@@ -30,39 +59,27 @@ namespace EventHorizon.Editor
 				recorder.enabled = shouldRecord;
 		}
 
-		private static void OnPlayModeStateChanged(PlayModeStateChange stateChange)
-		{
-			switch (stateChange)
-			{
-				case PlayModeStateChange.EnteredPlayMode:
-					if (SessionState.GetBool(ToggleKeyString, false))
-					{
-						OnEnteredPlayMode();
-					}
-
-					break;
-				case PlayModeStateChange.ExitingPlayMode:
-					// No need for a separate flag, the action will be triggered when exiting play mode
-					break;
-				case PlayModeStateChange.EnteredEditMode:
-					if (SessionState.GetBool(ToggleKeyString, false))
-					{
-						OnExitingPlayMode();
-					}
-					SessionState.SetBool(ToggleKeyString, false);
-					break;
-			}
-		}
-
 		private static void OnEnteredPlayMode()
 		{
 			Debug.Log("Now in Play Mode - performing actions (initiated by toggle button).");
+			StartTimeline();
+		}
+
+		private static void StartTimeline()
+		{
+			var recordingDataObject = Selection.activeObject as RecordingDataScriptable;
+			if (!recordingDataObject)
+			{
+				Debug.LogError("No recording selected, aborting...");
+				return;
+			}
+
 			var recorder = TrackableManagerComponent.Instance.GetComponent<RecorderComponent>();
 			if (recorder)
 				recorder.enabled = false;
 
 			// read recording
-			var recording = RecordingDataUtilities.Load("Assets/Recordings/recording.evh");
+			var recording = recordingDataObject.data;
 			var director = TrackableManagerComponent.Instance.gameObject.AddComponent<PlayableDirector>();
 
 			// build and configure timeline
