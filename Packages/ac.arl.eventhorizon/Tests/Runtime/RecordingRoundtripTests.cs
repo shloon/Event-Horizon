@@ -27,6 +27,7 @@ namespace EventHorizon.Tests
 			RecordingWriter r = new RecordingWriter(stream, METADATA);
 			r.WriteHeader();
 			r.WrapStream();
+			r.Close();
 
 			var recording = RecordingDataUtilities.Load(stream);
 			Assert.AreEqual(RecordingFormatVersion.V1, recording.version);
@@ -50,6 +51,7 @@ namespace EventHorizon.Tests
 				});
 			}
 			r.WrapStream();
+			r.Close();
 
 			var recording = RecordingDataUtilities.Load(stream);
 			Assert.AreEqual(RecordingFormatVersion.V1, recording.version);
@@ -85,6 +87,7 @@ namespace EventHorizon.Tests
 				r.WriteFrame(frameData);
 			}
 			r.WrapStream();
+			r.Close();
 
 			var recording = RecordingDataUtilities.Load(stream);
 			Assert.AreEqual(RecordingFormatVersion.V1, recording.version);
@@ -139,6 +142,7 @@ namespace EventHorizon.Tests
 				r.WriteFrame(frameData);
 			}
 			r.WrapStream();
+			r.Close();
 
 			var recording = RecordingDataUtilities.Load(stream);
 			Assert.AreEqual(RecordingFormatVersion.V1, recording.version);

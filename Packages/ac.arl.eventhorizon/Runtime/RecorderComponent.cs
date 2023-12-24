@@ -55,6 +55,7 @@ namespace EventHorizon
 		private void OnApplicationQuit()
 		{
 			recordingWriter.WrapStream();
+			recordingWriter.Close();
 			fileStream.Close();
 		}
 	}

@@ -33,8 +33,12 @@ namespace EventHorizon
 
 		public void WriteFrame(RecordingFrameData frameData) => tasks.Enqueue(Task.Run(() => JsonUtility.ToJson(frameData)));
 
+		private bool wrappedStream = false;
 		public void WrapStream()
 		{
+			if (wrappedStream)
+				return;
+
 			Task.WaitAll(tasks.ToArray<Task>());
 
 			var sortedLines = tasks
@@ -53,17 +57,45 @@ namespace EventHorizon
 
 			streamWriter.Write("]}");
 			streamWriter.Flush();
+
+			wrappedStream = true;
 		}
 
-		public void Flush() => outputStream.Flush();
 
 		public void Close()
 		{
-			Flush();
+			WrapStream();
 			Dispose();
 		}
 
-		public void Dispose() => streamWriter?.Dispose();
-		~RecordingWriter() => Close();
+
+		private bool disposed = false; // to track whether Dispose has been called
+		protected virtual void Dispose(bool disposing)
+		{
+			if (!disposed)
+			{
+				if (disposing)
+				{
+					// Dispose managed resources.
+					streamWriter?.Dispose();
+					outputStream?.Dispose();
+				}
+
+				// Here you can dispose any unmanaged resources if you have any.
+
+				disposed = true;
+			}
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this); // Prevent finalizer from running.
+		}
+
+		~RecordingWriter()
+		{
+			Dispose(false);
+		}
 	}
 }
