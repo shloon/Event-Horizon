@@ -7,7 +7,7 @@ namespace EventHorizon
 	// Serialized using unity's JsonUtility API
 	// which we compress later via Brotli (see `Recording.WrapStream`)
 	[Serializable]
-	public struct RecordingData
+	public class RecordingData
 	{
 		public RecordingFormatVersion version;
 		public RecordingMetadata metadata;
