@@ -164,11 +164,11 @@ with open("path/to/recording_file.evh", "br") as file:
     print(json.loads(brotli.decompress(file.read())))
 ```
 
-To make integration easier for researchers, we wrote a small python script, `evh.py`, that massages the data to better match the needs of data researchers.
-Below is an example for using `evh.py` to get the total distances for each tracker (using pandas):
+To make integration easier for researchers, we wrote a small python package, `event_horizon_py`, that massages the data to better match the needs of data researchers.
+Below is an example for using `event_horizon_py` to get the total distances for each tracker (using pandas):
 
 ```python
-import evh
+import event_horizon_py as evh
 import os
 import pandas as pd
 import numpy as np
@@ -203,6 +203,8 @@ data = evh.Recording.from_file("path/to/recording_file.evh")
 avg_speeds = total_distances(data)
 print(avg_speeds)
 ```
+
+For more information about `event_horizon_py`, visit [its dedicated repository page](https://github.com/shloon/Event-Horizon-Py).
 
 ### Other languages
 
