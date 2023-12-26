@@ -1,5 +1,5 @@
-using UnityEngine;
 using UnityEditor.AssetImporters;
+using UnityEngine;
 
 namespace EventHorizon.Editor
 {
