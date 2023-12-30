@@ -10,6 +10,8 @@ namespace EventHorizon.Tests.Utilities
 			public IReadOnlyDictionary<TrackableID, Trackable> RegisteredTrackables => null;
 			public void Register(Trackable trackable) { }
 			public void Unregister(Trackable trackable) { }
+			public void ChangeTrackableID(TrackableID previousID, TrackableID newID) {}
+
 			public TrackableID GenerateId() => TrackableID.Unassigned;
 		}
 

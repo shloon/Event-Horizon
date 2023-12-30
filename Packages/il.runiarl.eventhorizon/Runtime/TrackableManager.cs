@@ -8,7 +8,8 @@ namespace EventHorizon
 		public IReadOnlyDictionary<TrackableID, Trackable> RegisteredTrackables { get; }
 		void Register(Trackable trackable);
 		void Unregister(Trackable trackable);
-		public TrackableID GenerateId();
+		void ChangeTrackableID(TrackableID previousID, TrackableID newID);
+		TrackableID GenerateId();
 	}
 
 	public sealed class TrackableManager : ITrackableManager
@@ -30,7 +31,8 @@ namespace EventHorizon
 				if (existingTrackable == trackable)
 					throw new InvalidOperationException($"Trackable '{trackable.gameObject}' already registered");
 
-				throw new InvalidOperationException($"Trackable '{trackable.gameObject}' has key registered by another trackable");
+				throw new InvalidOperationException(
+					$"Trackable '{trackable.gameObject}' has key registered by another trackable");
 			}
 
 			registeredTrackables.Add(trackable.id, trackable);
@@ -45,9 +47,25 @@ namespace EventHorizon
 				throw new InvalidOperationException($"Trackable '{trackable.gameObject}' is not registered");
 
 			if (existingTrackable != trackable)
-				throw new InvalidOperationException($"Attempt to remove '{trackable.gameObject}' would remove another trackable with the same ID");
+				throw new InvalidOperationException(
+					$"Attempt to remove '{trackable.gameObject}' would remove another trackable with the same ID");
 
 			registeredTrackables.Remove(trackable.id);
+		}
+
+		public void ChangeTrackableID(TrackableID previousID, TrackableID newID)
+		{
+			if (previousID == newID) return;			
+			
+			if (!registeredTrackables.TryGetValue(previousID, out var existingObject))
+				throw new ArgumentException($"Could not find trackable with ID '{previousID}'");
+
+			if (registeredTrackables.TryGetValue(newID, out var objectWithSameID))
+				throw new InvalidOperationException(
+					$"Could not change to the ID above since `{objectWithSameID}` already uses it");
+
+			registeredTrackables.Remove(previousID);
+			registeredTrackables.Add(newID, existingObject);
 		}
 
 		public const int MaxGenerateAttempts = 128;
