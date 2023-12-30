@@ -1,5 +1,5 @@
 {
-  "name": "ac.arl.eventhorizon",
+  "name": "il.runiarl.eventhorizon",
   "displayName": "Event Horizon",
   "description": "Easy to use event playback system.",
   "version": "0.1.0-preview.1",
