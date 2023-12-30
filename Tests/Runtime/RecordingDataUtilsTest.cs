@@ -1,3 +1,4 @@
+using EventHorizon.Tests.Utilities;
 using NUnit.Framework;
 using System;
 using System.IO;
@@ -7,18 +8,7 @@ namespace EventHorizon.Tests
 {
 	public class RecordingDataUtilsTest
 	{
-		byte[] GenerateFile()
-		{
-			using var stream = new MemoryStream();
-			RecordingWriter r = new RecordingWriter(stream, new RecordingMetadata { sceneName = "test", fps = new FrameRate(24000, 1001) });
-			r.WriteHeader();
-			r.WrapStream();
-			r.Close();
-
-			return stream.ToArray();
-		}
-
-		void AssertsOnData(RecordingData recordingData)
+		private void AssertsOnData(RecordingData recordingData)
 		{
 			Assert.AreEqual(RecordingFormatVersion.Current, recordingData.version);
 			Assert.AreEqual("test", recordingData.metadata.sceneName);
@@ -29,12 +19,11 @@ namespace EventHorizon.Tests
 		[Test]
 		public void Load_FromFilePath_WithValidData_ShouldReturnCorrectData()
 		{
-			var path = Path.GetTempFileName();
-			File.WriteAllBytes(path, GenerateFile());
+			var path = RecordingTestUtils.CreateEmptyRecordingFile();
 
 			Assert.DoesNotThrow(() => RecordingDataUtilities.Load(path));
 
-			RecordingData recordingData = RecordingDataUtilities.Load(path);
+			var recordingData = RecordingDataUtilities.Load(path);
 			Assert.IsNotNull(recordingData);
 			AssertsOnData(recordingData);
 
@@ -64,10 +53,10 @@ namespace EventHorizon.Tests
 		[Test]
 		public void Load_FromByteArray_WithValidData_ShouldReturnCorrectData()
 		{
-			var data = GenerateFile();
+			var data = RecordingTestUtils.GenerateEmptyRecordingData();
 
 			Assert.DoesNotThrow(() => RecordingDataUtilities.Load(data));
-			RecordingData recordingData = RecordingDataUtilities.Load(data);
+			var recordingData = RecordingDataUtilities.Load(data);
 
 			Assert.IsNotNull(recordingData);
 			AssertsOnData(recordingData);
@@ -91,13 +80,13 @@ namespace EventHorizon.Tests
 		public void Load_FromStream_WithValidData_ShouldReturnCorrectData()
 		{
 			using var stream = new MemoryStream();
-			stream.Write(GenerateFile());
+			stream.Write(RecordingTestUtils.GenerateEmptyRecordingData());
 			stream.Position = 0; // seeking back to 0 required so we could read the written data from the stream
 
 			Assert.DoesNotThrow(() => RecordingDataUtilities.Load(stream));
 			stream.Position = 0; // ditto
 
-			RecordingData recordingData = RecordingDataUtilities.Load(stream);
+			var recordingData = RecordingDataUtilities.Load(stream);
 			Assert.IsNotNull(recordingData);
 			AssertsOnData(recordingData);
 		}
