@@ -3,6 +3,7 @@
     "rootNamespace": "EventHorizon.Tests",
     "references": [
         "UnityEngine.TestRunner",
+        "Unity.Timeline",
         "EventHorizon"
     ],
     "includePlatforms": [],

@@ -8,7 +8,8 @@ namespace EventHorizon
 {
 	public static class RecordingTimelineUtilities
 	{
-		public static void BuildTimeline(RecordingData recording, out TimelineAsset timelineAsset, out Dictionary<TrackableID, TransformControlTrack> transformControlTracks)
+		public static void BuildTimeline(RecordingData recording, out TimelineAsset timelineAsset,
+			out Dictionary<TrackableID, TransformControlTrack> transformControlTracks)
 		{
 			// build timeline
 			timelineAsset = ScriptableObject.CreateInstance<TimelineAsset>();
@@ -16,9 +17,17 @@ namespace EventHorizon
 
 			// build timeline data
 			transformControlTracks = new Dictionary<TrackableID, TransformControlTrack>();
-			var transformControlAssets = new Dictionary<TrackableID, TransformControlAsset>();
-			var trackableIDs = recording.frames.SelectMany(frame => frame.trackers.Select(x => x.id)).Distinct().ToList();
+			if (recording.frames == null || recording.frames.Length == 0)
+			{
+				return;
+			}
 
+			var transformControlAssets = new Dictionary<TrackableID, TransformControlAsset>();
+			var trackableIDs = recording.frames.SelectMany(frame => frame.trackers.Select(x => x.id))
+				.Distinct()
+				.ToList();
+
+			// setup 
 			foreach (var id in trackableIDs)
 			{
 				var track = timelineAsset.CreateTrack<TransformControlTrack>();
@@ -33,6 +42,7 @@ namespace EventHorizon
 				transformControlAssets.Add(id, asset);
 			}
 
+			// setup transform data
 			for (var frameIndex = 0; frameIndex < recording.frames.Length; frameIndex++)
 			{
 				foreach (var trackable in recording.frames[frameIndex].trackers)
@@ -42,7 +52,8 @@ namespace EventHorizon
 			}
 		}
 
-		public static void ConfigureDirector(Dictionary<TrackableID, TransformControlTrack> transformControlTracks, PlayableDirector director, TimelineAsset timelineAsset)
+		public static void ConfigureDirector(Dictionary<TrackableID, TransformControlTrack> transformControlTracks,
+			PlayableDirector director, TimelineAsset timelineAsset)
 		{
 			director.playOnAwake = false;
 			director.playableAsset = timelineAsset;
@@ -50,8 +61,10 @@ namespace EventHorizon
 			foreach (var (id, trackable) in TrackableManagerComponent.Instance.RegisteredTrackables)
 			{
 				var animator = trackable.gameObject.AddComponent<Animator>();
-				var animationTrack = transformControlTracks[id];
-				director.SetGenericBinding(animationTrack, animator);
+				if (transformControlTracks.TryGetValue(id, out var animationTrack))
+				{
+					director.SetGenericBinding(animationTrack, animator);
+				}
 			}
 		}
 	}
