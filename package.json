@@ -1,7 +1,7 @@
 {
   "name": "il.runiarl.eventhorizon",
   "displayName": "Event Horizon",
-  "description": "Easy to use event playback system.",
+  "description": "Utility packages for recording, reproducing, and visualizing VR experiments in Unity.",
   "version": "0.1.0-preview.1",
   "unity": "2022.3",
   "unityRelease": "0f1",
