@@ -38,18 +38,25 @@ namespace EventHorizon.Editor
 				// Button to regenerate GUID
 				if (GUI.Button(buttonRect, char.ConvertFromUtf32(0x000021BA)))
 				{
-					var trackableManager = UnityEngine.Object.FindObjectOfType<TrackableManagerComponent>();
-					if (trackableManager == null)
+					var trackableManager = Object.FindObjectOfType<TrackableManagerComponent>();
+					if (trackableManager is null)
 					{
-						Debug.LogWarning("Event Horizon: No TrackableManager was found in the current scene. Bailing out...");
+						Debug.LogWarning(
+							"Event Horizon: No TrackableManager was found in the current scene. Bailing out...");
 					}
 					else
 					{
+						var oldID = (TrackableID) property.boxedValue;
+						var newID = trackableManager.GenerateId();
+
 						var guidProp = property.serializedObject.FindProperty(property.propertyPath);
-						property.boxedValue = trackableManager.GenerateId();
+						property.boxedValue = newID;
 						property.serializedObject.ApplyModifiedProperties();
 
-						// TODO: updating this also updates registry
+						if (property.serializedObject.targetObject is Trackable trackable)
+						{
+							trackableManager.ChangeTrackableID(oldID, newID);
+						}
 					}
 				}
 			}
