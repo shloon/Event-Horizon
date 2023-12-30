@@ -1,5 +1,5 @@
 <h1 align="center">
-    <img src="Packages/il.runiarl.eventhorizon/Documentation~/images/event-horizon-logo.png" width="180" >
+    <img src="Packages/il.runiarl.eventhorizon/Documentation~/images/event-horizon-logo.png" width="180"/>
     <br>
     Event Horizon
     <br>
@@ -18,10 +18,10 @@
 
 ## Installation
 
-### Via Official Scoped Repositories
+### Via Official Scoped Repository
 **Note**: Event Horizon currently requires the use of preview packages, which may contain untested beta features. Stick to non-preview releases unless advised otherwise or if you know what you're doing.
 
-We currently host all the event horizon packages on NPM with the `il.runiarl` prefix. Here's how to add our scoped registry:
+We currently host all Event Horizon packages on NPM with the `il.runiarl` prefix. Here's how to add our scoped registry:
 1. Go to the `Package Manager` in `Project Settings`.
 2. Add a new scoped registry with the following details:
    - Name: `ARL EventHorizon`
@@ -29,11 +29,12 @@ We currently host all the event horizon packages on NPM with the `il.runiarl` pr
    - Scope(s): `il.runiarl`
 3. Click on `Save`.
 
-![Scoped registry settings illustration](Packages/il.runiarl.eventhorizon/Documentation~/images/scoped-registry-01.png)
+
+<img src="Packages/il.runiarl.eventhorizon/Documentation~/images/scoped-registry-01.png" alt="Scoped registry settings illustration" width="540"/>
 
 Next, open the Package Manager window, click on the dropdown label menu labeled "Packages:", and select `My Registries` to list our packages.
 
-![Scoped registry selection dropdown illustration](Packages/il.runiarl.eventhorizon/Documentation~/images/scoped-registry-02.png)
+<img src="Packages/il.runiarl.eventhorizon/Documentation~/images/scoped-registry-02.png" alt="Scoped registry selection dropdown illustration" width="200" />
 
 We advise only installing the packages relevant to your development environment. For instance, when working with the Meta XR SDK, opt for the `Event Horizon MetaXR Integration` package; it will automatically handle the dependencies for you.
 
