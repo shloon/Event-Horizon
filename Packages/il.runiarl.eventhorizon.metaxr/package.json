@@ -1,0 +1,32 @@
+{
+  "name": "il.runiarl.eventhorizon.metaxr",
+  "displayName": "Event Horizon - MetaXR integration",
+  "description": "Utilities required for supporting the MetaXR SDK in Event Horizon.",
+  "version": "0.1.0-preview.1",
+  "unity": "2022.3",
+  "unityRelease": "0f1",
+  "keywords": [
+    "events",
+    "recording",
+    "playback",
+    "metaxr",
+    "unity"
+  ],
+  "documentationUrl": "https://github.com/Shloon/Event-Horizon#documentation",
+  "changelogUrl": "https://github.com/Shloon/Event-Horizon/releases",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "repository": "https://github.com/Shloon/Event-Horizon.git"
+  },
+  "author": {
+    "name": "Shloon",
+    "url": "https://github.com/Shloon"
+  },
+  "dependencies": {
+    "com.unity.timeline": "1.7.6",
+    "com.unity.test-framework.performance": "3.0.3",
+    "il.runiarl.eventhorizon": "0.1.0-preview.1",
+    "nuget.moq": "2.0.0"
+  }
+}
