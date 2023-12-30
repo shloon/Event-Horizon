@@ -21,6 +21,9 @@ namespace EventHorizon
 
 		public static RecordingData Load(Stream compressedStream)
 		{
+			if (compressedStream.Length == 0)
+				throw new InvalidDataException("Stream cannot be of length 0");
+
 			using var uncompressedStream = new MemoryStream();
 			compressedStream.Position = 0;
 			BrotliUtils.Decompress(compressedStream, uncompressedStream);
