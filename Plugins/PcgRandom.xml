@@ -1,0 +1,174 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PcgRandom</name>
+    </assembly>
+    <members>
+        <member name="M:Pcg.Helpers.Advance(System.UInt64,System.UInt64,System.UInt64,System.UInt64)">
+            <summary>
+            Implements <c>pcg_advance_lcg_64</c>.
+            </summary>
+            <remarks>See <a href="https://github.com/imneme/pcg-c/blob/e2383c4bfcc862b40c3d85a43c9d495ff61186cb/src/pcg-advance-64.c#L46">original source</a>.</remarks>
+        </member>
+        <member name="M:Pcg.Helpers.OutputXshRs(System.UInt64)">
+            <summary>
+            Implements <c>pcg_output_xsh_rs_64_32</c>.
+            </summary>
+            <remarks>See <a href="https://github.com/imneme/pcg-c/blob/e2383c4bfcc862b40c3d85a43c9d495ff61186cb/include/pcg_variants.h#L133">original source</a>.</remarks>
+        </member>
+        <member name="M:Pcg.Helpers.OutputXshRr(System.UInt64)">
+            <summary>
+            Implements <c>pcg_output_xsh_rr_64_32</c>.
+            </summary>
+            <remarks>See <a href="https://github.com/imneme/pcg-c/blob/e2383c4bfcc862b40c3d85a43c9d495ff61186cb/include/pcg_variants.h#L158">original source</a>.</remarks>
+        </member>
+        <member name="M:Pcg.Helpers.RotateRight(System.UInt32,System.Int32)">
+            <summary>
+            Implements <c>pcg_rotr_32</c>.
+            </summary>
+            <param name="value">The value to rotate right.</param>
+            <param name="rotate">The number of bits to rotate.</param>
+            <returns>The input <paramref name="value"/>, rotated right by <paramref name="rotate"/> bits.</returns>
+            <remarks>See <a href="https://github.com/imneme/pcg-c/blob/e2383c4bfcc862b40c3d85a43c9d495ff61186cb/include/pcg_variants.h#L88">original source</a>.</remarks>
+        </member>
+        <member name="F:Pcg.Helpers.Multiplier64">
+            <summary>
+            Represents <c>PCG_DEFAULT_MULTIPLIER_64</c>.
+            </summary>
+            <remarks>See <a href="https://github.com/imneme/pcg-c/blob/e2383c4bfcc862b40c3d85a43c9d495ff61186cb/include/pcg_variants.h#L253">original source</a>.</remarks>
+        </member>
+        <member name="F:Pcg.Helpers.Increment64">
+            <summary>
+            Represents <c>PCG_DEFAULT_INCREMENT_64</c>.
+            </summary>
+            <remarks>See <a href="https://github.com/imneme/pcg-c/blob/e2383c4bfcc862b40c3d85a43c9d495ff61186cb/include/pcg_variants.h#L258">original source</a>.</remarks>
+        </member>
+        <member name="T:Pcg.Pcg32">
+            <summary>
+            Implements the <code>pcg32</code> random number generator described
+            at <a href="http://www.pcg-random.org/using-pcg-c.html">http://www.pcg-random.org/using-pcg-c.html</a>.
+            </summary>
+        </member>
+        <member name="M:Pcg.Pcg32.#ctor(System.UInt64,System.UInt64)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Pcg.Pcg32"/> pseudorandom number generator.
+            </summary>
+            <param name="state">The starting state for the RNG; you can pass any 64-bit value.</param>
+            <param name="sequence">The output sequence for the RNG; you can pass any 64-bit value, although only the low
+            63 bits are significant.</param>
+            <remarks>For this generator, there are 2<sup>63</sup> possible sequences of pseudorandom numbers. Each sequence
+            is entirely distinct and has a period of 2<sup>64</sup>. The <paramref name="sequence"/> argument selects which
+            stream you will use. The <paramref name="state"/> argument specifies where you are in that 2<sup>64</sup> period.</remarks>
+        </member>
+        <member name="M:Pcg.Pcg32.GenerateNext">
+            <summary>
+            Generates the next random number.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Pcg.Pcg32.GenerateNext(System.UInt32)">
+            <summary>
+            Generates a uniformly distributed 32-bit unsigned integer less than <paramref name="bound"/> (i.e., <c>x</c> where
+            <c>0 &lt;= x &lt; bound</c>.
+            </summary>
+            <param name="bound">The exclusive upper bound of the random number to be generated.</param>
+            <returns>A random number between <c>0</c> and <paramref name="bound"/> (exclusive).</returns>
+        </member>
+        <member name="M:Pcg.Pcg32.Advance(System.UInt64)">
+            <summary>
+            Advances the RNG by <paramref name="delta"/> steps, doing so in <c>log(delta)</c> time.
+            </summary>
+            <param name="delta">The number of steps to advance; pass <c>2<sup>64</sup> - delta</c> (i.e., <c>-delta</c>) to go backwards.</param>
+        </member>
+        <member name="T:Pcg.Pcg32Single">
+            <summary>
+            Implements the <code>pcg32s</code> random number generator described
+            at <a href="http://www.pcg-random.org/using-pcg-c.html">http://www.pcg-random.org/using-pcg-c.html</a>.
+            </summary>
+        </member>
+        <member name="M:Pcg.Pcg32Single.#ctor(System.UInt64)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Pcg.Pcg32Single"/> pseudorandom number generator.
+            </summary>
+            <param name="state">The starting state for the RNG; you can pass any 64-bit value.</param>
+        </member>
+        <member name="M:Pcg.Pcg32Single.GenerateNext">
+            <summary>
+            Generates the next random number.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Pcg.Pcg32Single.GenerateNext(System.UInt32)">
+            <summary>
+            Generates a uniformly distributed 32-bit unsigned integer less than <paramref name="bound"/> (i.e., <c>x</c> where
+            <c>0 &lt;= x &lt; bound</c>.
+            </summary>
+            <param name="bound">The exclusive upper bound of the random number to be generated.</param>
+            <returns>A random number between <c>0</c> and <paramref name="bound"/> (exclusive).</returns>
+        </member>
+        <member name="M:Pcg.Pcg32Single.Advance(System.UInt64)">
+            <summary>
+            Advances the RNG by <paramref name="delta"/> steps, doing so in <c>log(delta)</c> time.
+            </summary>
+            <param name="delta">The number of steps to advance; pass <c>2<sup>64</sup> - delta</c> (i.e., <c>-delta</c>) to go backwards.</param>
+        </member>
+        <member name="T:Pcg.PcgRandom">
+            <summary>
+            Provides an implementation of <see cref="T:System.Random"/> that uses <see cref="T:Pcg.Pcg32Single"/> to generate its random numbers.
+            </summary>
+        </member>
+        <member name="M:Pcg.PcgRandom.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Pcg.PcgRandom"/> class, using a time-dependent default seed value.
+            </summary>
+        </member>
+        <member name="M:Pcg.PcgRandom.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Pcg.PcgRandom"/> class, using the specified seed value.
+            </summary>
+            <param name="seed">A number used to calculate a starting value for the pseudo-random number sequence.</param>
+        </member>
+        <member name="M:Pcg.PcgRandom.Next">
+            <summary>
+            Returns a non-negative random integer.
+            </summary>
+            <returns>A 32-bit signed integer that is greater than or equal to 0 and less than <see cref="F:System.Int32.MaxValue"/>.</returns>
+        </member>
+        <member name="M:Pcg.PcgRandom.Next(System.Int32)">
+            <summary>
+            Returns a non-negative random integer that is less than the specified maximum.
+            </summary>
+            <param name="maxValue">The exclusive upper bound of the random number to be generated. <paramref name="maxValue"/> must be greater than or equal to 0.</param>
+            <returns>A 32-bit signed integer that is greater than or equal to 0, and less than <paramref name="maxValue"/>; that is, the range of return values ordinarily
+            includes 0 but not <paramref name="maxValue"/>. However, if <paramref name="maxValue"/> equals 0, <paramref name="maxValue"/> is returned.</returns>
+        </member>
+        <member name="M:Pcg.PcgRandom.Next(System.Int32,System.Int32)">
+            <summary>
+            Returns a random integer that is within a specified range.
+            </summary>
+            <param name="minValue">The inclusive lower bound of the random number returned.</param>
+            <param name="maxValue">The exclusive upper bound of the random number returned. <paramref name="maxValue"/> must be greater than or equal to <paramref name="minValue"/>.</param>
+            <returns>A 32-bit signed integer greater than or equal to <paramref name="minValue"/> and less than <paramref name="maxValue"/>;
+            that is, the range of return values includes <paramref name="minValue"/> but not <paramref name="maxValue"/>. If <paramref name="minValue"/>
+            equals <paramref name="maxValue"/>, <paramref name="minValue"/> is returned.</returns>
+        </member>
+        <member name="M:Pcg.PcgRandom.NextBytes(System.Byte[])">
+            <summary>
+            Fills the elements of a specified array of bytes with random numbers.
+            </summary>
+            <param name="buffer">An array of bytes to contain random numbers.</param>
+        </member>
+        <member name="M:Pcg.PcgRandom.Sample">
+            <summary>
+            Returns a random floating-point number between 0.0 and 1.0.
+            </summary>
+            <returns>A double-precision floating point number that is greater than or equal to 0.0, and less than 1.0.</returns>
+        </member>
+        <member name="M:Pcg.PcgRandom.NextDouble">
+            <summary>
+            Returns a random floating-point number between 0.0 and 1.0.
+            </summary>
+            <returns>A double-precision floating point number that is greater than or equal to 0.0, and less than 1.0.</returns>
+        </member>
+    </members>
+</doc>

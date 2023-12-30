@@ -1,0 +1,29 @@
+{
+  "name": "il.runiarl.eventhorizon",
+  "displayName": "Event Horizon",
+  "description": "Easy to use event playback system.",
+  "version": "0.1.0-preview.1",
+  "unity": "2022.3",
+  "unityRelease": "0f1",
+  "keywords": [
+    "events",
+    "recording",
+    "playback"
+  ],
+  "documentationUrl": "https://github.com/Shloon/Event-Horizon#documentation",
+  "changelogUrl": "https://github.com/Shloon/Event-Horizon/releases",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "repository": "https://github.com/Shloon/Event-Horizon.git"
+  },
+  "author": {
+    "name": "Shloon",
+    "url": "https://github.com/Shloon"
+  },
+  "dependencies": {
+    "com.unity.timeline": "1.7.6",
+    "com.unity.test-framework.performance": "3.0.3",
+    "nuget.moq": "2.0.0"
+  }
+}
