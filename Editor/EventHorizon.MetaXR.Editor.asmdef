@@ -1,0 +1,20 @@
+{
+    "name": "EventHorizon.MetaXR.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:6d86fca08a5529a4e9ef4424de432043",
+        "GUID:c6d975650bc152f40b1d8775cea2495a",
+        "GUID:df333206d5eb477418d564feb6e90379"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
