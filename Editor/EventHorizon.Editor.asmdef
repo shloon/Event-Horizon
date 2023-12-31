@@ -1,6 +1,6 @@
 {
     "name": "EventHorizon.Editor",
-    "rootNamespace": "EventHorizon.Editor",
+    "rootNamespace": "EventHorizon",
     "references": [
         "EventHorizon",
         "Unity.Timeline",
