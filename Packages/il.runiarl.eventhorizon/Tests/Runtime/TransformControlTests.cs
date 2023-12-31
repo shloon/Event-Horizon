@@ -1,13 +1,15 @@
 using NUnit.Framework;
+using System;
 using UnityEngine;
 using UnityEngine.Playables;
+using Object = UnityEngine.Object;
 
 namespace EventHorizon.Tests
 {
 	public class TransformControlTests
 	{
-		private PlayableGraph graph;
 		private GameObject gameObject;
+		private PlayableGraph graph;
 
 		[SetUp]
 		public void Setup()
@@ -26,7 +28,7 @@ namespace EventHorizon.Tests
 		[Test]
 		public void CreatePlayable_ShouldCreatePlayableOfTypeTransformControl()
 		{
-			var transformControlAsset = new TransformControlAsset();
+			var transformControlAsset = ScriptableObject.CreateInstance<TransformControlAsset>();
 			var playable = transformControlAsset.CreatePlayable(graph, gameObject);
 
 			// Checking the type of Playable
@@ -36,18 +38,26 @@ namespace EventHorizon.Tests
 		[Test]
 		public void CreatePlayable_ShouldTransferDataAndMetadata()
 		{
-			var metadata = new RecordingMetadata { sceneName = "TestScene", fps = new FrameRate(30, 1) };
+			var metadata = new RecordingMetadata { sceneName = "TestScene", fps = new FrameRate(30) };
 			var data = new TransformData[]
 			{
-				new TransformData { position = new Vector3(1, 2, 3), rotation = Quaternion.identity, scale = new Vector3(1, 1, 1) },
-				new TransformData { position = new Vector3(4, 5, 6), rotation = Quaternion.Euler(45, 45, 45), scale = new Vector3(2, 2, 2) }
+				new()
+				{
+					position = new Vector3(1, 2, 3),
+					rotation = Quaternion.identity,
+					scale = new Vector3(1, 1, 1)
+				},
+				new()
+				{
+					position = new Vector3(4, 5, 6),
+					rotation = Quaternion.Euler(45, 45, 45),
+					scale = new Vector3(2, 2, 2)
+				}
 			};
 
-			var transformControlAsset = new TransformControlAsset
-			{
-				data = data,
-				metadata = metadata
-			};
+			var transformControlAsset = ScriptableObject.CreateInstance<TransformControlAsset>();
+			transformControlAsset.data = data;
+			transformControlAsset.metadata = metadata;
 			var playable = (ScriptPlayable<TransformControl>) transformControlAsset.CreatePlayable(graph, gameObject);
 			var behaviour = playable.GetBehaviour();
 
@@ -58,13 +68,11 @@ namespace EventHorizon.Tests
 		[Test]
 		public void CreatePlayable_WithEmptyDataArray_ShouldCreatePlayable()
 		{
-			var metadata = new RecordingMetadata { sceneName = "EmptyTest", fps = new FrameRate(24, 1) };
+			var metadata = new RecordingMetadata { sceneName = "EmptyTest", fps = new FrameRate(24) };
 
-			var transformControlAsset = new TransformControlAsset
-			{
-				data = new TransformData[0],
-				metadata = metadata
-			};
+			var transformControlAsset = ScriptableObject.CreateInstance<TransformControlAsset>();
+			transformControlAsset.data = Array.Empty<TransformData>();
+			transformControlAsset.metadata = metadata;
 			var playable = transformControlAsset.CreatePlayable(graph, gameObject);
 
 			// Checking the type of Playable
