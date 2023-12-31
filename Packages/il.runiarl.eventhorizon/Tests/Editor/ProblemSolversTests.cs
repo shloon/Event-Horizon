@@ -38,6 +38,7 @@ namespace EventHorizon.Editor.Tests
 		{
 			var newId = new TrackableID(3);
 			mockTrackableManager.Setup(m => m.GenerateId()).Returns(newId);
+			mockTrackableManager.Setup(m => m.Register(mockTrackable)).Verifiable();
 			var problem = new InvalidTrackableIDProblem
 			{
 				trackable = mockTrackable, trackableManager = mockTrackableManager.Object
@@ -46,6 +47,7 @@ namespace EventHorizon.Editor.Tests
 			problem.Fix();
 
 			mockTrackableManager.Verify(m => m.GenerateId(), Times.Once);
+			mockTrackableManager.Verify(m => m.Register(mockTrackable), Times.Once);
 			Assert.AreEqual(newId, mockTrackable.id);
 		}
 	}
@@ -90,6 +92,7 @@ namespace EventHorizon.Editor.Tests
 			// Arrange
 			var newId = new TrackableID(3); // Assuming TrackableId is a struct or class
 			mockTrackableManager.Setup(m => m.GenerateId()).Returns(newId);
+			mockTrackableManager.Setup(m => m.Register(mockTrackable)).Verifiable();
 			var problem = new TwoTrackablesWithSameIDProblem
 			{
 				trackable = mockTrackable,
@@ -102,6 +105,7 @@ namespace EventHorizon.Editor.Tests
 
 			// Assert
 			mockTrackableManager.Verify(m => m.GenerateId(), Times.Once);
+			mockTrackableManager.Verify(m => m.Register(mockTrackable), Times.Once);
 			Assert.AreEqual(newId, mockTrackable.id);
 		}
 	}
