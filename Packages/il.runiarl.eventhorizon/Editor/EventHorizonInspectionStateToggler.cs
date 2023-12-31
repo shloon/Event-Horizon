@@ -7,7 +7,7 @@ namespace EventHorizon.Editor
 	// we use SessionState since we want the toggle value to persist
 	// and InitializeOnLoad is called whenever switching to either play or edit mode.
 	[InitializeOnLoad]
-	public abstract class EventHorizonInspectionStateToggler
+	public class EventHorizonInspectionStateToggler
 	{
 		private const string ToggleKeyString = "isCurrentlyInspectingEventHorizon";
 
