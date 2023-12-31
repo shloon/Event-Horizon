@@ -1,14 +1,14 @@
 using UnityEditor;
 using UnityEngine.UIElements;
 
-namespace EventHorizon
+namespace EventHorizon.Editor
 {
 	[CustomPropertyDrawer(typeof(FrameRate))]
-	class FrameRatePropertyDrawer : PropertyDrawer
+	internal class FrameRatePropertyDrawer : PropertyDrawer
 	{
-		TextField textField;
-		string internalText;
-		string placeholderText;
+		private string internalText;
+		private string placeholderText;
+		private TextField textField;
 
 		public override VisualElement CreatePropertyGUI(SerializedProperty property)
 		{
@@ -32,20 +32,18 @@ namespace EventHorizon
 			placeholderText = frameRate.GetAsDouble().ToString("0.###") + " FPS";
 		}
 
-		private void OnFocusIn(FocusInEvent ev)
-		{
-			textField.value = internalText;
-		}
+		private void OnFocusIn(FocusInEvent ev) => textField.value = internalText;
 
 		private void OnFocusOut(SerializedProperty property)
 		{
 			internalText = textField.value;
-			if (FrameRate.TryParse(internalText, out FrameRate frameRate))
+			if (FrameRate.TryParse(internalText, out var frameRate))
 			{
 				property.boxedValue = frameRate;
 				property.serializedObject.ApplyModifiedProperties();
 				UpdateFrameRateDrawerStrings(frameRate);
 			}
+
 			textField.value = placeholderText;
 		}
 	}
