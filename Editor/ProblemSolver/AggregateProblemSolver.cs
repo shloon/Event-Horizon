@@ -10,7 +10,14 @@ namespace EventHorizon.Editor.ProblemSolver
 	// TODO: test
 	public class AggregateProblemSolver
 	{
-		public AggregateProblemSolver() => ProblemSolvers = GetSceneProblemFinders();
+		public AggregateProblemSolver()
+		{
+			ProblemSolvers = GetSceneProblemFinders();
+			foreach (var solver in ProblemSolvers)
+			{
+				Debug.Log($"EventHorizon: Registered solver of type \"{solver.GetType()}\"");
+			}
+		}
 
 		public List<ISceneProblemFinder> ProblemSolvers { get; }
 
