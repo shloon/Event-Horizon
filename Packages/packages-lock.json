@@ -5,7 +5,7 @@
       "depth": 1,
       "source": "registry",
       "dependencies": {},
-      "url": "https://packages.unity.com"
+      "url": "https://npm.developer.oculus.com"
     },
     "com.unity.collab-proxy": {
       "version": "2.2.0",

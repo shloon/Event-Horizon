@@ -1,4 +1,11 @@
 {
+  "scopedRegistries": [
+    {
+      "name": "Meta XR",
+      "url": "https://npm.developer.oculus.com/",
+      "scopes": ["com.meta.xr"]
+    }
+  ],
   "dependencies": {
     "com.unity.collab-proxy": "2.2.0",
     "com.unity.feature.development": "1.0.1",
