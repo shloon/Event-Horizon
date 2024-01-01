@@ -20,14 +20,14 @@ namespace EventHorizon.Editor.ProblemSolver
 		public List<IProblem> DiscoverProblemsInScene(ISceneWrapper scene, ITrackableManager trackableManager)
 		{
 			var allTrackables = scene.GetRootGameObjects()
-				.SelectMany(rootGO => rootGO.GetComponentsInChildren<Trackable>())
+				.SelectMany(rootGO => rootGO.GetComponentsInChildren<ITrackable>())
 				.ToList();
 			var problems = new List<IProblem>();
 
 			foreach (var trackable in allTrackables)
 			{
-				// Tracker ID is already being used by 
-				if (!trackable.id.IsValid)
+				// Tracker ID was not properly set
+				if (!trackable.Id.IsValid)
 				{
 					problems.Add(new InvalidTrackableIDProblem
 					{
@@ -35,8 +35,8 @@ namespace EventHorizon.Editor.ProblemSolver
 					});
 				}
 				// Tracker's ID is already being used by another
-				else if (trackableManager.RegisteredTrackables.TryGetValue(trackable.id, out var other) &&
-				         trackable != other)
+				else if (trackableManager.RegisteredTrackables.TryGetValue(trackable.Id, out var other) &&
+				         !trackable.Equals(other))
 				{
 					problems.Add(new TwoTrackablesWithSameIDProblem
 					{

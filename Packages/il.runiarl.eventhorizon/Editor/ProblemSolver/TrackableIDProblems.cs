@@ -2,30 +2,30 @@
 {
 	public struct InvalidTrackableIDProblem : IProblem
 	{
-		public Trackable trackable;
+		public ITrackable trackable;
 		public ITrackableManager trackableManager;
 
-		public string Description => $"GameObject \"{trackable.gameObject.name}\" has no valid ID assigned to it";
+		public string Description => $"GameObject \"{trackable.Name}\" has no valid ID assigned to it";
 
 		public void Fix()
 		{
-			trackable.id = trackableManager.GenerateId();
+			trackable.Id = trackableManager.GenerateId();
 			trackableManager.Register(trackable);
 		}
 	}
 
 	public struct TwoTrackablesWithSameIDProblem : IProblem
 	{
-		public Trackable trackable;
-		public Trackable otherTrackable;
+		public ITrackable trackable;
+		public ITrackable otherTrackable;
 		public ITrackableManager trackableManager;
 
 		public string Description =>
-			$"GameObject \"{trackable.gameObject.name}\"'s ID is already assigned to \"{otherTrackable.gameObject.name}\"";
+			$"GameObject \"{trackable.Name}\"'s ID is already assigned to \"{otherTrackable.Name}\"";
 
 		public void Fix()
 		{
-			trackable.id = trackableManager.GenerateId();
+			trackable.Id = trackableManager.GenerateId();
 			trackableManager.Register(trackable);
 		}
 	}

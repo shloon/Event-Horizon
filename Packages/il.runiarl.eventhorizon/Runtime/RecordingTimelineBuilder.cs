@@ -60,10 +60,13 @@ namespace EventHorizon
 
 			foreach (var (id, trackable) in TrackableManagerComponent.Instance.RegisteredTrackables)
 			{
-				var animator = trackable.gameObject.AddComponent<Animator>();
-				if (transformControlTracks.TryGetValue(id, out var animationTrack))
+				if (trackable is Trackable trackableComponent)
 				{
-					director.SetGenericBinding(animationTrack, animator);
+					var animator = trackableComponent.gameObject.AddComponent<Animator>();
+					if (transformControlTracks.TryGetValue(id, out var animationTrack))
+					{
+						director.SetGenericBinding(animationTrack, animator);
+					}
 				}
 			}
 		}

@@ -13,7 +13,7 @@ namespace EventHorizon.Tests
 		public void FromCurrentFrame_WithEmptyTrackables_ShouldReturnEmptyTrackers()
 		{
 			// Arrange
-			var trackables = new Dictionary<TrackableID, Trackable>();
+			var trackables = new Dictionary<TrackableID, ITrackable>();
 			var metadata = new RecordingMetadata { fps = new FrameRate(30) }; // Assuming FrameRate and fps are defined
 			var frameNumber = 5;
 
@@ -31,10 +31,16 @@ namespace EventHorizon.Tests
 		public void FromCurrentFrame_WithNonEmptyTrackables_ShouldReflectTrackablesData()
 		{
 			// Arrange
-			var trackables = new Dictionary<TrackableID, Trackable>
+			var trackables = new Dictionary<TrackableID, ITrackable>
 			{
-				{ new TrackableID(1), CreateMockTrackable(new Vector3(1, 1, 1), Quaternion.identity, new Vector3(1, 1, 1)) },
-				{ new TrackableID(2), CreateMockTrackable(new Vector3(2, 2, 2), Quaternion.Euler(45, 45, 45), new Vector3(2, 2, 2)) }
+				{
+					new TrackableID(1),
+					CreateMockTrackable(new Vector3(1, 1, 1), Quaternion.identity, new Vector3(1, 1, 1))
+				},
+				{
+					new TrackableID(2),
+					CreateMockTrackable(new Vector3(2, 2, 2), Quaternion.Euler(45, 45, 45), new Vector3(2, 2, 2))
+				}
 			};
 			var metadata = new RecordingMetadata { fps = new FrameRate(30) }; // Assuming FrameRate and fps are defined
 			var frameNumber = 10;
@@ -47,10 +53,13 @@ namespace EventHorizon.Tests
 			for (var i = 0; i < trackables.Count; i++)
 			{
 				var element = trackables.ElementAt(i);
-				Assert.AreEqual(element.Key, frameData.trackers[i].id);
-				Assert.AreEqual(element.Value.gameObject.transform.position, frameData.trackers[i].transform.position);
-				Assert.AreEqual(element.Value.gameObject.transform.rotation, frameData.trackers[i].transform.rotation);
-				Assert.AreEqual(element.Value.gameObject.transform.localScale, frameData.trackers[i].transform.scale);
+				if (element.Value is Trackable trackableElement)
+				{
+					Assert.AreEqual(element.Key, frameData.trackers[i].id);
+					Assert.AreEqual(trackableElement.transform.position, frameData.trackers[i].transform.position);
+					Assert.AreEqual(trackableElement.transform.rotation, frameData.trackers[i].transform.rotation);
+					Assert.AreEqual(trackableElement.transform.localScale, frameData.trackers[i].transform.scale);
+				}
 			}
 		}
 
@@ -58,7 +67,7 @@ namespace EventHorizon.Tests
 		public void FromCurrentFrame_WithSpecificFrameNumber_ShouldCalculateTimeCodeCorrectly()
 		{
 			// Arrange
-			var trackables = new Dictionary<TrackableID, Trackable>(); // can be empty or populated
+			var trackables = new Dictionary<TrackableID, ITrackable>(); // can be empty or populated
 			var metadata = new RecordingMetadata { fps = new FrameRate(60) }; // Assuming FrameRate and fps are defined
 			var frameNumber = 120;
 
@@ -75,10 +84,13 @@ namespace EventHorizon.Tests
 		public void FromCurrentFrame_WithMultipleTrackables_ShouldPreserveOrder()
 		{
 			// Arrange
-			var trackables = new Dictionary<TrackableID, Trackable>
+			var trackables = new Dictionary<TrackableID, ITrackable>
 			{
 				{ new TrackableID(1), CreateMockTrackable(Vector3.zero, Quaternion.identity, Vector3.one) },
-				{ new TrackableID(2), CreateMockTrackable(Vector3.one, Quaternion.Euler(45, 45, 45), new Vector3(2, 2, 2)) }
+				{
+					new TrackableID(2),
+					CreateMockTrackable(Vector3.one, Quaternion.Euler(45, 45, 45), new Vector3(2, 2, 2))
+				}
 			};
 			var metadata = new RecordingMetadata { fps = new FrameRate(30) };
 			var frameNumber = 20;
@@ -98,23 +110,22 @@ namespace EventHorizon.Tests
 		public void FromCurrentFrame_WithNullTrackable_ThrowsNullReferenceException()
 		{
 			// Arrange
-			var trackables = new Dictionary<TrackableID, Trackable>
-			{
-				{ new TrackableID(1), null }
-			};
+			var trackables = new Dictionary<TrackableID, ITrackable> { { new TrackableID(1), null } };
 			var metadata = new RecordingMetadata { fps = new FrameRate(30) };
 			var frameNumber = 10;
 
 			// Act & Assert
-			Assert.Throws<NullReferenceException>(() => RecordingFrameData.FromCurrentFrame(trackables, metadata, frameNumber));
+			Assert.Throws<NullReferenceException>(() =>
+				RecordingFrameData.FromCurrentFrame(trackables, metadata, frameNumber));
 		}
 
 		private Trackable CreateMockTrackable(Vector3 position, Quaternion rotation, Vector3 scale)
 		{
 			var trackable = TrackableTestUtils.CreateTrackable();
-			trackable.transform.position = position;
-			trackable.transform.rotation = rotation;
-			trackable.transform.localScale = scale;
+			var transform = trackable.transform;
+			transform.position = position;
+			transform.rotation = rotation;
+			transform.localScale = scale;
 			return trackable;
 		}
 	}

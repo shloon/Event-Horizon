@@ -5,52 +5,52 @@ namespace EventHorizon
 {
 	public interface ITrackableManager
 	{
-		public IReadOnlyDictionary<TrackableID, Trackable> RegisteredTrackables { get; }
-		void Register(Trackable trackable);
-		void Unregister(Trackable trackable);
+		public IReadOnlyDictionary<TrackableID, ITrackable> RegisteredTrackables { get; }
+		void Register(ITrackable trackable);
+		void Unregister(ITrackable trackable);
 		void ChangeTrackableID(TrackableID previousID, TrackableID newID);
 		TrackableID GenerateId();
 	}
 
 	public sealed class TrackableManager : ITrackableManager
 	{
-		private readonly Dictionary<TrackableID, Trackable> registeredTrackables = new();
-		public IReadOnlyDictionary<TrackableID, Trackable> RegisteredTrackables => registeredTrackables;
+		private readonly Dictionary<TrackableID, ITrackable> registeredTrackables = new();
+		public IReadOnlyDictionary<TrackableID, ITrackable> RegisteredTrackables => registeredTrackables;
 
 		private readonly IRandomNumberGenerator rngProvider;
 
 		public TrackableManager(IRandomNumberGenerator provider = null) => rngProvider = provider ?? new PcgRng();
 
-		public void Register(Trackable trackable)
+		public void Register(ITrackable trackable)
 		{
-			if (!trackable.id.IsValid)
-				throw new ArgumentException($"Trackable '{trackable.gameObject}' has invalid key");
+			if (!trackable.Id.IsValid)
+				throw new ArgumentException($"Trackable '{trackable.Name}' has invalid key");
 
-			if (registeredTrackables.TryGetValue(trackable.id, out Trackable existingTrackable))
+			if (registeredTrackables.TryGetValue(trackable.Id, out ITrackable existingTrackable))
 			{
 				if (existingTrackable == trackable)
-					throw new InvalidOperationException($"Trackable '{trackable.gameObject}' already registered");
+					throw new InvalidOperationException($"Trackable '{trackable.Name}' already registered");
 
 				throw new InvalidOperationException(
-					$"Trackable '{trackable.gameObject}' has key registered by another trackable");
+					$"Trackable '{trackable.Name}' has key registered by another trackable");
 			}
 
-			registeredTrackables.Add(trackable.id, trackable);
+			registeredTrackables.Add(trackable.Id, trackable);
 		}
 
-		public void Unregister(Trackable trackable)
+		public void Unregister(ITrackable trackable)
 		{
-			if (!trackable.id.IsValid)
-				throw new ArgumentException($"Trackable '{trackable.gameObject}' has invalid key");
+			if (!trackable.Id.IsValid)
+				throw new ArgumentException($"Trackable '{trackable.Name}' has invalid key");
 
-			if (!registeredTrackables.TryGetValue(trackable.id, out Trackable existingTrackable))
-				throw new InvalidOperationException($"Trackable '{trackable.gameObject}' is not registered");
+			if (!registeredTrackables.TryGetValue(trackable.Id, out ITrackable existingTrackable))
+				throw new InvalidOperationException($"Trackable '{trackable.Name}' is not registered");
 
 			if (existingTrackable != trackable)
 				throw new InvalidOperationException(
-					$"Attempt to remove '{trackable.gameObject}' would remove another trackable with the same ID");
+					$"Attempt to remove '{trackable.Name}' would remove another trackable with the same ID");
 
-			registeredTrackables.Remove(trackable.id);
+			registeredTrackables.Remove(trackable.Id);
 		}
 
 		public void ChangeTrackableID(TrackableID previousID, TrackableID newID)

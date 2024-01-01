@@ -53,7 +53,7 @@ namespace EventHorizon.Editor
 						property.boxedValue = newID;
 						property.serializedObject.ApplyModifiedProperties();
 
-						if (property.serializedObject.targetObject is Trackable trackable)
+						if (property.serializedObject.targetObject is ITrackable trackable)
 						{
 							trackableManager.ChangeTrackableID(oldID, newID);
 						}
