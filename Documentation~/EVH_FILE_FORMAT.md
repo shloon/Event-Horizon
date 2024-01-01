@@ -133,7 +133,7 @@ Represent 3D vectors and rotations:
 This section provides guidance on how to work with the EVH file format effectively, offering insights into various methods and tools available for interacting with this data format.
 
 ### Using the C# API
-For those operating within the Unity framework, the EventHorizon assembly provides a straightforward API to interact with the EVH file format. To use this API, include the EventHorizon namespace in your C# script as follows:
+For those operating within the Unity framework, the Event Horizon assembly provides a straightforward API to interact with the EVH file format. To use this API, include the `EventHorizon` namespace in your C# script as follows:
 
 ```csharp
 using EventHorizon;
