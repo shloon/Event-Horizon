@@ -70,8 +70,8 @@ it is recommended to stay informed about updates and changes, as we may add, cha
 
 # Limitations
 
-TODO
+See the [LIMITATION.md file in the project's documentation.](Packages/il.runiarl.eventhorizon/Documentation~/LIMITATIONS.md).
 
 # Future Improvements
 
-TODO
+See the [Relevant issue](https://github.com/shloon/Event-Horizon/issues/2).
