@@ -7,29 +7,30 @@ using NUnit.Framework;
 
 namespace EventHorizon.Editor.Tests
 {
+	[Parallelizable]
 	public class InvalidTrackableIDProblemTests
 	{
-		private TrackableComponent mockTrackableComponent;
 		private Mock<ITrackableManager> mockTrackableManager;
+		private TestTrackable trackable;
 
 		[SetUp]
 		public void Setup()
 		{
-			mockTrackableComponent = TrackableTestUtils.CreateTrackableGameObject();
+			trackable = new TestTrackable(name: "TestObject");
 			mockTrackableManager = new Mock<ITrackableManager>();
 		}
 
 		[Test]
 		public void InvalidTrackableIDProblem_Description_ShouldBeCorrect()
 		{
-			mockTrackableComponent.gameObject.name = "TestObject";
 			var problem = new InvalidTrackableIDProblem
 			{
-				trackable = mockTrackableComponent, trackableManager = mockTrackableManager.Object
+				trackable = trackable, trackableManager = mockTrackableManager.Object
 			};
 
 			var description = problem.Description;
 
+			Assert.AreEqual("TestObject", trackable.Name);
 			Assert.AreEqual("GameObject \"TestObject\" has no valid ID assigned to it", description);
 		}
 
@@ -38,31 +39,32 @@ namespace EventHorizon.Editor.Tests
 		{
 			var newId = new TrackableID(3);
 			mockTrackableManager.Setup(m => m.GenerateId()).Returns(newId);
-			mockTrackableManager.Setup(m => m.Register(mockTrackableComponent)).Verifiable();
+			mockTrackableManager.Setup(m => m.Register(trackable)).Verifiable();
 			var problem = new InvalidTrackableIDProblem
 			{
-				trackable = mockTrackableComponent, trackableManager = mockTrackableManager.Object
+				trackable = trackable, trackableManager = mockTrackableManager.Object
 			};
 
 			problem.Fix();
 
 			mockTrackableManager.Verify(m => m.GenerateId(), Times.Once);
-			mockTrackableManager.Verify(m => m.Register(mockTrackableComponent), Times.Once);
-			Assert.AreEqual(newId, mockTrackableComponent.Id);
+			mockTrackableManager.Verify(m => m.Register(trackable), Times.Once);
+			Assert.AreEqual(newId, trackable.Id);
 		}
 	}
 
+	[Parallelizable]
 	public class TwoTrackablesWithSameIDProblemTests
 	{
-		private TrackableComponent mockOtherTrackableComponent;
-		private TrackableComponent mockTrackableComponent;
+		private TestTrackable mockOtherTrackableComponent;
+		private TestTrackable mockTrackableComponent;
 		private Mock<ITrackableManager> mockTrackableManager;
 
 		[SetUp]
 		public void Setup()
 		{
-			mockTrackableComponent = TrackableTestUtils.CreateTrackableGameObject(new TrackableID(1));
-			mockOtherTrackableComponent = TrackableTestUtils.CreateTrackableGameObject(new TrackableID(1));
+			mockTrackableComponent = new TestTrackable(new TrackableID(1), "TestObject");
+			mockOtherTrackableComponent = new TestTrackable(new TrackableID(1), "OtherObject");
 			mockTrackableManager = new Mock<ITrackableManager>();
 		}
 
@@ -70,8 +72,6 @@ namespace EventHorizon.Editor.Tests
 		public void TrackableIDInUseProblem_Description_ShouldBeCorrect()
 		{
 			// Arrange
-			mockTrackableComponent.gameObject.name = "TestObject";
-			mockOtherTrackableComponent.gameObject.name = "OtherObject";
 			var problem = new TwoTrackablesWithSameIDProblem
 			{
 				trackable = mockTrackableComponent,
