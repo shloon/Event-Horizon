@@ -57,7 +57,7 @@ namespace EventHorizon.Tests
 			TrackableTestUtils.DestroyTrackable(trackable1);
 			TrackableTestUtils.DestroyTrackable(trackable2);
 		}
-		
+
 		[Test]
 		public void ChangeTrackableID_DifferentTrackableDifferentID_ShouldSucceed()
 		{
@@ -66,14 +66,14 @@ namespace EventHorizon.Tests
 			var manager = new TrackableManager();
 			manager.Register(trackable1);
 
-			manager.ChangeTrackableID(trackable1.id, expectedTrackableID);
-			
+			manager.ChangeTrackableID(trackable1.Id, expectedTrackableID);
+
 			Assert.IsTrue(manager.RegisteredTrackables.ContainsKey(expectedTrackableID));
-			Assert.IsFalse(manager.RegisteredTrackables.ContainsKey(trackable1.id));
-			
+			Assert.IsFalse(manager.RegisteredTrackables.ContainsKey(trackable1.Id));
+
 			TrackableTestUtils.DestroyTrackable(trackable1);
 		}
-		
+
 		[Test]
 		public void ChangeTrackableID_NonExistentTrackableReferenced_ShouldThrowArgumentException()
 		{
@@ -82,11 +82,11 @@ namespace EventHorizon.Tests
 
 			manager.Register(trackable1);
 
-			Assert.Throws<ArgumentException>(() => manager.ChangeTrackableID(new TrackableID(303), trackable1.id));
+			Assert.Throws<ArgumentException>(() => manager.ChangeTrackableID(new TrackableID(303), trackable1.Id));
 
 			TrackableTestUtils.DestroyTrackable(trackable1);
 		}
-		
+
 		[Test]
 		public void ChangeTrackableID_DifferentTrackableWithSameId_ShouldThrowInvalidOperationException()
 		{
@@ -97,7 +97,7 @@ namespace EventHorizon.Tests
 			manager.Register(trackable1);
 			manager.Register(trackable2);
 
-			Assert.Throws<InvalidOperationException>(() => manager.ChangeTrackableID(trackable2.id, trackable1.id));
+			Assert.Throws<InvalidOperationException>(() => manager.ChangeTrackableID(trackable2.Id, trackable1.Id));
 
 			TrackableTestUtils.DestroyTrackable(trackable1);
 			TrackableTestUtils.DestroyTrackable(trackable2);
@@ -109,14 +109,14 @@ namespace EventHorizon.Tests
 			var trackable1 = TrackableTestUtils.CreateTrackable(new TrackableID(1));
 			var manager = new TrackableManager();
 			manager.Register(trackable1);
-			
-			manager.ChangeTrackableID(trackable1.id, trackable1.id);
-			
-			Assert.AreEqual(new TrackableID(1), trackable1.id);
-			
+
+			manager.ChangeTrackableID(trackable1.Id, trackable1.Id);
+
+			Assert.AreEqual(new TrackableID(1), trackable1.Id);
+
 			TrackableTestUtils.DestroyTrackable(trackable1);
 		}
-		
+
 		[Test]
 		public void Unregister_RegisteredTrackable_ShouldRemoveTrackable()
 		{
@@ -185,7 +185,7 @@ namespace EventHorizon.Tests
 			trackableManager.Register(trackable);
 
 			var newId = trackableManager.GenerateId();
-			Assert.AreNotEqual(trackable.id, newId);
+			Assert.AreNotEqual(trackable.Id, newId);
 
 			TrackableTestUtils.DestroyTrackable(trackable);
 		}

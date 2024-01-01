@@ -12,7 +12,7 @@ namespace EventHorizon.Tests.Utilities
 
 			var trackable = go.AddComponent<Trackable>();
 			trackable.manager = new DummyManager();
-			trackable.id = id;
+			trackable.Id = id;
 			go.SetActive(true);
 
 			return trackable;
@@ -29,12 +29,12 @@ namespace EventHorizon.Tests.Utilities
 
 		internal class DummyManager : ITrackableManager
 		{
-			public IReadOnlyDictionary<TrackableID, Trackable> RegisteredTrackables => null;
-			public void Register(Trackable trackable) { }
-			public void Unregister(Trackable trackable) { }
+			public IReadOnlyDictionary<TrackableID, ITrackable> RegisteredTrackables => null;
 			public void ChangeTrackableID(TrackableID previousID, TrackableID newID) { }
 
 			public TrackableID GenerateId() => TrackableID.Unassigned;
+			public void Register(ITrackable trackable) { }
+			public void Unregister(ITrackable trackable) { }
 		}
 	}
 }

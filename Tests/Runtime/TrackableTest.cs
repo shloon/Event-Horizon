@@ -8,27 +8,29 @@ namespace EventHorizon.Tests
 {
 	public class TrackableTest
 	{
-		private Mock<ITrackableManager> mockManager;
 		private GameObject gameObject;
+		private Mock<ITrackableManager> mockManager;
 		private Trackable trackable;
 
 		[SetUp]
 		public void SetUp()
 		{
-			mockManager = new Moq.Mock<ITrackableManager>();
+			mockManager = new Mock<ITrackableManager>();
 
 			gameObject = new GameObject("trackable");
 			gameObject.SetActive(false);
 
 			trackable = gameObject.AddComponent<Trackable>();
-			trackable.id = new TrackableID(1234);
+			trackable.Id = new TrackableID(1234);
 		}
 
 		[TearDown]
 		public void TearDown()
 		{
 			if (gameObject == null)
+			{
 				Object.Destroy(gameObject);
+			}
 		}
 
 		[Test]

@@ -113,8 +113,8 @@ namespace EventHorizon.Editor.Tests
 
 			solver.DiscoverProblemsInScene(mockScene.Object, trackableManager);
 
-			Assert.IsTrue(trackableManager.RegisteredTrackables.ContainsKey(validTrackable.id));
-			Assert.AreEqual(validTrackable, trackableManager.RegisteredTrackables[validTrackable.id]);
+			Assert.IsTrue(trackableManager.RegisteredTrackables.ContainsKey(validTrackable.Id));
+			Assert.AreEqual(validTrackable, trackableManager.RegisteredTrackables[validTrackable.Id]);
 
 			TrackableTestUtils.DestroyTrackable(validTrackable);
 		}

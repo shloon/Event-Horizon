@@ -48,7 +48,7 @@ namespace EventHorizon.Editor.Tests
 
 			mockTrackableManager.Verify(m => m.GenerateId(), Times.Once);
 			mockTrackableManager.Verify(m => m.Register(mockTrackable), Times.Once);
-			Assert.AreEqual(newId, mockTrackable.id);
+			Assert.AreEqual(newId, mockTrackable.Id);
 		}
 	}
 
@@ -106,7 +106,7 @@ namespace EventHorizon.Editor.Tests
 			// Assert
 			mockTrackableManager.Verify(m => m.GenerateId(), Times.Once);
 			mockTrackableManager.Verify(m => m.Register(mockTrackable), Times.Once);
-			Assert.AreEqual(newId, mockTrackable.id);
+			Assert.AreEqual(newId, mockTrackable.Id);
 		}
 	}
 }

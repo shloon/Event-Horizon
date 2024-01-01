@@ -1,6 +1,7 @@
 using System;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace EventHorizon
 {
@@ -8,10 +9,12 @@ namespace EventHorizon
 	[DefaultExecutionOrder(-99)]
 	[AddComponentMenu("Event Horizon/Trackable")]
 	[ExecuteAlways]
-	public sealed class Trackable : MonoBehaviour
+	public sealed class Trackable : MonoBehaviour, ITrackable
 	{
-		[SerializeField] public TrackableID id;
-		[NonSerialized] public ITrackableManager manager;
+		public ITrackableManager manager;
+
+		[field: SerializeField, FormerlySerializedAs("id")] public TrackableID Id { get; set; }
+		public string Name => gameObject.name;
 
 		private void Awake()
 		{
@@ -20,9 +23,9 @@ namespace EventHorizon
 			// Generate key if in Edit Mode
 			if (manager != null && !EditorApplication.isPlayingOrWillChangePlaymode)
 			{
-				if (!id.IsValid)
+				if (!Id.IsValid)
 				{
-					id = manager.GenerateId();
+					Id = manager.GenerateId();
 				}
 			}
 #endif

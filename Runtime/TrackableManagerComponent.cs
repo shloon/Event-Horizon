@@ -54,9 +54,9 @@ namespace EventHorizon
 	{
 		private TrackableManager manager;
 
-		public IReadOnlyDictionary<TrackableID, Trackable> RegisteredTrackables => manager.RegisteredTrackables;
-		public void Register(Trackable trackable) => manager.Register(trackable);
-		public void Unregister(Trackable trackable) => manager.Unregister(trackable);
+		public IReadOnlyDictionary<TrackableID, ITrackable> RegisteredTrackables => manager.RegisteredTrackables;
+		public void Register(ITrackable trackable) => manager.Register(trackable);
+		public void Unregister(ITrackable trackable) => manager.Unregister(trackable);
 		public void ChangeTrackableID(TrackableID previousID, TrackableID newID) =>
 			manager.ChangeTrackableID(previousID, newID);
 		

@@ -146,9 +146,12 @@ namespace EventHorizon.Tests
 
 			foreach (var (id, trackable) in TrackableManagerComponent.Instance.RegisteredTrackables)
 			{
-				var animator = trackable.GetComponent<Animator>();
-				var binding = director.GetGenericBinding(transformControlTracks[id]);
-				Assert.AreEqual(animator, binding);
+				if (trackable is Trackable trackableComponent)
+				{
+					var animator = trackableComponent.GetComponent<Animator>();
+					var binding = director.GetGenericBinding(transformControlTracks[id]);
+					Assert.AreEqual(animator, binding);
+				}
 			}
 		}
 
@@ -169,7 +172,7 @@ namespace EventHorizon.Tests
 				var tgo = new GameObject("Trackable");
 				tgo.SetActive(false);
 				trackables[i] = tgo.AddComponent<Trackable>();
-				trackables[i].id = trackableManager.GenerateId();
+				trackables[i].Id = trackableManager.GenerateId();
 				tgo.SetActive(true);
 			}
 		}
