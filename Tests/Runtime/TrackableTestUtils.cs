@@ -3,6 +3,18 @@ using UnityEngine;
 
 namespace EventHorizon.Tests.Utilities
 {
+	public class TestTrackable : ITrackable
+	{
+		public TestTrackable(TrackableID id = new(), string name = "Trackable")
+		{
+			Name = name;
+			Id = id;
+		}
+
+		public TrackableID Id { get; set; }
+		public string Name { get; }
+	}
+
 	public static class TrackableTestUtils
 	{
 		public static TrackableComponent CreateTrackableGameObject(TrackableID id = new())
