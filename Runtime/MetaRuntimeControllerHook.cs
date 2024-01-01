@@ -43,13 +43,13 @@ namespace EventHorizon.MetaXR
 		private void Update()
 		{
 			if (!initialized && OVRInput.IsControllerConnected(runtimeController.m_controller) &&
-				controllerGameObject is null &&
-				animationNodes is null)
+			    controllerGameObject is null &&
+			    animationNodes is null)
 			{
 				Debug.Log("Controller connected, let's find the relevant game objects");
-				controllerGameObject = (GameObject)m_controllerObjectField.GetValue(runtimeController);
+				controllerGameObject = (GameObject) m_controllerObjectField.GetValue(runtimeController);
 				animationNodes =
-					(Dictionary<OVRGLTFInputNode, OVRGLTFAnimatinonNode>)m_animationNodesField.GetValue(
+					(Dictionary<OVRGLTFInputNode, OVRGLTFAnimatinonNode>) m_animationNodesField.GetValue(
 						runtimeController);
 
 				if (!(controllerGameObject is null || animationNodes is null))
@@ -86,37 +86,37 @@ namespace EventHorizon.MetaXR
 			// this assumes that we won't change to a different kind of controllers in the middle of the experiment.
 			if (animationNodes.TryGetValue(OVRGLTFInputNode.Button_A_X, out var button0))
 			{
-				var controllerButton0GO = (GameObject)m_gameObjField.GetValue(button0);
+				var controllerButton0GO = (GameObject) m_gameObjField.GetValue(button0);
 				Utils.AddTrackableToGameObject(controllerButton0GO, controllerButton0ID.value);
 			}
 
 			if (animationNodes.TryGetValue(OVRGLTFInputNode.Button_B_Y, out var button1))
 			{
-				var controllerButton1GO = (GameObject)m_gameObjField.GetValue(button1);
+				var controllerButton1GO = (GameObject) m_gameObjField.GetValue(button1);
 				Utils.AddTrackableToGameObject(controllerButton1GO, controllerButton1ID.value);
 			}
 
 			if (animationNodes.TryGetValue(OVRGLTFInputNode.Button_Oculus_Menu, out var button2))
 			{
-				var controllerButton2GO = (GameObject)m_gameObjField.GetValue(button2);
+				var controllerButton2GO = (GameObject) m_gameObjField.GetValue(button2);
 				Utils.AddTrackableToGameObject(controllerButton2GO, controllerButton2ID.value);
 			}
 
 			if (animationNodes.TryGetValue(OVRGLTFInputNode.Trigger_Grip, out var button3))
 			{
-				var controllerButton3GO = (GameObject)m_gameObjField.GetValue(button3);
+				var controllerButton3GO = (GameObject) m_gameObjField.GetValue(button3);
 				Utils.AddTrackableToGameObject(controllerButton3GO, controllerButton3ID.value);
 			}
 
 			if (animationNodes.TryGetValue(OVRGLTFInputNode.Trigger_Front, out var button4))
 			{
-				var controllerButton4GO = (GameObject)m_gameObjField.GetValue(button4);
+				var controllerButton4GO = (GameObject) m_gameObjField.GetValue(button4);
 				Utils.AddTrackableToGameObject(controllerButton4GO, controllerButton4ID.value);
 			}
 
 			if (animationNodes.TryGetValue(OVRGLTFInputNode.ThumbStick, out var button5))
 			{
-				var controllerButton5GO = (GameObject)m_gameObjField.GetValue(button5);
+				var controllerButton5GO = (GameObject) m_gameObjField.GetValue(button5);
 				Utils.AddTrackableToGameObject(controllerButton5GO, controllerButton5ID.value);
 			}
 
