@@ -57,9 +57,9 @@ namespace EventHorizon
 					throw new NullReferenceException("Cannot query null trackable");
 				}
 
-				if (trackable is Trackable genericTrackable)
+				if (trackable is TrackableComponent trackableComponent)
 				{
-					var trackableTransform = genericTrackable.gameObject.transform;
+					var trackableTransform = trackableComponent.gameObject.transform;
 					frameData.trackers[i].id = trackableID;
 					frameData.trackers[i].transform.position = trackableTransform.position;
 					frameData.trackers[i].transform.rotation = trackableTransform.rotation;

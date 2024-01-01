@@ -1,4 +1,3 @@
-using System;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -9,12 +8,9 @@ namespace EventHorizon
 	[DefaultExecutionOrder(-99)]
 	[AddComponentMenu("Event Horizon/Trackable")]
 	[ExecuteAlways]
-	public sealed class Trackable : MonoBehaviour, ITrackable
+	public sealed class TrackableComponent : MonoBehaviour, ITrackable
 	{
 		public ITrackableManager manager;
-
-		[field: SerializeField, FormerlySerializedAs("id")] public TrackableID Id { get; set; }
-		public string Name => gameObject.name;
 
 		private void Awake()
 		{
@@ -33,5 +29,11 @@ namespace EventHorizon
 		}
 
 		private void OnDestroy() => manager?.Unregister(this);
+
+		[field: SerializeField]
+		[field: FormerlySerializedAs("id")]
+		public TrackableID Id { get; set; }
+
+		public string Name => gameObject.name;
 	}
 }

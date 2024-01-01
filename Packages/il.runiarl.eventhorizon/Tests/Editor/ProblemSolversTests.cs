@@ -9,23 +9,23 @@ namespace EventHorizon.Editor.Tests
 {
 	public class InvalidTrackableIDProblemTests
 	{
-		private Trackable mockTrackable;
+		private TrackableComponent mockTrackableComponent;
 		private Mock<ITrackableManager> mockTrackableManager;
 
 		[SetUp]
 		public void Setup()
 		{
-			mockTrackable = TrackableTestUtils.CreateTrackable();
+			mockTrackableComponent = TrackableTestUtils.CreateTrackableGameObject();
 			mockTrackableManager = new Mock<ITrackableManager>();
 		}
 
 		[Test]
 		public void InvalidTrackableIDProblem_Description_ShouldBeCorrect()
 		{
-			mockTrackable.gameObject.name = "TestObject";
+			mockTrackableComponent.gameObject.name = "TestObject";
 			var problem = new InvalidTrackableIDProblem
 			{
-				trackable = mockTrackable, trackableManager = mockTrackableManager.Object
+				trackable = mockTrackableComponent, trackableManager = mockTrackableManager.Object
 			};
 
 			var description = problem.Description;
@@ -38,31 +38,31 @@ namespace EventHorizon.Editor.Tests
 		{
 			var newId = new TrackableID(3);
 			mockTrackableManager.Setup(m => m.GenerateId()).Returns(newId);
-			mockTrackableManager.Setup(m => m.Register(mockTrackable)).Verifiable();
+			mockTrackableManager.Setup(m => m.Register(mockTrackableComponent)).Verifiable();
 			var problem = new InvalidTrackableIDProblem
 			{
-				trackable = mockTrackable, trackableManager = mockTrackableManager.Object
+				trackable = mockTrackableComponent, trackableManager = mockTrackableManager.Object
 			};
 
 			problem.Fix();
 
 			mockTrackableManager.Verify(m => m.GenerateId(), Times.Once);
-			mockTrackableManager.Verify(m => m.Register(mockTrackable), Times.Once);
-			Assert.AreEqual(newId, mockTrackable.Id);
+			mockTrackableManager.Verify(m => m.Register(mockTrackableComponent), Times.Once);
+			Assert.AreEqual(newId, mockTrackableComponent.Id);
 		}
 	}
 
 	public class TwoTrackablesWithSameIDProblemTests
 	{
-		private Trackable mockOtherTrackable;
-		private Trackable mockTrackable;
+		private TrackableComponent mockOtherTrackableComponent;
+		private TrackableComponent mockTrackableComponent;
 		private Mock<ITrackableManager> mockTrackableManager;
 
 		[SetUp]
 		public void Setup()
 		{
-			mockTrackable = TrackableTestUtils.CreateTrackable(new TrackableID(1));
-			mockOtherTrackable = TrackableTestUtils.CreateTrackable(new TrackableID(1));
+			mockTrackableComponent = TrackableTestUtils.CreateTrackableGameObject(new TrackableID(1));
+			mockOtherTrackableComponent = TrackableTestUtils.CreateTrackableGameObject(new TrackableID(1));
 			mockTrackableManager = new Mock<ITrackableManager>();
 		}
 
@@ -70,12 +70,12 @@ namespace EventHorizon.Editor.Tests
 		public void TrackableIDInUseProblem_Description_ShouldBeCorrect()
 		{
 			// Arrange
-			mockTrackable.gameObject.name = "TestObject";
-			mockOtherTrackable.gameObject.name = "OtherObject";
+			mockTrackableComponent.gameObject.name = "TestObject";
+			mockOtherTrackableComponent.gameObject.name = "OtherObject";
 			var problem = new TwoTrackablesWithSameIDProblem
 			{
-				trackable = mockTrackable,
-				otherTrackable = mockOtherTrackable,
+				trackable = mockTrackableComponent,
+				otherTrackable = mockOtherTrackableComponent,
 				trackableManager = mockTrackableManager.Object
 			};
 
@@ -92,11 +92,11 @@ namespace EventHorizon.Editor.Tests
 			// Arrange
 			var newId = new TrackableID(3); // Assuming TrackableId is a struct or class
 			mockTrackableManager.Setup(m => m.GenerateId()).Returns(newId);
-			mockTrackableManager.Setup(m => m.Register(mockTrackable)).Verifiable();
+			mockTrackableManager.Setup(m => m.Register(mockTrackableComponent)).Verifiable();
 			var problem = new TwoTrackablesWithSameIDProblem
 			{
-				trackable = mockTrackable,
-				otherTrackable = mockOtherTrackable,
+				trackable = mockTrackableComponent,
+				otherTrackable = mockOtherTrackableComponent,
 				trackableManager = mockTrackableManager.Object
 			};
 
@@ -105,8 +105,8 @@ namespace EventHorizon.Editor.Tests
 
 			// Assert
 			mockTrackableManager.Verify(m => m.GenerateId(), Times.Once);
-			mockTrackableManager.Verify(m => m.Register(mockTrackable), Times.Once);
-			Assert.AreEqual(newId, mockTrackable.Id);
+			mockTrackableManager.Verify(m => m.Register(mockTrackableComponent), Times.Once);
+			Assert.AreEqual(newId, mockTrackableComponent.Id);
 		}
 	}
 }

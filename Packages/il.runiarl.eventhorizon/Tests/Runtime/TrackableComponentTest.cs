@@ -6,11 +6,11 @@ using UnityEngine.TestTools;
 
 namespace EventHorizon.Tests
 {
-	public class TrackableTest
+	public class TrackableComponentTest
 	{
 		private GameObject gameObject;
 		private Mock<ITrackableManager> mockManager;
-		private Trackable trackable;
+		private TrackableComponent trackableComponent;
 
 		[SetUp]
 		public void SetUp()
@@ -20,8 +20,8 @@ namespace EventHorizon.Tests
 			gameObject = new GameObject("trackable");
 			gameObject.SetActive(false);
 
-			trackable = gameObject.AddComponent<Trackable>();
-			trackable.Id = new TrackableID(1234);
+			trackableComponent = gameObject.AddComponent<TrackableComponent>();
+			trackableComponent.Id = new TrackableID(1234);
 		}
 
 		[TearDown]
@@ -36,11 +36,11 @@ namespace EventHorizon.Tests
 		[Test]
 		public void Awake_WithManagerSet_ShouldCallRegister()
 		{
-			trackable.manager = mockManager.Object;
+			trackableComponent.manager = mockManager.Object;
 
 			gameObject.SetActive(true); // This triggers the Awake method
 
-			mockManager.Verify(m => m.Register(trackable), Times.Once());
+			mockManager.Verify(m => m.Register(trackableComponent), Times.Once());
 		}
 
 		[Test]
@@ -50,8 +50,8 @@ namespace EventHorizon.Tests
 
 			gameObject.SetActive(true); // This triggers the Awake method
 
-			Assert.AreEqual(singletonManager, trackable.manager);
-			Assert.AreEqual(TrackableManagerComponent.Instance, trackable.manager);
+			Assert.AreEqual(singletonManager, trackableComponent.manager);
+			Assert.AreEqual(TrackableManagerComponent.Instance, trackableComponent.manager);
 
 			// cleanup
 			Object.Destroy(singletonManager.gameObject);
@@ -60,13 +60,13 @@ namespace EventHorizon.Tests
 		[UnityTest]
 		public IEnumerator OnDestroy_ShouldCallUnregister()
 		{
-			trackable.manager = mockManager.Object;
+			trackableComponent.manager = mockManager.Object;
 			gameObject.SetActive(true); // This triggers the Awake method
 
-			Object.Destroy(trackable);
+			Object.Destroy(trackableComponent);
 			yield return null;
 
-			mockManager.Verify(m => m.Unregister(trackable), Times.Once());
+			mockManager.Verify(m => m.Unregister(trackableComponent), Times.Once());
 		}
 	}
 }

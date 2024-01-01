@@ -5,12 +5,12 @@ namespace EventHorizon.Tests.Utilities
 {
 	public static class TrackableTestUtils
 	{
-		public static Trackable CreateTrackable(TrackableID id = new())
+		public static TrackableComponent CreateTrackableGameObject(TrackableID id = new())
 		{
 			var go = new GameObject("Trackable");
 			go.SetActive(false);
 
-			var trackable = go.AddComponent<Trackable>();
+			var trackable = go.AddComponent<TrackableComponent>();
 			trackable.manager = new DummyManager();
 			trackable.Id = id;
 			go.SetActive(true);
@@ -18,10 +18,10 @@ namespace EventHorizon.Tests.Utilities
 			return trackable;
 		}
 
-		public static void DestroyTrackable(Trackable trackable)
+		public static void DestroyTrackableGameObject(TrackableComponent trackableComponent)
 		{
 #if UNITY_EDITOR
-			Object.DestroyImmediate(trackable.gameObject);
+			Object.DestroyImmediate(trackableComponent.gameObject);
 #else
 			Object.Destroy(trackable.gameObject);
 #endif
