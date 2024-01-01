@@ -11,13 +11,18 @@ jobs:
     name: Update UPM branches (latest git)
     runs-on: ubuntu-latest
     env:
-      PKG_ROOT: Packages/il.runiarl.eventhorizon
+      EVH_CORE_PKG_ROOT: Packages/il.runiarl.eventhorizon
+      EVH_METAXR_PKG_ROOT: Packages/il.runiarl.eventhorizon.metaxr
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: update upm branch
+      - name: update branch `upm` (core package)
         run: |
-          git subtree split -P "$PKG_ROOT" -b upm
+          git subtree split -P "$EVH_CORE_PKG_ROOT" -b upm
           git push -u origin upm -f
+      - name: update branch `upm-metaxr` (metaxr support)
+        run: |
+            git subtree split -P "$EVH_METAXR_PKG_ROOT" -b upm-metaxr
+            git push -u origin upm-metaxr -f
