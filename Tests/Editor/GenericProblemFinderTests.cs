@@ -57,7 +57,7 @@ namespace EventHorizon.Editor.Tests
 		[Test]
 		public void ShouldFindProblem_WhenTrackableIDIsInvalid()
 		{
-			var invalidTrackable = TrackableTestUtils.CreateTrackable();
+			var invalidTrackable = TrackableTestUtils.CreateTrackableGameObject();
 			mockScene.Setup(x => x.GetRootGameObjects()).Returns(new[] { invalidTrackable.gameObject });
 
 			var problems = solver.DiscoverProblemsInScene(mockScene.Object, trackableManager);
@@ -65,14 +65,14 @@ namespace EventHorizon.Editor.Tests
 			Assert.IsNotEmpty(problems);
 			Assert.IsInstanceOf<InvalidTrackableIDProblem>(problems[0]);
 
-			TrackableTestUtils.DestroyTrackable(invalidTrackable);
+			TrackableTestUtils.DestroyTrackableGameObject(invalidTrackable);
 		}
 
 		[Test]
 		public void ShouldFindProblem_WhenIsInvalid()
 		{
-			var validTrackable1 = TrackableTestUtils.CreateTrackable(new TrackableID(1));
-			var validTrackable2 = TrackableTestUtils.CreateTrackable(new TrackableID(1));
+			var validTrackable1 = TrackableTestUtils.CreateTrackableGameObject(new TrackableID(1));
+			var validTrackable2 = TrackableTestUtils.CreateTrackableGameObject(new TrackableID(1));
 			mockScene.Setup(x => x.GetRootGameObjects())
 				.Returns(new[] { validTrackable1.gameObject, validTrackable2.gameObject });
 
@@ -81,16 +81,16 @@ namespace EventHorizon.Editor.Tests
 			Assert.IsNotEmpty(problems);
 			Assert.IsInstanceOf<TwoTrackablesWithSameIDProblem>(problems[0]);
 
-			TrackableTestUtils.DestroyTrackable(validTrackable1);
-			TrackableTestUtils.DestroyTrackable(validTrackable2);
+			TrackableTestUtils.DestroyTrackableGameObject(validTrackable1);
+			TrackableTestUtils.DestroyTrackableGameObject(validTrackable2);
 		}
 
 		[Test]
 		public void ShouldFindProblems_WhenMixed()
 		{
-			var invalidTrackable = TrackableTestUtils.CreateTrackable();
-			var validTrackable1 = TrackableTestUtils.CreateTrackable(new TrackableID(1));
-			var validTrackable2 = TrackableTestUtils.CreateTrackable(new TrackableID(1));
+			var invalidTrackable = TrackableTestUtils.CreateTrackableGameObject();
+			var validTrackable1 = TrackableTestUtils.CreateTrackableGameObject(new TrackableID(1));
+			var validTrackable2 = TrackableTestUtils.CreateTrackableGameObject(new TrackableID(1));
 			mockScene.Setup(x => x.GetRootGameObjects())
 				.Returns(new[] { invalidTrackable.gameObject, validTrackable1.gameObject, validTrackable2.gameObject });
 
@@ -100,15 +100,15 @@ namespace EventHorizon.Editor.Tests
 			Assert.IsInstanceOf<InvalidTrackableIDProblem>(problems[0]);
 			Assert.IsInstanceOf<TwoTrackablesWithSameIDProblem>(problems[1]);
 
-			TrackableTestUtils.DestroyTrackable(invalidTrackable);
-			TrackableTestUtils.DestroyTrackable(validTrackable1);
-			TrackableTestUtils.DestroyTrackable(validTrackable2);
+			TrackableTestUtils.DestroyTrackableGameObject(invalidTrackable);
+			TrackableTestUtils.DestroyTrackableGameObject(validTrackable1);
+			TrackableTestUtils.DestroyTrackableGameObject(validTrackable2);
 		}
 
 		[Test]
 		public void ShouldRegisterTrackable_WhenIDIsValid()
 		{
-			var validTrackable = TrackableTestUtils.CreateTrackable(new TrackableID(3));
+			var validTrackable = TrackableTestUtils.CreateTrackableGameObject(new TrackableID(3));
 			mockScene.Setup(x => x.GetRootGameObjects()).Returns(new[] { validTrackable.gameObject });
 
 			solver.DiscoverProblemsInScene(mockScene.Object, trackableManager);
@@ -116,7 +116,7 @@ namespace EventHorizon.Editor.Tests
 			Assert.IsTrue(trackableManager.RegisteredTrackables.ContainsKey(validTrackable.Id));
 			Assert.AreEqual(validTrackable, trackableManager.RegisteredTrackables[validTrackable.Id]);
 
-			TrackableTestUtils.DestroyTrackable(validTrackable);
+			TrackableTestUtils.DestroyTrackableGameObject(validTrackable);
 		}
 	}
 }

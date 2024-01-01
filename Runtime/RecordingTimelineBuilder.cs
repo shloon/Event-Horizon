@@ -60,7 +60,7 @@ namespace EventHorizon
 
 			foreach (var (id, trackable) in TrackableManagerComponent.Instance.RegisteredTrackables)
 			{
-				if (trackable is Trackable trackableComponent)
+				if (trackable is TrackableComponent trackableComponent)
 				{
 					var animator = trackableComponent.gameObject.AddComponent<Animator>();
 					if (transformControlTracks.TryGetValue(id, out var animationTrack))
