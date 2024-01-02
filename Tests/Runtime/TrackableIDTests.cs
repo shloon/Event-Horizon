@@ -18,7 +18,7 @@ namespace EventHorizon.Tests
 		[Test]
 		public void Constructor_DefaultId_IsNotValid()
 		{
-			TrackableID defaultId = new TrackableID();
+			TrackableID defaultId = TrackableID.Unassigned;
 			Assert.IsFalse(defaultId.IsValid);
 		}
 

@@ -16,7 +16,7 @@ namespace EventHorizon.Tests
 		[Test]
 		public void TrackableIDWrapper_DefaultConstructor_ShouldSetDefaultValue()
 		{
-			var defaultId = new TrackableID();
+			var defaultId = TrackableID.Unassigned;
 			var wrapper = new TrackableIDWrapper();
 
 			Assert.AreEqual(defaultId, wrapper.value);
