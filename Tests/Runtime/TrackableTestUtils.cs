@@ -17,13 +17,19 @@ namespace EventHorizon.Tests.Utilities
 
 	public static class TrackableTestUtils
 	{
-		public static TrackableComponent CreateTrackableGameObject(TrackableID id = new())
+		public static TrackableComponent CreateTrackableGameObject(TrackableID id) =>
+			CreateTrackableGameObject(new DummyManager(), id);
+
+		public static TrackableComponent CreateTrackableGameObject(ITrackableManager manager) =>
+			CreateTrackableGameObject(manager, manager.GenerateId());
+
+		public static TrackableComponent CreateTrackableGameObject(ITrackableManager manager, TrackableID id)
 		{
 			var go = new GameObject("Trackable");
 			go.SetActive(false);
 
 			var trackable = go.AddComponent<TrackableComponent>();
-			trackable.manager = new DummyManager();
+			trackable.manager = manager;
 			trackable.Id = id;
 			go.SetActive(true);
 

@@ -57,7 +57,7 @@ namespace EventHorizon.Editor.Tests
 		[Test]
 		public void ShouldFindProblem_WhenTrackableIDIsInvalid()
 		{
-			var invalidTrackable = TrackableTestUtils.CreateTrackableGameObject();
+			var invalidTrackable = TrackableTestUtils.CreateTrackableGameObject(new TrackableID());
 			mockScene.Setup(x => x.GetRootGameObjects()).Returns(new[] { invalidTrackable.gameObject });
 
 			var problems = solver.DiscoverProblemsInScene(mockScene.Object, trackableManager);
@@ -88,7 +88,7 @@ namespace EventHorizon.Editor.Tests
 		[Test]
 		public void ShouldFindProblems_WhenMixed()
 		{
-			var invalidTrackable = TrackableTestUtils.CreateTrackableGameObject();
+			var invalidTrackable = TrackableTestUtils.CreateTrackableGameObject(new TrackableID());
 			var validTrackable1 = TrackableTestUtils.CreateTrackableGameObject(new TrackableID(1));
 			var validTrackable2 = TrackableTestUtils.CreateTrackableGameObject(new TrackableID(1));
 			mockScene.Setup(x => x.GetRootGameObjects())
