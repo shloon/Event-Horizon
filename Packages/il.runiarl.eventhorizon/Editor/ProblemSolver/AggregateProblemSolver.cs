@@ -44,6 +44,11 @@ namespace EventHorizon.Editor.ProblemSolver
 			var trackableManager = new TrackableManager();
 			var problems = DiscoverProblemsInScene(scene, trackableManager).ToList();
 
+			if (problems.Count == 0)
+			{
+				Debug.LogWarning("EventHorizon: No problems detected");
+			}
+
 			foreach (var problem in problems)
 			{
 				if (fix)
