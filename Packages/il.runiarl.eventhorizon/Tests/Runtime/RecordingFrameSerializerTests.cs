@@ -121,7 +121,7 @@ namespace EventHorizon.Tests
 
 		private TrackableComponent CreateMockTrackable(Vector3 position, Quaternion rotation, Vector3 scale)
 		{
-			var trackable = TrackableTestUtils.CreateTrackableGameObject(new TrackableID());
+			var trackable = TrackableTestUtils.CreateTrackableGameObject(TrackableID.Unassigned);
 			var transform = trackable.transform;
 			transform.position = position;
 			transform.rotation = rotation;
