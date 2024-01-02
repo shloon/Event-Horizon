@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -36,7 +37,7 @@ namespace EventHorizon
 				var clip = track.CreateClip<TransformControlAsset>();
 				clip.duration = recording.frames.Length * recording.metadata.fps.GetFrameDuration();
 
-				var asset = (TransformControlAsset) clip.asset;
+				var asset = (TransformControlAsset)clip.asset;
 				asset.data = new TransformData[recording.frames.Length];
 				asset.metadata = recording.metadata;
 				transformControlAssets.Add(id, asset);
@@ -57,6 +58,11 @@ namespace EventHorizon
 		{
 			director.playOnAwake = false;
 			director.playableAsset = timelineAsset;
+
+			if (timelineAsset == null)
+			{
+				throw new NullReferenceException("Cannot config director for null timeline");
+			}
 
 			foreach (var (id, trackable) in TrackableManagerComponent.Instance.RegisteredTrackables)
 			{
