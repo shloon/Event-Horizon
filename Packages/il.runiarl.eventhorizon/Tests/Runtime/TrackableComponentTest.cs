@@ -10,18 +10,12 @@ namespace EventHorizon.Tests
 	{
 		private GameObject gameObject;
 		private Mock<ITrackableManager> mockManager;
-		private TrackableComponent trackableComponent;
 
 		[SetUp]
 		public void SetUp()
 		{
 			mockManager = new Mock<ITrackableManager>();
-
 			gameObject = new GameObject("trackable");
-			gameObject.SetActive(false);
-
-			trackableComponent = gameObject.AddComponent<TrackableComponent>();
-			trackableComponent.Id = new TrackableID(1234);
 		}
 
 		[TearDown]
@@ -33,35 +27,40 @@ namespace EventHorizon.Tests
 			}
 		}
 
-		[Test]
-		public void Awake_WithManagerSet_ShouldCallRegister()
+		[UnityTest]
+		public IEnumerator Awake_WithManagerSet_ShouldCallRegister()
 		{
+			var trackableComponent = gameObject.AddComponent<TrackableComponent>();
+			trackableComponent.Id = new TrackableID(1234);
 			trackableComponent.manager = mockManager.Object;
-
-			gameObject.SetActive(true); // This triggers the Awake method
+			yield return null;
 
 			mockManager.Verify(m => m.Register(trackableComponent), Times.Once());
 		}
 
-		[Test]
-		public void Awake_WithoutManagerSet_ShouldFallbackToSingletonAndCallRegister()
+		[UnityTest]
+		public IEnumerator Awake_WithoutManagerSet_ShouldFallbackToSingletonAndCallRegister()
 		{
-			var singletonManager = new GameObject().AddComponent<TrackableManagerComponent>();
+			var trackableComponent = gameObject.AddComponent<TrackableComponent>();
+			trackableComponent.Id = new TrackableID(1234);
 
-			gameObject.SetActive(true); // This triggers the Awake method
+			var singletonManager = new GameObject().AddComponent<TrackableManagerComponent>();
+			yield return null;
 
 			Assert.AreEqual(singletonManager, trackableComponent.manager);
 			Assert.AreEqual(TrackableManagerComponent.Instance, trackableComponent.manager);
 
-			// cleanup
 			Object.Destroy(singletonManager.gameObject);
+			yield return null;
 		}
 
 		[UnityTest]
 		public IEnumerator OnDestroy_ShouldCallUnregister()
 		{
+			var trackableComponent = gameObject.AddComponent<TrackableComponent>();
+			trackableComponent.Id = new TrackableID(1234);
 			trackableComponent.manager = mockManager.Object;
-			gameObject.SetActive(true); // This triggers the Awake method
+			yield return null;
 
 			Object.Destroy(trackableComponent);
 			yield return null;

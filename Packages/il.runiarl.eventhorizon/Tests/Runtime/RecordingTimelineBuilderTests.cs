@@ -1,3 +1,4 @@
+using EventHorizon.Tests.Utilities;
 using NUnit.Framework;
 using System;
 using System.Collections;
@@ -160,8 +161,8 @@ namespace EventHorizon.Tests
 		private TrackableComponent[] trackables;
 		private TrackableManagerComponent trackableManager;
 
-		[SetUp]
-		public void Setup()
+		[UnitySetUp]
+		public IEnumerator Setup()
 		{
 			trackableManager = new GameObject("Trackable Manager").AddComponent<TrackableManagerComponent>();
 
@@ -169,12 +170,10 @@ namespace EventHorizon.Tests
 			trackables = new TrackableComponent[NUM_TRACKABLES];
 			for (var i = 0; i < trackables.Length; i++)
 			{
-				var tgo = new GameObject("Trackable");
-				tgo.SetActive(false);
-				trackables[i] = tgo.AddComponent<TrackableComponent>();
-				trackables[i].Id = trackableManager.GenerateId();
-				tgo.SetActive(true);
+				trackables[i] = TrackableTestUtils.CreateTrackableGameObject(trackableManager);
 			}
+
+			yield return null;
 		}
 
 		[UnityTearDown]
@@ -182,7 +181,7 @@ namespace EventHorizon.Tests
 		{
 			foreach (var trackable in trackables)
 			{
-				Object.Destroy(trackable.gameObject);
+				TrackableTestUtils.DestroyTrackableGameObject(trackable);
 			}
 
 			Object.Destroy(trackableManager);
