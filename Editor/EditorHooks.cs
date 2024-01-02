@@ -2,6 +2,7 @@ using EventHorizon.Editor.ProblemSolver;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace EventHorizon.Editor
 {
@@ -21,5 +22,8 @@ namespace EventHorizon.Editor
 			Debug.Log("EventHorizon: Added onSaving hook");
 			EditorSceneManager.sceneSaving += (scene, _) => Solver.DiscoverProblems(scene);
 		}
+
+		[MenuItem("Event Horizon/Fix All Issues")]
+		public static void AutoFixAllIssues() => Solver.DiscoverProblems(SceneManager.GetActiveScene());
 	}
 }
