@@ -1,3 +1,4 @@
+using EventHorizon.Tests.Utilities;
 using NUnit.Framework;
 using System;
 using System.Collections;
@@ -11,8 +12,8 @@ namespace EventHorizon.Editor.Tests
 {
 	public class TrackableManagerComponentTests
 	{
-		private GameObject testObject;
 		private const string filename = "Assets/TempScript.cs";
+		private GameObject testObject;
 
 		[SetUp]
 		public void SetUp()
@@ -31,7 +32,9 @@ namespace EventHorizon.Editor.Tests
 		{
 			// clean up file
 			if (!File.Exists(filename))
+			{
 				yield break;
+			}
 
 			File.Delete(filename);
 			yield return new RecompileScripts();
@@ -62,11 +65,46 @@ namespace EventHorizon.Editor.Tests
 		public IEnumerator Manager_NotExists_StillDoesNotExistAfterReload()
 		{
 			File.WriteAllText(filename, "namespace EventHorizon.Test.ReloadTest { public class TestClass {} }");
-			Assert.Throws<NullReferenceException>(() => _ = TrackableManagerComponent.Instance);
-
 			yield return new RecompileScripts();
 
 			Assert.Throws<NullReferenceException>(() => _ = TrackableManagerComponent.Instance);
+		}
+
+		[Test]
+		public void Manager_RegistersElementImmediately()
+		{
+			var manager = testObject.AddComponent<TrackableManagerComponent>();
+
+			var key1 = new TrackableID(1);
+			var key2 = new TrackableID(2);
+			var trackableComponent1 = TrackableTestUtils.CreateTrackableGameObject(manager, key1);
+			var trackableComponent2 = TrackableTestUtils.CreateTrackableGameObject(manager, key2);
+
+			Assert.IsTrue(manager.RegisteredTrackables.ContainsKey(key1));
+			Assert.AreSame(trackableComponent1, manager.RegisteredTrackables[key1]);
+			Assert.IsTrue(manager.RegisteredTrackables.ContainsKey(key2));
+			Assert.AreSame(trackableComponent2, manager.RegisteredTrackables[key2]);
+		}
+
+		[UnityTest]
+		public IEnumerator Manager_RegistersElementAfterDomainReload()
+		{
+			var manager = testObject.AddComponent<TrackableManagerComponent>();
+			var key1 = new TrackableID(1);
+			var key2 = new TrackableID(2);
+			var trackableComponent1 = TrackableTestUtils.CreateTrackableGameObject(manager, key1);
+			var trackableComponent2 = TrackableTestUtils.CreateTrackableGameObject(manager, key2);
+
+			File.WriteAllText(filename, "namespace EventHorizon.Test.ReloadTest { public class TestClass {} }");
+			yield return new RecompileScripts();
+
+			Assert.IsTrue(manager.RegisteredTrackables.ContainsKey(key1));
+			Assert.AreSame(trackableComponent1, manager.RegisteredTrackables[key1]);
+			Assert.IsTrue(manager.RegisteredTrackables.ContainsKey(key2));
+			Assert.AreSame(trackableComponent2, manager.RegisteredTrackables[key2]);
+
+			TrackableTestUtils.DestroyTrackableGameObject(trackableComponent1);
+			TrackableTestUtils.DestroyTrackableGameObject(trackableComponent2);
 		}
 	}
 }
