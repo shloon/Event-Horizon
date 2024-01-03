@@ -7,13 +7,6 @@
       "dependencies": {},
       "url": "https://npm.developer.oculus.com"
     },
-    "com.unity.collab-proxy": {
-      "version": "2.2.0",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://packages.unity.com"
-    },
     "com.unity.editorcoroutines": {
       "version": "1.0.0",
       "depth": 1,
@@ -142,24 +135,12 @@
         "com.unity.modules.imgui": "1.0.0"
       }
     },
-    "com.unity.visualscripting": {
-      "version": "1.9.1",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.ugui": "1.0.0",
-        "com.unity.modules.jsonserialize": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
-    },
     "il.runiarl.eventhorizon": {
       "version": "file:il.runiarl.eventhorizon",
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.unity.timeline": "1.7.6",
-        "com.unity.test-framework.performance": "3.0.3",
-        "nuget.moq": "2.0.0"
+        "com.unity.timeline": "1.7.6"
       }
     },
     "il.runiarl.eventhorizon.metaxr": {
@@ -168,10 +149,7 @@
       "source": "embedded",
       "dependencies": {
         "com.meta.xr.sdk.core": "60.0.0",
-        "com.unity.timeline": "1.7.6",
-        "com.unity.test-framework.performance": "3.0.3",
-        "il.runiarl.eventhorizon": "0.1.0-preview.1",
-        "nuget.moq": "2.0.0"
+        "il.runiarl.eventhorizon": "0.1.0-preview.1"
       }
     },
     "nuget.castle-core": {

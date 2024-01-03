@@ -25,9 +25,6 @@
   },
   "dependencies": {
     "com.meta.xr.sdk.core": "60.0.0",
-    "com.unity.timeline": "1.7.6",
-    "com.unity.test-framework.performance": "3.0.3",
-    "il.runiarl.eventhorizon": "0.1.0-preview.1",
-    "nuget.moq": "2.0.0"
+    "il.runiarl.eventhorizon": "0.1.0-preview.1"
   }
 }
