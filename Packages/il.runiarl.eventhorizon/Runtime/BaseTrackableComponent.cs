@@ -8,7 +8,7 @@ namespace EventHorizon
 	[DefaultExecutionOrder(-99)]
 	[AddComponentMenu("Event Horizon/Trackable")]
 	[ExecuteAlways]
-	public sealed class TrackableComponent : MonoBehaviour, ITrackable
+	public class BaseTrackableComponent : MonoBehaviour, ITrackable
 	{
 		private bool isInitialized;
 		public ITrackableManager manager;

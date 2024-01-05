@@ -53,7 +53,7 @@ namespace EventHorizon.Tests
 			for (var i = 0; i < trackables.Count; i++)
 			{
 				var element = trackables.ElementAt(i);
-				if (element.Value is TrackableComponent trackableElement)
+				if (element.Value is TransformTrackableComponent trackableElement)
 				{
 					Assert.AreEqual(element.Key, frameData.trackers[i].id);
 					Assert.AreEqual(trackableElement.transform.position, frameData.trackers[i].transform.position);
@@ -119,7 +119,8 @@ namespace EventHorizon.Tests
 				RecordingFrameData.FromCurrentFrame(trackables, metadata, frameNumber));
 		}
 
-		private TrackableComponent CreateMockTrackable(Vector3 position, Quaternion rotation, Vector3 scale)
+		private TransformTrackableComponent CreateMockTrackable(Vector3 position, Quaternion rotation,
+			Vector3 scale)
 		{
 			var trackable = TrackableTestUtils.CreateTrackableGameObject(TrackableID.Unassigned);
 			var transform = trackable.transform;
