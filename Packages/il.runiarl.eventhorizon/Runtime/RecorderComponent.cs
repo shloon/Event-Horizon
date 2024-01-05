@@ -1,3 +1,5 @@
+using EventHorizon.FormatV2;
+using System;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,25 +11,18 @@ namespace EventHorizon
 	[DefaultExecutionOrder(-100)]
 	public class RecorderComponent : MonoBehaviour
 	{
-		public string outputFileName = "Assets/Recordings/recording.evh";
+		public string outputFileName = "Assets/Recordings/recording.evh2";
 		public FrameRate frameRate = new(60);
+		private ulong elapsedFrames;
 
 		private float elapsedTime;
 		private Stream fileStream;
-		private int frames;
 		private ITrackableManager manager;
 
-		private RecordingMetadata recordingMetadata;
-		private RecordingWriter recordingWriter;
+		private FormatWriter writer;
 
 		private void Start()
 		{
-			recordingMetadata = new RecordingMetadata
-			{
-				sceneName = SceneManager.GetActiveScene().name,
-				fps = frameRate
-			};
-
 			manager = TrackableManagerComponent.Instance;
 
 			// create subfolder
@@ -41,8 +36,9 @@ namespace EventHorizon
 			fileStream = File.Create(outputFileName);
 
 			// initialize writer
-			recordingWriter = new RecordingWriter(fileStream, recordingMetadata);
-			recordingWriter.WriteHeader();
+			writer = new FormatWriter(fileStream);
+			writer.WritePacket(PacketUtils.GenerateMetadataPacket(SceneManager.GetActiveScene().name, frameRate,
+				DateTime.Now));
 		}
 
 		private void Update()
@@ -53,17 +49,37 @@ namespace EventHorizon
 				return;
 			}
 
-			recordingWriter.WriteFrame(
-				RecordingFrameData.FromCurrentFrame(manager.RegisteredTrackables, recordingMetadata, frames));
-			frames++;
+			var framePacket = new FramePacket
+			{
+				frame = elapsedFrames, elapsedTime = frameRate.GetFrameDuration() * elapsedFrames
+			};
+			writer.WritePacket(framePacket);
+			GetTrackablePackets(elapsedFrames);
+
+			elapsedFrames++;
 			elapsedTime = 0;
 		}
 
 		private void OnApplicationQuit()
 		{
-			recordingWriter.WrapStream();
-			recordingWriter.Close();
-			fileStream.Close();
+			writer?.Close();
+			fileStream?.Close();
+		}
+
+		private void GetTrackablePackets(ulong frame)
+		{
+			foreach (var trackable in manager.RegisteredTrackables.Values)
+			{
+				switch (trackable)
+				{
+					case IPacketGenerator<TransformPacket> trackable1:
+						writer.WritePacket(trackable1.GetPacketForFrame(frame));
+						break;
+					case IPacketGenerator<GenericDataPacket> trackable2:
+						writer.WritePacket(trackable2.GetPacketForFrame(frame));
+						break;
+				}
+			}
 		}
 	}
 }

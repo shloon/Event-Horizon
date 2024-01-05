@@ -1,3 +1,4 @@
+using EventHorizon.Editor.RecordingsV2;
 using UnityEditor;
 using UnityEditor.Timeline;
 using UnityEngine;
@@ -32,8 +33,8 @@ namespace EventHorizon.Editor
 
 		private static void StartTimeline()
 		{
-			var recordingDataObject = Selection.activeObject as RecordingDataScriptable;
-			if (!recordingDataObject)
+			var serializedFormatV2 = Selection.activeObject as FormatV2Scriptable;
+			if (!serializedFormatV2)
 			{
 				Debug.LogError("No recording selected, aborting...");
 				return;
@@ -46,16 +47,15 @@ namespace EventHorizon.Editor
 			}
 
 			// read recording
-			var recording = recordingDataObject.data;
 			var director = TrackableManagerComponent.Instance.gameObject.AddComponent<PlayableDirector>();
 
 			// build and configure timeline
-			RecordingTimelineUtilities.BuildTimeline(recording, out var timelineAsset, out var transformControlTracks);
-			RecordingTimelineUtilities.ConfigureDirector(transformControlTracks, director, timelineAsset);
+			var timelineData = RecordingTimelineUtilities.BuildTimeline(serializedFormatV2);
+			RecordingTimelineUtilities.ConfigureDirector(timelineData, director);
 
 			// focus on gameobject and timeline editor window
 			EditorWindow.GetWindow<SceneView>().Focus();
-			Selection.activeObject = timelineAsset;
+			Selection.activeObject = timelineData.timelineAsset;
 			Selection.activeGameObject = director.gameObject;
 			EditorWindow.GetWindow<TimelineEditorWindow>().Focus();
 		}

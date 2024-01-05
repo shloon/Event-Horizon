@@ -14,7 +14,7 @@ namespace EventHorizon
 		public RecordingFrameData[] frames;
 	}
 
-	public enum RecordingFormatVersion { V1, Current = V1 }
+	public enum RecordingFormatVersion { V1, V2, Current = V1 }
 
 	[Serializable]
 	public struct RecordingMetadata

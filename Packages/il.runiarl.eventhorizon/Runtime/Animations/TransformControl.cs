@@ -1,34 +1,42 @@
+﻿using EventHorizon.FormatV2;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.Serialization;
 using UnityEngine.Timeline;
 
 namespace EventHorizon
 {
 	public class TransformControlAsset : PlayableAsset
 	{
-		public TransformData[] data;
-		public RecordingMetadata metadata;
+		[FormerlySerializedAs("frames")] public List<TransformPacket> packets = new();
+		public double frameDuration;
 
 		public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
 		{
-			var playable = ScriptPlayable<TransformControl>.Create(graph);
+			var playable = ScriptPlayable<TransformControlBehaviour>.Create(graph);
 
 			var transformControlBehaviour = playable.GetBehaviour();
-			transformControlBehaviour.data = data;
-			transformControlBehaviour.metadata = metadata;
+			transformControlBehaviour.packets = packets;
+			transformControlBehaviour.frameDuration = frameDuration;
 
 			return playable;
 		}
 	}
 
 	[Serializable]
-	public class TransformControl : PlayableBehaviour
+	public class TransformControlBehaviour : PlayableBehaviour
 	{
-		public TransformData[] data;
-		public RecordingMetadata metadata;
+		public List<TransformPacket> packets = new();
+		public double globalStartTime;
+		public double frameDuration;
 
-		private State state = State.Unknown;
+		public override void OnBehaviourPlay(Playable playable, FrameData info)
+		{
+			var playableDirector = (PlayableDirector) playable.GetGraph().GetResolver();
+			globalStartTime = playableDirector.time - playable.GetTime(); // Calculate global start time
+		}
 
 		public override void ProcessFrame(Playable playable, FrameData info, object playerData)
 		{
@@ -42,70 +50,16 @@ namespace EventHorizon
 			}
 
 			var playableDirector = (PlayableDirector) playable.GetGraph().GetResolver();
+			var frame = (int) ((playableDirector.time - globalStartTime) / frameDuration);
 
-			var time = playableDirector.time;
-			var frame = (ulong) (time * metadata.fps.GetAsDouble()); // time * fps = frames
-			Debug.Log(
-				$"Time: {time}, guessed frame: {frame}, actual frame: {info.frameId}, output: {info.evaluationType}");
-
-			transform.position = data[frame].position;
-			transform.rotation = data[frame].rotation;
-			transform.localScale = data[frame].scale;
-		}
-
-		public void RunOnAllBoundObjects(Playable playable, Action<GameObject> action)
-		{
-			var graph = playable.GetGraph();
-			var director = (PlayableDirector) graph.GetResolver();
-			if (director == null)
+			if (frame < 0 || frame >= packets.Count)
 			{
 				return;
 			}
 
-			for (var i = 0; i < graph.GetOutputCount(); ++i)
-			{
-				var track = graph.GetOutput(i).GetReferenceObject();
-				var go = ((Animator) director.GetGenericBinding(track))?.gameObject;
-				if (go)
-				{
-					action(go);
-				}
-			}
-		}
-
-		public override void OnBehaviourPause(Playable playable, FrameData info)
-		{
-			if (state != State.BehaviourPaused)
-			{
-				RunOnAllBoundObjects(playable, go => ToggleDangerousComponents(go, true));
-			}
-
-			state = State.BehaviourPlay;
-			base.OnBehaviourPause(playable, info);
-		}
-
-		public override void OnBehaviourPlay(Playable playable, FrameData info)
-		{
-			if (state != State.BehaviourPlay)
-			{
-				RunOnAllBoundObjects(playable, go => ToggleDangerousComponents(go, false));
-			}
-
-			state = State.BehaviourPlay;
-			base.OnBehaviourPlay(playable, info);
-		}
-
-		private void ToggleDangerousComponents(GameObject go, bool enable)
-		{
-			var rigidbody = go.GetComponent<Rigidbody>();
-			rigidbody.isKinematic = !enable; // equivalent to disable on a rigidbody?
-		}
-
-		private enum State
-		{
-			Unknown,
-			BehaviourPaused,
-			BehaviourPlay
+			transform.position = packets[frame].translation;
+			transform.rotation = packets[frame].rotation;
+			transform.localScale = packets[frame].scale;
 		}
 	}
 
