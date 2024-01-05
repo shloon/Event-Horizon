@@ -1,24 +1,24 @@
 {
-    "name": "EventHorizon.Tests",
-    "rootNamespace": "EventHorizon.Tests",
-    "references": [
-        "UnityEngine.TestRunner",
-        "Unity.Timeline",
-        "EventHorizon"
-    ],
-    "includePlatforms": [],
-    "excludePlatforms": [],
-    "allowUnsafeCode": false,
-    "overrideReferences": true,
-    "precompiledReferences": [
-        "nunit.framework.dll",
-        "Moq.dll",
-        "System.Runtime.CompilerServices.Unsafe.dll"
-    ],
-    "autoReferenced": false,
-    "defineConstraints": [
-        "UNITY_INCLUDE_TESTS"
-    ],
-    "versionDefines": [],
-    "noEngineReferences": false
+  "name": "EventHorizon.Tests",
+  "rootNamespace": "EventHorizon.Tests",
+  "references": [
+    "UnityEngine.TestRunner",
+    "Unity.Timeline",
+    "EventHorizon"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll",
+    "Moq.dll",
+    "System.Runtime.CompilerServices.Unsafe.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
 }

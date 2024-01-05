@@ -5,7 +5,7 @@ namespace EventHorizon.Tests.Utilities
 {
 	public class TestTrackable : ITrackable
 	{
-		public TestTrackable(TrackableID id = new TrackableID(), string name = "Trackable")
+		public TestTrackable(TrackableID id = new(), string name = "Trackable")
 		{
 			Name = name;
 			Id = id;

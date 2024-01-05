@@ -37,7 +37,7 @@ namespace EventHorizon
 				var clip = track.CreateClip<TransformControlAsset>();
 				clip.duration = recording.frames.Length * recording.metadata.fps.GetFrameDuration();
 
-				var asset = (TransformControlAsset)clip.asset;
+				var asset = (TransformControlAsset) clip.asset;
 				asset.data = new TransformData[recording.frames.Length];
 				asset.metadata = recording.metadata;
 				transformControlAssets.Add(id, asset);

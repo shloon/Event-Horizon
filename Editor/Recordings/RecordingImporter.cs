@@ -11,9 +11,12 @@ namespace EventHorizon.Editor
 
 	internal class AssetImportContextWrapper : IAssetImportContext
 	{
-		readonly AssetImportContext ctx;
+		private readonly AssetImportContext ctx;
 		public AssetImportContextWrapper(AssetImportContext context) => ctx = context;
-		public void AddObjectToAsset(string identifier, Object objectToAdd) => ctx.AddObjectToAsset(identifier, objectToAdd);
+
+		public void AddObjectToAsset(string identifier, Object objectToAdd) =>
+			ctx.AddObjectToAsset(identifier, objectToAdd);
+
 		public void SetMainObject(Object mainObject) => ctx.SetMainObject(mainObject);
 	}
 

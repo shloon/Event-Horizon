@@ -1,4 +1,4 @@
-﻿using EventHorizon.Editor.ProblemSolver;
+using EventHorizon.Editor.ProblemSolver;
 using EventHorizon.Tests.Utilities;
 using Moq;
 using NUnit.Framework;
@@ -25,7 +25,8 @@ namespace EventHorizon.Editor.Tests
 		{
 			var problem = new InvalidTrackableIDProblem
 			{
-				trackable = trackable, trackableManager = mockTrackableManager.Object
+				trackable = trackable,
+				trackableManager = mockTrackableManager.Object
 			};
 
 			var description = problem.Description;
@@ -42,7 +43,8 @@ namespace EventHorizon.Editor.Tests
 			mockTrackableManager.Setup(m => m.Register(trackable)).Verifiable();
 			var problem = new InvalidTrackableIDProblem
 			{
-				trackable = trackable, trackableManager = mockTrackableManager.Object
+				trackable = trackable,
+				trackableManager = mockTrackableManager.Object
 			};
 
 			problem.Fix();

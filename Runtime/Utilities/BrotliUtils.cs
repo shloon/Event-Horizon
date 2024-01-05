@@ -8,21 +8,35 @@ namespace EventHorizon
 	{
 		public static void Compress(Stream source, Stream destination)
 		{
-			if (source == null) throw new ArgumentNullException(nameof(source));
-			if (destination == null) throw new ArgumentNullException(nameof(destination));
+			if (source == null)
+			{
+				throw new ArgumentNullException(nameof(source));
+			}
+
+			if (destination == null)
+			{
+				throw new ArgumentNullException(nameof(destination));
+			}
 
 			source.Position = 0; // move head back
-			using BrotliStream compressor = new BrotliStream(destination, CompressionLevel.Optimal, leaveOpen: true);
+			using var compressor = new BrotliStream(destination, CompressionLevel.Optimal, true);
 			source.CopyTo(compressor);
 		}
 
 		public static void Decompress(Stream source, Stream destination)
 		{
-			if (source == null) throw new ArgumentNullException(nameof(source));
-			if (destination == null) throw new ArgumentNullException(nameof(destination));
+			if (source == null)
+			{
+				throw new ArgumentNullException(nameof(source));
+			}
+
+			if (destination == null)
+			{
+				throw new ArgumentNullException(nameof(destination));
+			}
 
 			source.Position = 0; // move head back
-			using BrotliStream decompressor = new BrotliStream(source, CompressionMode.Decompress, leaveOpen: true);
+			using var decompressor = new BrotliStream(source, CompressionMode.Decompress, true);
 			decompressor.CopyTo(destination);
 		}
 	}

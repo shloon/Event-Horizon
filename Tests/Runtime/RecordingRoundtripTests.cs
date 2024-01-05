@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using System;
+using System.IO;
 using UnityEngine;
 
 namespace EventHorizon.Tests
@@ -10,12 +11,11 @@ namespace EventHorizon.Tests
 		private const int NUM_MULTIPLE_TRACKABLES = 16;
 		private const int NUM_FRAMES = 16 * 16;
 
-		private static readonly RecordingMetadata METADATA =
-			new RecordingMetadata() { fps = new FrameRate(1), sceneName = "Test" };
+		private static readonly RecordingMetadata METADATA = new() { fps = new FrameRate(1), sceneName = "Test" };
 
-		private static readonly Vector3 POSITION_DATA = new Vector3(1, 2, 3);
-		private static readonly Quaternion ROTATION_DATA = new Quaternion(4, 5, 6, 7);
-		private static readonly Vector3 SCALE_DATA = new Vector3(8, 9, 0);
+		private static readonly Vector3 POSITION_DATA = new(1, 2, 3);
+		private static readonly Quaternion ROTATION_DATA = new(4, 5, 6, 7);
+		private static readonly Vector3 SCALE_DATA = new(8, 9, 0);
 
 		private static readonly TransformData TRANSFORM_DATA =
 			new() { position = POSITION_DATA, rotation = ROTATION_DATA, scale = SCALE_DATA };
@@ -23,8 +23,8 @@ namespace EventHorizon.Tests
 		[Test]
 		public void MakeEmptyRecording()
 		{
-			using var stream = new System.IO.MemoryStream();
-			RecordingWriter r = new RecordingWriter(stream, METADATA);
+			using var stream = new MemoryStream();
+			var r = new RecordingWriter(stream, METADATA);
 			r.WriteHeader();
 			r.WrapStream();
 			r.Close();
@@ -38,8 +38,8 @@ namespace EventHorizon.Tests
 		[Test]
 		public void MakeFramesButZeroTrackablesRecording()
 		{
-			using var stream = new System.IO.MemoryStream();
-			RecordingWriter r = new RecordingWriter(stream, METADATA);
+			using var stream = new MemoryStream();
+			var r = new RecordingWriter(stream, METADATA);
 			r.WriteHeader();
 			for (var i = 0; i < NUM_FRAMES; ++i)
 			{
@@ -50,6 +50,7 @@ namespace EventHorizon.Tests
 					trackers = Array.Empty<RecordingTrackerData>()
 				});
 			}
+
 			r.WrapStream();
 			r.Close();
 
@@ -70,8 +71,8 @@ namespace EventHorizon.Tests
 		[Test]
 		public void MakeSingleTrackableRecording()
 		{
-			using var stream = new System.IO.MemoryStream();
-			RecordingWriter r = new RecordingWriter(stream, METADATA);
+			using var stream = new MemoryStream();
+			var r = new RecordingWriter(stream, METADATA);
 			r.WriteHeader();
 			for (var i = 0; i < NUM_FRAMES; ++i)
 			{
@@ -86,6 +87,7 @@ namespace EventHorizon.Tests
 				};
 				r.WriteFrame(frameData);
 			}
+
 			r.WrapStream();
 			r.Close();
 
@@ -113,8 +115,8 @@ namespace EventHorizon.Tests
 		[Test]
 		public void MakeMultiTrackableRecording()
 		{
-			using var stream = new System.IO.MemoryStream();
-			RecordingWriter r = new RecordingWriter(stream, METADATA);
+			using var stream = new MemoryStream();
+			var r = new RecordingWriter(stream, METADATA);
 			var frameData = new RecordingFrameData
 			{
 				frame = 0,
@@ -126,7 +128,7 @@ namespace EventHorizon.Tests
 				frameData.trackers[i] = new RecordingTrackerData
 				{
 					id = new TrackableID((uint) i),
-					transform = new TransformData()
+					transform = new TransformData
 					{
 						position = POSITION_DATA,
 						rotation = ROTATION_DATA,
@@ -134,6 +136,7 @@ namespace EventHorizon.Tests
 					}
 				};
 			}
+
 			r.WriteHeader();
 			for (var i = 0; i < NUM_FRAMES; ++i)
 			{
@@ -141,6 +144,7 @@ namespace EventHorizon.Tests
 				frameData.timeCode = i;
 				r.WriteFrame(frameData);
 			}
+
 			r.WrapStream();
 			r.Close();
 

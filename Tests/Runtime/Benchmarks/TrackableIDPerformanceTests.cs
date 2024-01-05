@@ -5,7 +5,8 @@ namespace EventHorizon.Tests.Benchmarks
 {
 	public class TrackableIDPerformanceTests
 	{
-		[Test, Performance]
+		[Test]
+		[Performance]
 		public void ConstructorPerformanceTest()
 		{
 			Measure.Method(() =>
@@ -29,7 +30,8 @@ namespace EventHorizon.Tests.Benchmarks
 #pragma warning restore CS0219
 		}
 
-		[Test, Performance]
+		[Test]
+		[Performance]
 		public void EqualityPerformanceTest()
 		{
 			var trackableId1 = new TrackableID(123);
@@ -56,7 +58,8 @@ namespace EventHorizon.Tests.Benchmarks
 				.Run();
 		}
 
-		[Test, Performance]
+		[Test]
+		[Performance]
 		public void GetHashCodePerformanceTest()
 		{
 			var trackableId = new TrackableID(123);
@@ -81,7 +84,8 @@ namespace EventHorizon.Tests.Benchmarks
 				.Run();
 		}
 
-		[Test, Performance]
+		[Test]
+		[Performance]
 		public void ToStringPerformanceTest()
 		{
 			var trackableId = new TrackableID(123);

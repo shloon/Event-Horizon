@@ -57,9 +57,10 @@ namespace EventHorizon
 		public IReadOnlyDictionary<TrackableID, ITrackable> RegisteredTrackables => manager.RegisteredTrackables;
 		public void Register(ITrackable trackable) => manager.Register(trackable);
 		public void Unregister(ITrackable trackable) => manager.Unregister(trackable);
+
 		public void ChangeTrackableID(TrackableID previousID, TrackableID newID) =>
 			manager.ChangeTrackableID(previousID, newID);
-		
+
 		public TrackableID GenerateId() => manager.GenerateId();
 
 		#region Singleton Handling

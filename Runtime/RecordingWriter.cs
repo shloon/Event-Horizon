@@ -5,24 +5,36 @@ using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
+using CompressionLevel = System.IO.Compression.CompressionLevel;
 
 namespace EventHorizon
 {
 	public class RecordingWriter : IDisposable
 	{
-		private readonly Stream outputStream;
 		private readonly RecordingMetadata metadata;
-		private readonly ConcurrentQueue<Task<string>> tasks;
+		private readonly Stream outputStream;
 		private readonly StreamWriter streamWriter;
+		private readonly ConcurrentQueue<Task<string>> tasks;
+
+
+		private bool disposed; // to track whether Dispose has been called
+
+		private bool wrappedStream;
 
 		public RecordingWriter(Stream outputStream, RecordingMetadata metadata)
 		{
-			tasks = new();
+			tasks = new ConcurrentQueue<Task<string>>();
 
-			this.outputStream = new BrotliStream(outputStream, System.IO.Compression.CompressionLevel.Optimal, leaveOpen: true);
+			this.outputStream = new BrotliStream(outputStream, CompressionLevel.Optimal, true);
 			this.metadata = metadata;
 
 			streamWriter = new StreamWriter(this.outputStream);
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this); // Prevent finalizer from running.
 		}
 
 		public void WriteHeader()
@@ -31,13 +43,15 @@ namespace EventHorizon
 			streamWriter.Write(JsonUtility.ToJson(rd).Replace("\"frames\":[]}", "\"frames\":["));
 		}
 
-		public void WriteFrame(RecordingFrameData frameData) => tasks.Enqueue(Task.Run(() => JsonUtility.ToJson(frameData)));
+		public void WriteFrame(RecordingFrameData frameData) =>
+			tasks.Enqueue(Task.Run(() => JsonUtility.ToJson(frameData)));
 
-		private bool wrappedStream = false;
 		public void WrapStream()
 		{
 			if (wrappedStream)
+			{
 				return;
+			}
 
 			Task.WaitAll(tasks.ToArray<Task>());
 
@@ -52,7 +66,9 @@ namespace EventHorizon
 
 				// Write remaining lines, each prefixed with a comma
 				foreach (var line in sortedLines.Skip(1))
+				{
 					streamWriter.Write($",{line}");
+				}
 			}
 
 			streamWriter.Write("]}");
@@ -68,8 +84,6 @@ namespace EventHorizon
 			Dispose();
 		}
 
-
-		private bool disposed = false; // to track whether Dispose has been called
 		protected virtual void Dispose(bool disposing)
 		{
 			if (!disposed)
@@ -87,15 +101,6 @@ namespace EventHorizon
 			}
 		}
 
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this); // Prevent finalizer from running.
-		}
-
-		~RecordingWriter()
-		{
-			Dispose(false);
-		}
+		~RecordingWriter() => Dispose(false);
 	}
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -24,10 +24,10 @@ namespace EventHorizon.Editor.ProblemSolver
 		public IEnumerable<Assembly> FindAssemblies() =>
 			AppDomain.CurrentDomain.GetAssemblies()
 				.Where(assembly => !assembly.FullName.StartsWith("UnityEngine") &&
-				                   !assembly.FullName.StartsWith("UnityEditor") &&
-				                   !assembly.FullName.StartsWith("System") &&
-				                   !assembly.FullName.StartsWith("Microsoft") &&
-				                   !assembly.FullName.StartsWith("mscorlib"));
+								   !assembly.FullName.StartsWith("UnityEditor") &&
+								   !assembly.FullName.StartsWith("System") &&
+								   !assembly.FullName.StartsWith("Microsoft") &&
+								   !assembly.FullName.StartsWith("mscorlib"));
 
 		public List<ISceneProblemFinder> GetSceneProblemFinders() =>
 			FindAssemblies()
