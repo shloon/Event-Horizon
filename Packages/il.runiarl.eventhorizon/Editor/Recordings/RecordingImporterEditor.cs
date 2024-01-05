@@ -8,10 +8,8 @@ namespace EventHorizon.Editor
 	public class RecordingImporterEditor : ScriptedImporterEditor
 	{
 		[ExcludeFromCodeCoverage] // unity internal function, cannot really test this
-		public override void OnInspectorGUI()
-		{
+		public override void OnInspectorGUI() =>
 			// This removes the "Script" field from the recording importer
 			ApplyRevertGUI();
-		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿using EventHorizon.Tests.Utilities;
+using EventHorizon.Tests.Utilities;
 using Moq;
 using NUnit.Framework;
 using System.IO;

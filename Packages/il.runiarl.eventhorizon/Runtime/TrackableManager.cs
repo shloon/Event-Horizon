@@ -14,22 +14,27 @@ namespace EventHorizon
 
 	public sealed class TrackableManager : ITrackableManager
 	{
+		public const int MaxGenerateAttempts = 128;
 		private readonly Dictionary<TrackableID, ITrackable> registeredTrackables = new();
-		public IReadOnlyDictionary<TrackableID, ITrackable> RegisteredTrackables => registeredTrackables;
 
 		private readonly IRandomNumberGenerator rngProvider;
 
 		public TrackableManager(IRandomNumberGenerator provider = null) => rngProvider = provider ?? new PcgRng();
+		public IReadOnlyDictionary<TrackableID, ITrackable> RegisteredTrackables => registeredTrackables;
 
 		public void Register(ITrackable trackable)
 		{
 			if (!trackable.Id.IsValid)
+			{
 				throw new ArgumentException($"Trackable '{trackable.Name}' has invalid key");
+			}
 
-			if (registeredTrackables.TryGetValue(trackable.Id, out ITrackable existingTrackable))
+			if (registeredTrackables.TryGetValue(trackable.Id, out var existingTrackable))
 			{
 				if (existingTrackable == trackable)
+				{
 					throw new InvalidOperationException($"Trackable '{trackable.Name}' already registered");
+				}
 
 				throw new InvalidOperationException(
 					$"Trackable '{trackable.Name}' has key registered by another trackable");
@@ -41,34 +46,45 @@ namespace EventHorizon
 		public void Unregister(ITrackable trackable)
 		{
 			if (!trackable.Id.IsValid)
+			{
 				throw new ArgumentException($"Trackable '{trackable.Name}' has invalid key");
+			}
 
-			if (!registeredTrackables.TryGetValue(trackable.Id, out ITrackable existingTrackable))
+			if (!registeredTrackables.TryGetValue(trackable.Id, out var existingTrackable))
+			{
 				throw new InvalidOperationException($"Trackable '{trackable.Name}' is not registered");
+			}
 
 			if (existingTrackable != trackable)
+			{
 				throw new InvalidOperationException(
 					$"Attempt to remove '{trackable.Name}' would remove another trackable with the same ID");
+			}
 
 			registeredTrackables.Remove(trackable.Id);
 		}
 
 		public void ChangeTrackableID(TrackableID previousID, TrackableID newID)
 		{
-			if (previousID == newID) return;			
-			
+			if (previousID == newID)
+			{
+				return;
+			}
+
 			if (!registeredTrackables.TryGetValue(previousID, out var existingObject))
+			{
 				throw new ArgumentException($"Could not find trackable with ID '{previousID}'");
+			}
 
 			if (registeredTrackables.TryGetValue(newID, out var objectWithSameID))
+			{
 				throw new InvalidOperationException(
 					$"Could not change to the ID above since `{objectWithSameID}` already uses it");
+			}
 
 			registeredTrackables.Remove(previousID);
 			registeredTrackables.Add(newID, existingObject);
 		}
-
-		public const int MaxGenerateAttempts = 128;
 
 		public TrackableID GenerateId()
 		{
@@ -77,7 +93,9 @@ namespace EventHorizon
 			{
 				var identity = new TrackableID((uint) rngProvider.Next());
 				if (identity.IsValid && !registeredTrackables.ContainsKey(identity))
+				{
 					return identity;
+				}
 
 				attempts++;
 			}

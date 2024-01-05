@@ -1,4 +1,4 @@
-﻿using EventHorizon.Editor.ProblemSolver;
+using EventHorizon.Editor.ProblemSolver;
 using EventHorizon.Tests.Utilities;
 using Moq;
 using NUnit.Framework;

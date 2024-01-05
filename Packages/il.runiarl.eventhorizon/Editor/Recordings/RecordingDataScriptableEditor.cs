@@ -22,7 +22,9 @@ namespace EventHorizon.Editor
 
 			var sceneNameField = new TextField
 			{
-				label = "Scene Name", isReadOnly = true, value = scriptable.data.metadata.sceneName
+				label = "Scene Name",
+				isReadOnly = true,
+				value = scriptable.data.metadata.sceneName
 			};
 			sceneNameField.AddToClassList("unity-base-field__aligned");
 			container.Add(sceneNameField);
@@ -30,14 +32,18 @@ namespace EventHorizon.Editor
 			var fpsProperty = serializedObject.FindProperty("data.metadata.fps");
 			var fpsField = new TextField
 			{
-				label = "Frame Rate", isReadOnly = true, value = scriptable.data.metadata.fps.ToString()
+				label = "Frame Rate",
+				isReadOnly = true,
+				value = scriptable.data.metadata.fps.ToString()
 			};
 			fpsField.AddToClassList("unity-base-field__aligned");
 			container.Add(fpsField);
 
 			var framesLengthField = new IntegerField
 			{
-				label = "Number of Frames", value = scriptable.data.frames.Length, isReadOnly = true
+				label = "Number of Frames",
+				value = scriptable.data.frames.Length,
+				isReadOnly = true
 			};
 			framesLengthField.AddToClassList("unity-base-field__aligned");
 			container.Add(framesLengthField);

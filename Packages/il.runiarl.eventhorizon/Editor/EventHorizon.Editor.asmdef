@@ -1,20 +1,20 @@
 {
-    "name": "EventHorizon.Editor",
-    "rootNamespace": "EventHorizon",
-    "references": [
-        "EventHorizon",
-        "Unity.Timeline",
-        "Unity.Timeline.Editor"
-    ],
-    "includePlatforms": [
-        "Editor"
-    ],
-    "excludePlatforms": [],
-    "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
+  "name": "EventHorizon.Editor",
+  "rootNamespace": "EventHorizon",
+  "references": [
+    "EventHorizon",
+    "Unity.Timeline",
+    "Unity.Timeline.Editor"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
 }

@@ -1,4 +1,4 @@
-﻿namespace EventHorizon.Editor.ProblemSolver
+namespace EventHorizon.Editor.ProblemSolver
 {
 	public struct InvalidTrackableIDProblem : IProblem
 	{

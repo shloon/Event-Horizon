@@ -1,8 +1,10 @@
 using NUnit.Framework;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
+using Object = UnityEngine.Object;
 
 namespace EventHorizon.Tests
 {
@@ -55,7 +57,7 @@ namespace EventHorizon.Tests
 			// but I think that's currently impossible
 			LogAssert.Expect(LogType.Exception,
 				"InvalidOperationException: Another instance of TrackableManager already exists.");
-			Assert.Throws<System.InvalidOperationException>(() => anotherManager.Awake());
+			Assert.Throws<InvalidOperationException>(() => anotherManager.Awake());
 
 			Object.DestroyImmediate(anotherManagerObject);
 		}
@@ -77,7 +79,7 @@ namespace EventHorizon.Tests
 			testObject.AddComponent<TrackableManagerComponent>();
 			Object.DestroyImmediate(testObject);
 
-			Assert.Throws<System.NullReferenceException>(() => _ = TrackableManagerComponent.Instance);
+			Assert.Throws<NullReferenceException>(() => _ = TrackableManagerComponent.Instance);
 		}
 
 		[Test]

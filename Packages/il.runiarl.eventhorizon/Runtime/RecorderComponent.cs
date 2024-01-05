@@ -1,3 +1,4 @@
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,15 +10,15 @@ namespace EventHorizon
 	public class RecorderComponent : MonoBehaviour
 	{
 		public string outputFileName = "Assets/Recordings/recording.evh";
-		public FrameRate frameRate = new FrameRate(60, 1);
+		public FrameRate frameRate = new(60);
+
+		private float elapsedTime;
+		private Stream fileStream;
+		private int frames;
+		private ITrackableManager manager;
 
 		private RecordingMetadata recordingMetadata;
-		private ITrackableManager manager;
-		private System.IO.Stream fileStream;
 		private RecordingWriter recordingWriter;
-
-		private float elapsedTime = 0;
-		private int frames = 0;
 
 		private void Start()
 		{
@@ -30,12 +31,14 @@ namespace EventHorizon
 			manager = TrackableManagerComponent.Instance;
 
 			// create subfolder
-			var parentDirectory = System.IO.Path.GetDirectoryName(outputFileName);
-			if (!System.IO.Directory.Exists(parentDirectory))
-				System.IO.Directory.CreateDirectory(parentDirectory);
+			var parentDirectory = Path.GetDirectoryName(outputFileName);
+			if (!Directory.Exists(parentDirectory))
+			{
+				Directory.CreateDirectory(parentDirectory);
+			}
 
 			// create filestream
-			fileStream = System.IO.File.Create(outputFileName);
+			fileStream = File.Create(outputFileName);
 
 			// initialize writer
 			recordingWriter = new RecordingWriter(fileStream, recordingMetadata);
@@ -45,9 +48,13 @@ namespace EventHorizon
 		private void Update()
 		{
 			elapsedTime += Time.deltaTime;
-			if (!(elapsedTime >= frameRate.GetFrameDuration())) return;
+			if (!(elapsedTime >= frameRate.GetFrameDuration()))
+			{
+				return;
+			}
 
-			recordingWriter.WriteFrame(RecordingFrameData.FromCurrentFrame(manager.RegisteredTrackables, recordingMetadata, frames));
+			recordingWriter.WriteFrame(
+				RecordingFrameData.FromCurrentFrame(manager.RegisteredTrackables, recordingMetadata, frames));
 			frames++;
 			elapsedTime = 0;
 		}

@@ -22,26 +22,31 @@ namespace EventHorizon
 		}
 	}
 
-	[System.Serializable]
+	[Serializable]
 	public class TransformControl : PlayableBehaviour
 	{
 		public TransformData[] data;
 		public RecordingMetadata metadata;
 
+		private State state = State.Unknown;
+
 		public override void ProcessFrame(Playable playable, FrameData info, object playerData)
 		{
 			// try getting the underlying transform
-			Transform transform = playerData as Transform;
+			var transform = playerData as Transform;
 			transform ??= (playerData as Animator)?.gameObject.transform;
 
 			if (transform == null)
+			{
 				return;
+			}
 
 			var playableDirector = (PlayableDirector) playable.GetGraph().GetResolver();
 
 			var time = playableDirector.time;
 			var frame = (ulong) (time * metadata.fps.GetAsDouble()); // time * fps = frames
-			Debug.Log($"Time: {time}, guessed frame: {frame}, actual frame: {info.frameId}, output: {info.evaluationType}");
+			Debug.Log(
+				$"Time: {time}, guessed frame: {frame}, actual frame: {info.frameId}, output: {info.evaluationType}");
 
 			transform.position = data[frame].position;
 			transform.rotation = data[frame].rotation;
@@ -51,30 +56,30 @@ namespace EventHorizon
 		public void RunOnAllBoundObjects(Playable playable, Action<GameObject> action)
 		{
 			var graph = playable.GetGraph();
-			var director = ((PlayableDirector) graph.GetResolver());
-			if (director == null) return;
+			var director = (PlayableDirector) graph.GetResolver();
+			if (director == null)
+			{
+				return;
+			}
 
 			for (var i = 0; i < graph.GetOutputCount(); ++i)
 			{
 				var track = graph.GetOutput(i).GetReferenceObject();
 				var go = ((Animator) director.GetGenericBinding(track))?.gameObject;
-				if (go) action(go);
+				if (go)
+				{
+					action(go);
+				}
 			}
 		}
-
-		private enum State
-		{
-			Unknown,
-			BehaviourPaused,
-			BehaviourPlay,
-		}
-
-		private State state = State.Unknown;
 
 		public override void OnBehaviourPause(Playable playable, FrameData info)
 		{
 			if (state != State.BehaviourPaused)
+			{
 				RunOnAllBoundObjects(playable, go => ToggleDangerousComponents(go, true));
+			}
+
 			state = State.BehaviourPlay;
 			base.OnBehaviourPause(playable, info);
 		}
@@ -82,7 +87,10 @@ namespace EventHorizon
 		public override void OnBehaviourPlay(Playable playable, FrameData info)
 		{
 			if (state != State.BehaviourPlay)
+			{
 				RunOnAllBoundObjects(playable, go => ToggleDangerousComponents(go, false));
+			}
+
 			state = State.BehaviourPlay;
 			base.OnBehaviourPlay(playable, info);
 		}
@@ -91,6 +99,13 @@ namespace EventHorizon
 		{
 			var rigidbody = go.GetComponent<Rigidbody>();
 			rigidbody.isKinematic = !enable; // equivalent to disable on a rigidbody?
+		}
+
+		private enum State
+		{
+			Unknown,
+			BehaviourPaused,
+			BehaviourPlay
 		}
 	}
 
