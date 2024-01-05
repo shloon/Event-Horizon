@@ -22,7 +22,7 @@ namespace EventHorizon
 		}
 
 		private void Start() => Initialize();
-		private void OnDestroy() => manager?.Unregister(this);
+		private void OnDisable() => manager?.Unregister(this);
 
 		[field: SerializeField]
 		[field: FormerlySerializedAs("id")]
