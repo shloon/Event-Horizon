@@ -1,14 +1,11 @@
+using EventHorizon.FormatV2;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace EventHorizon
 {
-	[DisallowMultipleComponent]
-	[DefaultExecutionOrder(-99)]
-	[AddComponentMenu("Event Horizon/Trackable")]
-	[ExecuteAlways]
-	public class BaseTrackableComponent : MonoBehaviour, ITrackable
+	public abstract class BaseTrackableComponent<T> : MonoBehaviour, ITrackable, IPacketGenerator<T> where T : IPacket
 	{
 		private bool isInitialized;
 		public ITrackableManager manager;
@@ -20,6 +17,8 @@ namespace EventHorizon
 		}
 
 		private void OnDisable() => manager?.Unregister(this);
+
+		public abstract T GetPacketForFrame(ulong frame);
 
 		[field: SerializeField]
 		[field: FormerlySerializedAs("id")]

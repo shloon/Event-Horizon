@@ -1,4 +1,4 @@
-namespace EventHorizon
+﻿namespace EventHorizon
 {
 	public interface ITrackable
 	{

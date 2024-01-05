@@ -26,7 +26,6 @@ namespace EventHorizon.Tests
 			Assert.AreEqual(5 * metadata.fps.GetFrameDuration(), frameData.timeCode);
 		}
 
-
 		[Test]
 		public void FromCurrentFrame_WithNonEmptyTrackables_ShouldReflectTrackablesData()
 		{
