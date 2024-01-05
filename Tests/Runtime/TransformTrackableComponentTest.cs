@@ -6,7 +6,7 @@ using UnityEngine.TestTools;
 
 namespace EventHorizon.Tests
 {
-	public class TrackableComponentTest
+	public class TransformPacketGeneratorComponentTest
 	{
 		private GameObject gameObject;
 		private Mock<ITrackableManager> mockManager;
@@ -30,7 +30,7 @@ namespace EventHorizon.Tests
 		[UnityTest]
 		public IEnumerator Awake_WithManagerSet_ShouldCallRegister()
 		{
-			var trackableComponent = gameObject.AddComponent<TrackableComponent>();
+			var trackableComponent = gameObject.AddComponent<TransformTrackableComponent>();
 			trackableComponent.Id = new TrackableID(1234);
 			trackableComponent.manager = mockManager.Object;
 			yield return null;
@@ -41,7 +41,7 @@ namespace EventHorizon.Tests
 		[UnityTest]
 		public IEnumerator Awake_WithoutManagerSet_ShouldFallbackToSingletonAndCallRegister()
 		{
-			var trackableComponent = gameObject.AddComponent<TrackableComponent>();
+			var trackableComponent = gameObject.AddComponent<TransformTrackableComponent>();
 			trackableComponent.Id = new TrackableID(1234);
 
 			var singletonManager = new GameObject().AddComponent<TrackableManagerComponent>();
@@ -57,7 +57,7 @@ namespace EventHorizon.Tests
 		[UnityTest]
 		public IEnumerator OnDestroy_ShouldCallUnregister()
 		{
-			var trackableComponent = gameObject.AddComponent<TrackableComponent>();
+			var trackableComponent = gameObject.AddComponent<TransformTrackableComponent>();
 			trackableComponent.Id = new TrackableID(1234);
 			trackableComponent.manager = mockManager.Object;
 			yield return null;

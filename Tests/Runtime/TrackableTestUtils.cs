@@ -17,18 +17,19 @@ namespace EventHorizon.Tests.Utilities
 
 	public static class TrackableTestUtils
 	{
-		public static TrackableComponent CreateTrackableGameObject(TrackableID id) =>
+		public static TransformTrackableComponent CreateTrackableGameObject(TrackableID id) =>
 			CreateTrackableGameObject(new DummyManager(), id);
 
-		public static TrackableComponent CreateTrackableGameObject(ITrackableManager manager) =>
+		public static TransformTrackableComponent CreateTrackableGameObject(ITrackableManager manager) =>
 			CreateTrackableGameObject(manager, manager.GenerateId());
 
-		public static TrackableComponent CreateTrackableGameObject(ITrackableManager manager, TrackableID id)
+		public static TransformTrackableComponent CreateTrackableGameObject(ITrackableManager manager,
+			TrackableID id)
 		{
 			var go = new GameObject("Trackable");
 			go.SetActive(false);
 
-			var trackable = go.AddComponent<TrackableComponent>();
+			var trackable = go.AddComponent<TransformTrackableComponent>();
 			trackable.manager = manager;
 			trackable.Id = id;
 			go.SetActive(true);
@@ -36,10 +37,11 @@ namespace EventHorizon.Tests.Utilities
 			return trackable;
 		}
 
-		public static void DestroyTrackableGameObject(TrackableComponent trackableComponent)
+		public static void DestroyTrackableGameObject(
+			TransformTrackableComponent transformPacketGeneratorComponent)
 		{
 #if UNITY_EDITOR
-			Object.DestroyImmediate(trackableComponent.gameObject);
+			Object.DestroyImmediate(transformPacketGeneratorComponent.gameObject);
 #else
 			Object.Destroy(trackable.gameObject);
 #endif

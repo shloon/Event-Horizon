@@ -147,7 +147,7 @@ namespace EventHorizon.Tests
 
 			foreach (var (id, trackable) in TrackableManagerComponent.Instance.RegisteredTrackables)
 			{
-				if (trackable is TrackableComponent trackableComponent)
+				if (trackable is TransformTrackableComponent trackableComponent)
 				{
 					var animator = trackableComponent.GetComponent<Animator>();
 					var binding = director.GetGenericBinding(transformControlTracks[id]);
@@ -158,7 +158,7 @@ namespace EventHorizon.Tests
 
 		#region SetupTearDown
 
-		private TrackableComponent[] trackables;
+		private TransformTrackableComponent[] trackables;
 		private TrackableManagerComponent trackableManager;
 
 		[UnitySetUp]
@@ -167,7 +167,7 @@ namespace EventHorizon.Tests
 			trackableManager = new GameObject("Trackable Manager").AddComponent<TrackableManagerComponent>();
 
 			const int NUM_TRACKABLES = 16;
-			trackables = new TrackableComponent[NUM_TRACKABLES];
+			trackables = new TransformTrackableComponent[NUM_TRACKABLES];
 			for (var i = 0; i < trackables.Length; i++)
 			{
 				trackables[i] = TrackableTestUtils.CreateTrackableGameObject(trackableManager);
