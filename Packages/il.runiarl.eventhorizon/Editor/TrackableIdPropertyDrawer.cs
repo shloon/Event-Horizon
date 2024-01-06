@@ -55,7 +55,17 @@ namespace EventHorizon.Editor
 
 						if (property.serializedObject.targetObject is ITrackable trackable)
 						{
-							trackableManager.ChangeTrackableID(oldID, newID);
+							if (trackableManager.RegisteredTrackables.ContainsKey(oldID))
+							{
+								// if the old ID was registered, it was claimed by this trackable, so we change it
+								trackableManager.ChangeTrackableID(oldID, newID);
+							}
+							else
+							{
+								// if the old ID wasn't registered, this is a duplicate of an existing object,
+								// so we now have to register it
+								trackableManager.Register(trackable);
+							}
 						}
 					}
 				}
