@@ -10,8 +10,7 @@ namespace EventHorizon
 	{
 		public static TimelineData BuildTimeline(FormatV2Scriptable formatV2Data)
 		{
-			var timelineData = new TimelineData();
-			timelineData.timelineAsset = ScriptableObject.CreateInstance<TimelineAsset>();
+			var timelineData = new TimelineData { timelineAsset = ScriptableObject.CreateInstance<TimelineAsset>() };
 			var frameDuration = formatV2Data.metadataPacket.fps.GetFrameDuration();
 			timelineData.timelineAsset.editorSettings.frameRate = formatV2Data.metadataPacket.fps.GetAsDouble();
 
@@ -80,48 +79,48 @@ namespace EventHorizon
 
 				// Update clip duration
 				clip.duration = packetTime - clip.start;
+				transformClipsFrames[trackableID] = packet.frame;
 
 				// Append frame data to the clip
 				transformAssets[trackableID].packets.Add(packet);
-				transformClipsFrames[trackableID] = packet.frame;
 			}
 		}
 
-
-		public static void ConfigureDirector(in TimelineData timelineData, PlayableDirector director)
+		public static void ConfigureDirector(in TimelineData timelineData, PlayableDirector director,
+			out List<GameObject> boundGameObjects)
 		{
 			if (timelineData == null || director == null)
 			{
+				boundGameObjects = null;
 				return;
 			}
 
 			director.playOnAwake = false;
 			director.playableAsset = timelineData.timelineAsset;
 
-			foreach (var (id, trackable) in TrackableManagerComponent.Instance.RegisteredTrackables)
+			boundGameObjects = new List<GameObject>();
+
+			// find all trackable components, regardless of their active state
+			var transformTrackables =
+				Object.FindObjectsByType<TransformTrackableComponent>(FindObjectsInactive.Include,
+					FindObjectsSortMode.None);
+			foreach (var trackableComponent in transformTrackables)
 			{
-				// try to attach to all transform components
-				if (trackable is TransformTrackableComponent trackableComponent)
+				var animator = trackableComponent.gameObject.AddComponent<Animator>();
+				if (timelineData.transformTracks.TryGetValue(trackableComponent.Id, out var transformControlTrack))
 				{
-					var animator = trackableComponent.gameObject.AddComponent<Animator>();
-					if (timelineData.transformTracks.TryGetValue(id, out var transformControlTrack))
-					{
-						director.SetGenericBinding(transformControlTrack, animator);
-					}
+					director.SetGenericBinding(transformControlTrack, animator);
+					boundGameObjects.Add(trackableComponent.gameObject);
 				}
 			}
 		}
 
-		public static void ToggleGameObjects(bool shouldEnable)
-		{
-			foreach (var trackable in TrackableManagerComponent.Instance.RegisteredTrackables.Values)
-			{
-				if (trackable is not Component component)
-				{
-					continue;
-				}
 
-				var rigidbody = component.gameObject.GetComponent<Rigidbody>();
+		public static void ToggleGameObjects(List<GameObject> boundGameObjects, bool shouldEnable)
+		{
+			foreach (var gameObject in boundGameObjects)
+			{
+				var rigidbody = gameObject.GetComponent<Rigidbody>();
 				if (rigidbody != null)
 				{
 					rigidbody.isKinematic = !shouldEnable;
