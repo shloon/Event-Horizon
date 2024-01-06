@@ -12,6 +12,7 @@ namespace EventHorizon.Editor
 	{
 		private const string ToggleKeyString = "isCurrentlyInspectingEventHorizon";
 
+		[MenuItem("Event Horizon/Play Selected Recording")]
 		public static void TogglePlayModeAndSetupCleanup() => TogglePlaymode(true);
 
 		private static void ToggleRecorder(bool shouldRecord)
