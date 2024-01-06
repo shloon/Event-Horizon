@@ -6,11 +6,11 @@ using UnityEngine.Playables;
 
 namespace EventHorizon.Editor
 {
-	// we use SessionState since we want the toggle value to persist
-	// and InitializeOnLoad is called whenever switching to either play or edit mode.
 	[InitializeOnLoad]
-	public class EventHorizonInspectionStateToggler
+	public class InspectionModeHook
 	{
+		// we use SessionState since we want the toggle value to persist
+		// and InitializeOnLoad is called whenever switching to either play or edit mode.
 		private const string ToggleKeyString = "isCurrentlyInspectingEventHorizon";
 
 		[MenuItem("Event Horizon/Play Selected Recording")]
@@ -27,12 +27,8 @@ namespace EventHorizon.Editor
 
 		private static void OnEnteredPlayMode()
 		{
-			Debug.Log("Now in Play Mode - performing actions (initiated by toggle button).");
-			StartTimeline();
-		}
+			Debug.Log("Starting EVH file playback mode...");
 
-		private static void StartTimeline()
-		{
 			var serializedFormatV2 = Selection.activeObject as FormatV2Scriptable;
 			if (!serializedFormatV2)
 			{
@@ -53,22 +49,27 @@ namespace EventHorizon.Editor
 			var timelineData = RecordingTimelineUtilities.BuildTimeline(serializedFormatV2);
 			RecordingTimelineUtilities.ConfigureDirector(timelineData, director);
 
+			// disable any physics or similar things on game objects
+			RecordingTimelineUtilities.ToggleGameObjects(false);
+
 			// focus on gameobject and timeline editor window
 			EditorWindow.GetWindow<SceneView>().Focus();
 			Selection.activeObject = timelineData.timelineAsset;
 			Selection.activeGameObject = director.gameObject;
 			EditorWindow.GetWindow<TimelineEditorWindow>().Focus();
+
+			// TODO: Dock timeline window
 		}
 
 		private static void OnExitingPlayMode()
 		{
-			Debug.Log("Exiting Play Mode - performing cleanup (initiated by toggle button).");
+			Debug.Log("Stopping EVH file playback mode...");
 			ToggleRecorder(true);
 		}
 
 		#region Playmode Toggle Logic
 
-		static EventHorizonInspectionStateToggler() => EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+		static InspectionModeHook() => EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
 
 		private static void TogglePlaymode(bool startPlaing)
 		{
