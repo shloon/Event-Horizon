@@ -17,7 +17,7 @@ namespace EventHorizon
 
 			// handle edge case of no actual data
 			if (formatV2Data.framePackets.Count == 0 && formatV2Data.transformPackets.Count == 0 &&
-			    formatV2Data.genericDataPackets.Count == 0)
+				formatV2Data.genericDataPackets.Count == 0)
 			{
 				return null;
 			}
@@ -42,7 +42,7 @@ namespace EventHorizon
 		{
 			timelineData.genericDataTrack = timelineData.timelineAsset.CreateTrack<GenericDataControlTrack>();
 			var genericDataClip = timelineData.genericDataTrack.CreateClip<GenericDataControlAsset>();
-			((GenericDataControlAsset) genericDataClip.asset).frameDuration = frameDuration;
+			((GenericDataControlAsset)genericDataClip.asset).frameDuration = frameDuration;
 
 			// TODO, currently not on MVP
 		}
@@ -61,7 +61,7 @@ namespace EventHorizon
 
 				// Create a new clip if it doesn't exist or there is a gap of at least one frame
 				if (!transformClips.TryGetValue(trackableID, out var clip) ||
-				    packet.frame > transformClipsFrames[trackableID] + 1)
+					packet.frame > transformClipsFrames[trackableID] + 1)
 				{
 					if (!timelineData.transformTracks.TryGetValue(trackableID, out var track))
 					{
@@ -74,7 +74,7 @@ namespace EventHorizon
 					clip.start = packetTime;
 					transformClips[trackableID] = clip;
 
-					transformAssets[trackableID] = (TransformControlAsset) clip.asset;
+					transformAssets[trackableID] = (TransformControlAsset)clip.asset;
 					transformAssets[trackableID].frameDuration = frameDuration;
 				}
 
@@ -108,6 +108,23 @@ namespace EventHorizon
 					{
 						director.SetGenericBinding(transformControlTrack, animator);
 					}
+				}
+			}
+		}
+
+		public static void ToggleGameObjects(bool shouldEnable)
+		{
+			foreach (var trackable in TrackableManagerComponent.Instance.RegisteredTrackables.Values)
+			{
+				if (trackable is not Component component)
+				{
+					continue;
+				}
+
+				var rigidbody = component.gameObject.GetComponent<Rigidbody>();
+				if (rigidbody != null)
+				{
+					rigidbody.isKinematic = !shouldEnable;
 				}
 			}
 		}

@@ -15,7 +15,7 @@ namespace EventHorizon.Editor.RecordingsV2
 			var container = new VisualElement();
 
 			var playButton = new Button { text = "Start Playback" };
-			playButton.clicked += EventHorizonInspectionStateToggler.TogglePlayModeAndSetupCleanup;
+			playButton.clicked += InspectionModeHook.TogglePlayModeAndSetupCleanup;
 			container.Add(playButton);
 
 			#region Metadata
