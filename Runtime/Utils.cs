@@ -6,10 +6,10 @@ namespace EventHorizon.MetaXR
 	{
 		public static void AddTrackableToGameObject(GameObject gameObj, TrackableID id)
 		{
-			Debug.Log(gameObj);
-
+			gameObj.SetActive(false);
 			var trackable = gameObj.AddComponent<TransformTrackableComponent>();
 			trackable.Id = id;
+			gameObj.SetActive(true);
 		}
 	}
 }
