@@ -9,12 +9,16 @@ namespace EventHorizon.Editor
 	[InitializeOnLoad]
 	public class InspectionModeHook
 	{
+		public delegate void InspectionModeStartHandler();
+
 		// we use SessionState since we want the toggle value to persist
 		// and InitializeOnLoad is called whenever switching to either play or edit mode.
 		private const string ToggleKeyString = "isCurrentlyInspectingEventHorizon";
 
 		[MenuItem("Event Horizon/Play Selected Recording")]
 		public static void TogglePlayModeAndSetupCleanup() => TogglePlaymode(true);
+
+		public static event InspectionModeStartHandler onInspectionModeStart;
 
 		private static void ToggleRecorder(bool shouldRecord)
 		{
@@ -47,10 +51,11 @@ namespace EventHorizon.Editor
 
 			// build and configure timeline
 			var timelineData = RecordingTimelineUtilities.BuildTimeline(serializedFormatV2);
-			RecordingTimelineUtilities.ConfigureDirector(timelineData, director);
+			RecordingTimelineUtilities.ConfigureDirector(timelineData, director, out var boundGameObjects);
 
 			// disable any physics or similar things on game objects
-			RecordingTimelineUtilities.ToggleGameObjects(false);
+			RecordingTimelineUtilities.ToggleGameObjects(boundGameObjects, false);
+			onInspectionModeStart?.Invoke();
 
 			// focus on gameobject and timeline editor window
 			EditorWindow.GetWindow<SceneView>().Focus();

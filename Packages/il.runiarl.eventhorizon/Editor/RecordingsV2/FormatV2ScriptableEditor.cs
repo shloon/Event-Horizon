@@ -67,8 +67,9 @@ namespace EventHorizon.Editor.RecordingsV2
 			var genericDataPacketField = new PropertyField(serializedObject.FindProperty("genericDataPackets"));
 			container.Add(genericDataPacketField);
 
-			var transformPackets = new PropertyField(serializedObject.FindProperty("transformPackets"));
-			container.Add(transformPackets);
+			var transformPacketsField = new PropertyField(serializedObject.FindProperty("transformPackets"));
+			container.Add(transformPacketsField);
+
 
 			#endregion
 
