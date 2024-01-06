@@ -1,12 +1,10 @@
 using Moq;
 using NUnit.Framework;
-using System.Collections;
 using UnityEngine;
-using UnityEngine.TestTools;
 
 namespace EventHorizon.Tests
 {
-	public class TransformPacketGeneratorComponentTest
+	public class BaseTrackableComponentTest
 	{
 		private GameObject gameObject;
 		private Mock<ITrackableManager> mockManager;
@@ -27,43 +25,59 @@ namespace EventHorizon.Tests
 			}
 		}
 
-		[UnityTest]
-		public IEnumerator Awake_WithManagerSet_ShouldCallRegister()
+		[Test]
+		public void OnEnable_WithManagerSet_ShouldCallRegister()
 		{
+			gameObject.SetActive(false);
 			var trackableComponent = gameObject.AddComponent<TransformTrackableComponent>();
 			trackableComponent.Id = new TrackableID(1234);
 			trackableComponent.manager = mockManager.Object;
-			yield return null;
+
+			gameObject.SetActive(true);
 
 			mockManager.Verify(m => m.Register(trackableComponent), Times.Once());
 		}
 
-		[UnityTest]
-		public IEnumerator Awake_WithoutManagerSet_ShouldFallbackToSingletonAndCallRegister()
+		[Test]
+		public void OnEnable_WithoutManagerSet_ShouldFallbackToSingletonAndCallRegister()
 		{
+			gameObject.SetActive(false);
 			var trackableComponent = gameObject.AddComponent<TransformTrackableComponent>();
 			trackableComponent.Id = new TrackableID(1234);
-
 			var singletonManager = new GameObject().AddComponent<TrackableManagerComponent>();
-			yield return null;
+
+			gameObject.SetActive(true);
 
 			Assert.AreEqual(singletonManager, trackableComponent.manager);
 			Assert.AreEqual(TrackableManagerComponent.Instance, trackableComponent.manager);
 
 			Object.Destroy(singletonManager.gameObject);
-			yield return null;
 		}
 
-		[UnityTest]
-		public IEnumerator OnDestroy_ShouldCallUnregister()
+
+		[Test]
+		public void OnDisable_ShouldCallUnregister()
 		{
+			gameObject.SetActive(false);
 			var trackableComponent = gameObject.AddComponent<TransformTrackableComponent>();
 			trackableComponent.Id = new TrackableID(1234);
 			trackableComponent.manager = mockManager.Object;
-			yield return null;
+			gameObject.SetActive(true);
+
+			trackableComponent.enabled = false;
+			mockManager.Verify(m => m.Unregister(trackableComponent), Times.Once());
+		}
+
+		[Test]
+		public void OnDestroy_ShouldCallUnregister()
+		{
+			gameObject.SetActive(false);
+			var trackableComponent = gameObject.AddComponent<TransformTrackableComponent>();
+			trackableComponent.Id = new TrackableID(1234);
+			trackableComponent.manager = mockManager.Object;
+			gameObject.SetActive(true);
 
 			Object.Destroy(trackableComponent);
-			yield return null;
 
 			mockManager.Verify(m => m.Unregister(trackableComponent), Times.Once());
 		}

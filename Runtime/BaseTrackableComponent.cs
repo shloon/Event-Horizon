@@ -13,15 +13,12 @@ namespace EventHorizon
 		private bool isInitialized;
 		public ITrackableManager manager;
 
-		private void Awake()
+		private void OnEnable()
 		{
-			if (!EditorApplication.isPlayingOrWillChangePlaymode)
-			{
-				Initialize();
-			}
+			Initialize();
+			manager?.Register(this);
 		}
 
-		private void Start() => Initialize();
 		private void OnDisable() => manager?.Unregister(this);
 
 		[field: SerializeField]
@@ -45,7 +42,6 @@ namespace EventHorizon
 				Id = manager.GenerateId();
 			}
 #endif
-			manager?.Register(this);
 			isInitialized = true;
 		}
 	}
