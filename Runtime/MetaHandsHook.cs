@@ -56,7 +56,7 @@ namespace EventHorizon.MetaXR
 
 		public void Update()
 		{
-			if (skeleton.IsInitialized && !initialized)
+			if (!initialized && skeleton.IsInitialized)
 			{
 				AssignTrackablesToBones();
 			}

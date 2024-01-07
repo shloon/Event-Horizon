@@ -13,13 +13,7 @@ namespace EventHorizon.MetaXR
 		public void Start()
 		{
 			Utils.AddTrackableToGameObject(gameObject, trackableID.value);
-
 			cameraRig = GetCameraRig();
-
-			if (cameraRig.GetComponent<MetaOVRCameraHook>() is null)
-			{
-				cameraRig.gameObject.AddComponent<MetaOVRCameraHook>();
-			}
 		}
 
 		public OVRCameraRig GetCameraRig()

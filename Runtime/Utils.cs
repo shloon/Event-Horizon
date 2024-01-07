@@ -4,12 +4,12 @@ namespace EventHorizon.MetaXR
 {
 	public class Utils
 	{
-		public static void AddTrackableToGameObject(GameObject gameObj, TrackableID id)
+		public static void AddTrackableToGameObject(GameObject gameObj, TrackableID id, bool isLocal = false)
 		{
-			gameObj.SetActive(false);
 			var trackable = gameObj.AddComponent<TransformTrackableComponent>();
 			trackable.Id = id;
-			gameObj.SetActive(true);
+			trackable.isLocal = isLocal;
+			TrackableManagerComponent.Instance.Register(trackable);
 		}
 	}
 }
