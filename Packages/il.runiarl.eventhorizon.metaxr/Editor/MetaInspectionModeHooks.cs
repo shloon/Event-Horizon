@@ -63,6 +63,12 @@ namespace EventHorizon.MetaXR.Editor
 
 		public static void InspectionHook_MetaHandsHook()
 		{
+			var leftHandPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(
+				"Packages/com.meta.xr.sdk.core/Prefabs/OVRCustomHandPrefab_R.prefab");
+			var rightHandPrefab =
+				AssetDatabase.LoadAssetAtPath<GameObject>(
+					"Packages/com.meta.xr.sdk.core/Prefabs/OVRCustomHandPrefab_R.prefab");
+
 			foreach (var handsHook in Object.FindObjectsOfType<MetaHandsHook>())
 			{
 				// TODO introduce more sophisticated condition
@@ -70,7 +76,28 @@ namespace EventHorizon.MetaXR.Editor
 				{
 				}
 
-				// TODO replace with play-time controller model based on data from recording
+				// instantiate correct hand prefab
+				var skeletonType = handsHook.GetComponent<OVRSkeleton>().GetSkeletonType();
+				var handParentTransform = handsHook.gameObject.transform.parent;
+				var newGO = skeletonType switch
+				{
+					OVRSkeleton.SkeletonType.HandLeft => Object.Instantiate(leftHandPrefab,
+						handParentTransform),
+					OVRSkeleton.SkeletonType.HandRight => Object.Instantiate(rightHandPrefab,
+						handParentTransform),
+					_ => null
+				};
+
+				if (newGO == null)
+				{
+					continue;
+				}
+
+				// enable hand prefab
+				newGO.SetActive(false);
+				UnityComponentHelpers.CopyComponent(handsHook, newGO);
+				newGO.SetActive(true);
+				Object.DestroyImmediate(handsHook.gameObject);
 			}
 		}
 	}
