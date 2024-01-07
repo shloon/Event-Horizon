@@ -57,9 +57,16 @@ namespace EventHorizon
 				return;
 			}
 
-			transform.position = packets[frame].translation;
-			transform.rotation = packets[frame].rotation;
-			transform.localScale = packets[frame].scale;
+			var packet = packets[frame];
+			if (packet.isLocal)
+			{
+				transform.SetLocalPositionAndRotation(packet.translation, packet.rotation);
+			}
+			else
+			{
+				transform.SetPositionAndRotation(packet.translation, packet.rotation);
+			}
+			transform.localScale = packet.scale;
 		}
 	}
 

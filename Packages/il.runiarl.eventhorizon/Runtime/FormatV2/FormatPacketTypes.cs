@@ -65,6 +65,7 @@ namespace EventHorizon.FormatV2
 	{
 		public ulong frame;
 		public uint id;
+		public bool isLocal;
 		public Vector3 translation;
 		public Quaternion rotation;
 		public Vector3 scale;

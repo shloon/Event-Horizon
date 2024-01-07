@@ -9,15 +9,31 @@ namespace EventHorizon
 	[ExecuteAlways]
 	public sealed class TransformTrackableComponent : BaseTrackableComponent<TransformPacket>
 	{
+		public bool isLocal;
+		private Transform selfTransform;
+
+		public void Start() => selfTransform = transform;
+
 		public override TransformPacket GetPacketForFrame(ulong frame)
 		{
-			Transform selfTransform;
+			Vector3 translation;
+			Quaternion rotation;
+			if (isLocal)
+			{
+				transform.GetLocalPositionAndRotation(out translation, out rotation);
+			}
+			else
+			{
+				transform.GetPositionAndRotation(out translation, out rotation);
+			}
+
 			return new TransformPacket
 			{
 				frame = frame,
 				id = Id.Internal,
-				translation = (selfTransform = transform).position,
-				rotation = selfTransform.rotation,
+				isLocal = isLocal,
+				translation = translation,
+				rotation = rotation,
 				scale = selfTransform.localScale
 			};
 		}
