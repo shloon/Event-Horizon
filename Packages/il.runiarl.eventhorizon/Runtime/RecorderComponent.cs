@@ -75,8 +75,11 @@ namespace EventHorizon
 					case IPacketGenerator<TransformPacket> trackable1:
 						writer.WritePacket(trackable1.GetPacketForFrame(frame));
 						break;
-					case IPacketGenerator<GenericDataPacket> trackable2:
+					case IPacketGenerator<ActivationPacket> trackable2:
 						writer.WritePacket(trackable2.GetPacketForFrame(frame));
+						break;
+					case IPacketGenerator<GenericDataPacket> trackable3:
+						writer.WritePacket(trackable3.GetPacketForFrame(frame));
 						break;
 				}
 			}

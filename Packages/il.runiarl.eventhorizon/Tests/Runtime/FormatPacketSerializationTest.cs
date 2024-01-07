@@ -78,5 +78,19 @@ namespace EventHorizon.Tests
 			Assert.AreEqual(PacketType.Generic, deserializedPacket.Type);
 			Assert.AreEqual(genericDataPacket, (GenericDataPacket) deserializedPacket);
 		}
+
+		[Test]
+		public void ActivationPacket_RoundTrip()
+		{
+			var activationPacket = new ActivationPacket { frame = 1u, id = 2u };
+
+			var serializedPacket = PacketUtils.SerializePacket(activationPacket);
+			var deserializedPacket = PacketUtils.DeserializePacket(serializedPacket.header, serializedPacket.contents);
+
+			Debug.Log(serializedPacket.contents);
+
+			Assert.AreEqual(PacketType.Activation, deserializedPacket.Type);
+			Assert.AreEqual(activationPacket, (ActivationPacket) deserializedPacket);
+		}
 	}
 }

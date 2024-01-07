@@ -70,6 +70,8 @@ namespace EventHorizon.Editor.RecordingsV2
 			var transformPacketsField = new PropertyField(serializedObject.FindProperty("transformPackets"));
 			container.Add(transformPacketsField);
 
+			var activationPacketsField = new PropertyField(serializedObject.FindProperty("activationPackets"));
+			container.Add(activationPacketsField);
 
 			#endregion
 

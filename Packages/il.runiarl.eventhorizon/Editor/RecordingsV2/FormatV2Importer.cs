@@ -25,6 +25,9 @@ namespace EventHorizon.Editor.RecordingsV2
 						case TransformPacket transformPacket:
 							dataScriptable.transformPackets.Add(transformPacket);
 							break;
+						case ActivationPacket activationPacket:
+							dataScriptable.activationPackets.Add(activationPacket);
+							break;
 						case GenericDataPacket genericDataPacket:
 							dataScriptable.genericDataPackets.Add(genericDataPacket);
 							break;

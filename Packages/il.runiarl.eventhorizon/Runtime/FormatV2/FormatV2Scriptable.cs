@@ -13,5 +13,6 @@ namespace EventHorizon.Editor.RecordingsV2
 		public List<FramePacket> framePackets = new();
 		public List<GenericDataPacket> genericDataPackets = new();
 		public List<TransformPacket> transformPackets = new();
+		public List<ActivationPacket> activationPackets = new();
 	}
 }
