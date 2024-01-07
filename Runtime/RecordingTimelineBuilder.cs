@@ -16,7 +16,7 @@ namespace EventHorizon
 
 			// handle edge case of no actual data
 			if (formatV2Data.framePackets.Count == 0 && formatV2Data.transformPackets.Count == 0 &&
-				formatV2Data.genericDataPackets.Count == 0)
+				formatV2Data.genericDataPackets.Count == 0 && formatV2Data.activationPackets.Count == 0)
 			{
 				return null;
 			}
@@ -26,6 +26,11 @@ namespace EventHorizon
 			if (formatV2Data.framePackets.Count > 0)
 			{
 				BuildTransformTracks(formatV2Data, frameDuration, timelineData);
+			}
+
+			if (formatV2Data.activationPackets.Count > 0)
+			{
+				BuildActivationTracks(formatV2Data, frameDuration, timelineData);
 			}
 
 			// setup a generic track for generic trackable
@@ -86,6 +91,40 @@ namespace EventHorizon
 			}
 		}
 
+		private static void BuildActivationTracks(FormatV2Scriptable formatV2Data, double frameDuration,
+			TimelineData timelineData)
+		{
+			Dictionary<TrackableID, TimelineClip> activationClips = new();
+			Dictionary<TrackableID, ulong> activationClipFrames = new();
+
+			foreach (var packet in formatV2Data.activationPackets)
+			{
+				var trackableID = new TrackableID(packet.id);
+				var packetTime = packet.frame * frameDuration;
+
+				// Create a new clip if it doesn't exist or there is a gap of at least one frame
+				if (!activationClips.TryGetValue(trackableID, out var clip) ||
+					packet.frame > activationClipFrames[trackableID] + 1)
+				{
+					if (!timelineData.activationTracks.TryGetValue(trackableID, out var track))
+					{
+						track = timelineData.timelineAsset.CreateTrack<ActivationTrack>();
+						track.postPlaybackState = ActivationTrack.PostPlaybackState.Inactive;
+						timelineData.activationTracks[trackableID] = track;
+					}
+
+					clip = track.CreateDefaultClip();
+					clip.duration = 0;
+					clip.start = packetTime;
+					activationClips[trackableID] = clip;
+				}
+
+				// Update clip duration
+				clip.duration = packetTime - clip.start;
+				activationClipFrames[trackableID] = packet.frame;
+			}
+		}
+
 		public static void ConfigureDirector(in TimelineData timelineData, PlayableDirector director,
 			out List<GameObject> boundGameObjects)
 		{
@@ -113,6 +152,19 @@ namespace EventHorizon
 					boundGameObjects.Add(trackableComponent.gameObject);
 				}
 			}
+
+			// force-bind to all activation-trackable components in scene
+			var activationTrackables =
+				Object.FindObjectsByType<ActivationTrackableComponent>(FindObjectsInactive.Include,
+					FindObjectsSortMode.None);
+			foreach (var trackableComponent in activationTrackables)
+			{
+				if (timelineData.activationTracks.TryGetValue(trackableComponent.Id, out var activationTrack))
+				{
+					director.SetGenericBinding(activationTrack, trackableComponent.gameObject);
+					boundGameObjects.Add(trackableComponent.gameObject);
+				}
+			}
 		}
 
 
@@ -130,6 +182,7 @@ namespace EventHorizon
 
 		public class TimelineData
 		{
+			public Dictionary<TrackableID, ActivationTrack> activationTracks = new();
 			public GenericDataControlTrack genericDataTrack;
 			public TimelineAsset timelineAsset;
 			public Dictionary<TrackableID, TransformControlTrack> transformTracks = new();

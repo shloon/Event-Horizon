@@ -10,7 +10,8 @@ namespace EventHorizon.FormatV2
 		Metadata,
 		Frame,
 		Transform,
-		Generic
+		Generic,
+		Activation
 	}
 
 	public interface IPacket
@@ -52,6 +53,14 @@ namespace EventHorizon.FormatV2
 	}
 
 	[Serializable]
+	public struct ActivationPacket : IPacket
+	{
+		public ulong frame;
+		public uint id;
+		public PacketType Type => PacketType.Activation;
+	}
+
+	[Serializable]
 	public struct TransformPacket : IPacket
 	{
 		public ulong frame;
@@ -86,6 +95,7 @@ namespace EventHorizon.FormatV2
 				PacketType.Transform => JsonUtility.FromJson<TransformPacket>(contents),
 				PacketType.Generic => JsonUtility.FromJson<GenericDataPacket>(contents),
 				PacketType.Frame => JsonUtility.FromJson<FramePacket>(contents),
+				PacketType.Activation => JsonUtility.FromJson<ActivationPacket>(contents),
 				PacketType.Undefined => null,
 				_ => null
 			};
