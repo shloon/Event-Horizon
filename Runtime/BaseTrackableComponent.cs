@@ -13,7 +13,10 @@ namespace EventHorizon
 		private void OnEnable()
 		{
 			Initialize();
-			manager?.Register(this);
+			if (Id.IsValid)
+			{
+				manager?.Register(this);
+			}
 		}
 
 		private void OnDisable() => manager?.Unregister(this);
