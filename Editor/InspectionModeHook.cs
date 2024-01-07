@@ -46,6 +46,8 @@ namespace EventHorizon.Editor
 				recorder.enabled = false;
 			}
 
+			onInspectionModeStart?.Invoke();
+
 			// read recording
 			var director = TrackableManagerComponent.Instance.gameObject.AddComponent<PlayableDirector>();
 
@@ -55,7 +57,6 @@ namespace EventHorizon.Editor
 
 			// disable any physics or similar things on game objects
 			RecordingTimelineUtilities.ToggleGameObjects(boundGameObjects, false);
-			onInspectionModeStart?.Invoke();
 
 			// focus on gameobject and timeline editor window
 			EditorWindow.GetWindow<SceneView>().Focus();
