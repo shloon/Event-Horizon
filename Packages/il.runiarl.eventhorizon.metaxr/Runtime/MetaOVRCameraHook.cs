@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace EventHorizon.MetaXR
 {
@@ -23,34 +24,49 @@ namespace EventHorizon.MetaXR
 		public TrackableIDWrapper leftControllerAnchorID;
 		public TrackableIDWrapper rightControllerAnchorID;
 		public TrackableIDWrapper trackerAnchorID;
+		public OVRScreenFade ovrScreenFade { get; private set; }
 
 		private OVRCameraRig rig;
 
-		public void Start()
+		public void Awake()
 		{
 			rig = GetComponent<OVRCameraRig>();
+			ovrScreenFade = rig.centerEyeAnchor.GetComponent<OVRScreenFade>();
+			if (ovrScreenFade != null)
+			{
+				ovrScreenFade.fadeOnStart = false;
+			}
+		}
+
+		public void Start()
+		{
+			if (ovrScreenFade != null)
+			{
+				ovrScreenFade.FadeIn();
+			}
 
 			Utils.AddTrackableToGameObject(gameObject, cameraID.value);
 
-			Utils.AddTrackableToGameObject(rig.trackingSpace.gameObject, trackingSpaceID.value);
-			Utils.AddTrackableToGameObject(rig.leftEyeAnchor.gameObject, leftEyeAnchorID.value);
-			Utils.AddTrackableToGameObject(rig.centerEyeAnchor.gameObject, centerEyeAnchorID.value);
-			Utils.AddTrackableToGameObject(rig.rightEyeAnchor.gameObject, rightEyeAnchorID.value);
-			Utils.AddTrackableToGameObject(rig.leftHandAnchor.gameObject, leftHandAnchorID.value);
-			Utils.AddTrackableToGameObject(rig.rightHandAnchor.gameObject, rightHandAnchorID.value);
-			Utils.AddTrackableToGameObject(rig.leftHandAnchorDetached.gameObject, leftHandAnchorDetachedID.value);
-			Utils.AddTrackableToGameObject(rig.rightHandAnchorDetached.gameObject, rightHandAnchorDetachedID.value);
+			Utils.AddTrackableToGameObject(rig.trackingSpace.gameObject, trackingSpaceID.value, true);
+			Utils.AddTrackableToGameObject(rig.leftEyeAnchor.gameObject, leftEyeAnchorID.value, true);
+			Utils.AddTrackableToGameObject(rig.centerEyeAnchor.gameObject, centerEyeAnchorID.value, true);
+			Utils.AddTrackableToGameObject(rig.rightEyeAnchor.gameObject, rightEyeAnchorID.value, true);
+			Utils.AddTrackableToGameObject(rig.leftHandAnchor.gameObject, leftHandAnchorID.value, true);
+			Utils.AddTrackableToGameObject(rig.rightHandAnchor.gameObject, rightHandAnchorID.value, true);
+			Utils.AddTrackableToGameObject(rig.leftHandAnchorDetached.gameObject, leftHandAnchorDetachedID.value, true);
+			Utils.AddTrackableToGameObject(rig.rightHandAnchorDetached.gameObject, rightHandAnchorDetachedID.value,
+				true);
 			Utils.AddTrackableToGameObject(rig.leftControllerInHandAnchor.gameObject,
-				leftControllerInHandAnchorID.value);
+				leftControllerInHandAnchorID.value, true);
 			Utils.AddTrackableToGameObject(rig.leftHandOnControllerAnchor.gameObject,
-				leftHandOnControllerAnchorID.value);
+				leftHandOnControllerAnchorID.value, true);
 			Utils.AddTrackableToGameObject(rig.rightControllerInHandAnchor.gameObject,
-				rightControllerInHandAnchorID.value);
+				rightControllerInHandAnchorID.value, true);
 			Utils.AddTrackableToGameObject(rig.rightHandOnControllerAnchor.gameObject,
-				rightHandOnControllerAnchorID.value);
-			Utils.AddTrackableToGameObject(rig.leftControllerAnchor.gameObject, leftControllerAnchorID.value);
-			Utils.AddTrackableToGameObject(rig.rightControllerAnchor.gameObject, rightControllerAnchorID.value);
-			Utils.AddTrackableToGameObject(rig.trackerAnchor.gameObject, trackerAnchorID.value);
+				rightHandOnControllerAnchorID.value, true);
+			Utils.AddTrackableToGameObject(rig.leftControllerAnchor.gameObject, leftControllerAnchorID.value, true);
+			Utils.AddTrackableToGameObject(rig.rightControllerAnchor.gameObject, rightControllerAnchorID.value, true);
+			Utils.AddTrackableToGameObject(rig.trackerAnchor.gameObject, trackerAnchorID.value, true);
 		}
 	}
 }
