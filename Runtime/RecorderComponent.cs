@@ -15,7 +15,7 @@ namespace EventHorizon
 		public FrameRate frameRate = new(60);
 		private ulong elapsedFrames;
 
-		private float elapsedTime;
+		private double elapsedTime;
 		private Stream fileStream;
 		private ITrackableManager manager;
 
@@ -44,20 +44,21 @@ namespace EventHorizon
 		private void Update()
 		{
 			elapsedTime += Time.deltaTime;
-			if (!(elapsedTime >= frameRate.GetFrameDuration()))
+			var frameDuration = frameRate.GetFrameDuration();
+
+			while (elapsedTime >= frameDuration)
 			{
-				return;
+				var framePacket = new FramePacket
+				{
+					frame = elapsedFrames,
+					elapsedTime = frameDuration * elapsedFrames
+				};
+				writer.WritePacket(framePacket);
+				GetTrackablePackets(elapsedFrames);
+
+				elapsedFrames++;
+				elapsedTime -= frameDuration;
 			}
-
-			var framePacket = new FramePacket
-			{
-				frame = elapsedFrames, elapsedTime = frameRate.GetFrameDuration() * elapsedFrames
-			};
-			writer.WritePacket(framePacket);
-			GetTrackablePackets(elapsedFrames);
-
-			elapsedFrames++;
-			elapsedTime = 0;
 		}
 
 		private void OnApplicationQuit()
