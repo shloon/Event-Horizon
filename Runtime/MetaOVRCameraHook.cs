@@ -27,10 +27,7 @@ namespace EventHorizon.MetaXR
 
 		private OVRCameraRig rig;
 
-		public void Awake()
-		{
-			rig = GetComponent<OVRCameraRig>();
-		}
+		public void Awake() => rig = GetComponent<OVRCameraRig>();
 
 		public void Start()
 		{
@@ -56,7 +53,7 @@ namespace EventHorizon.MetaXR
 			Utils.AddTransformTrackable(rig.leftControllerAnchor.gameObject, leftControllerAnchorID.value, true);
 			Utils.AddTransformTrackable(rig.rightControllerAnchor.gameObject, rightControllerAnchorID.value, true);
 			Utils.AddTransformTrackable(rig.trackerAnchor.gameObject, trackerAnchorID.value, true);
-			
+
 			// find recorder
 			var recorder = FindObjectOfType<RecorderComponent>();
 			if (recorder != null && recorder.isActiveAndEnabled)
