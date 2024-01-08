@@ -66,14 +66,15 @@ namespace EventHorizon
 		private void OnApplicationQuit()
 		{
 #if UNITY_EDITOR
-			var progress = Progress.Start("Finishing up recording", options: Progress.Options.Indefinite);
+			// TODO: maybe include actual progress
+			EditorUtility.DisplayProgressBar("Event Horizon", "Writing the recording to disk...", 0.1f);
 #endif
 
 			writer?.Close();
 			fileStream?.Close();
 
 #if UNITY_EDITOR
-			Progress.Remove(progress);
+			EditorUtility.ClearProgressBar();
 #endif
 		}
 
