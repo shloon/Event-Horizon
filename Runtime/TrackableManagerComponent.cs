@@ -106,7 +106,7 @@ namespace EventHorizon
 			// detect if we're just about to play
 			// see https://gist.github.com/JakubNei/74bb5eba12a91a7d5f6334e7af365b11
 			if ((!EditorApplication.isPlayingOrWillChangePlaymode && Time.frameCount == 0) ||
-				Time.renderedFrameCount == 0)
+			    Time.renderedFrameCount == 0)
 			{
 				return;
 			}

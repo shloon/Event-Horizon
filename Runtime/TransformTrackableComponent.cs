@@ -10,9 +10,9 @@ namespace EventHorizon
 	public sealed class TransformTrackableComponent : BaseTrackableComponent<TransformPacket>
 	{
 		public bool isLocal;
+		public Vector3 translationMultiply = new(1, 1, 1);
+		public Vector3 rotationMultiply = new(1, 1, 1);
 		private Transform selfTransform;
-		public Vector3 translationMultiply = new Vector3(1, 1, 1);
-		public Vector3 rotationMultiply = new Vector3(1, 1, 1);
 
 		public void Start() => selfTransform = transform;
 

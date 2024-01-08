@@ -55,8 +55,7 @@ namespace EventHorizon
 			{
 				var framePacket = new FramePacket
 				{
-					frame = elapsedFrames,
-					elapsedTime = frameDuration * elapsedFrames
+					frame = elapsedFrames, elapsedTime = frameDuration * elapsedFrames
 				};
 				writer.WritePacket(framePacket);
 				GetTrackablePackets(elapsedFrames);
