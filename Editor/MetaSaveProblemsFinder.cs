@@ -38,8 +38,9 @@ namespace EventHorizon.MetaXR.Editor
 
 					if (trackableID is null)
 					{
-						problems.Add(new NullBoneIDProblem
+						problems.Add(new NullPartIDProblem
 						{
+							component = component,
 							gameObject = component.gameObject,
 							fieldInfo = fieldInfo,
 							boneName = fieldName,
@@ -48,8 +49,9 @@ namespace EventHorizon.MetaXR.Editor
 					}
 					else if (!trackableID.value.IsValid)
 					{
-						problems.Add(new InvalidBoneTrackableIDProblem
+						problems.Add(new InvalidPartTrackableIDProblem
 						{
+							component = component,
 							gameObject = component.gameObject,
 							trackableID = trackableID,
 							boneName = fieldName,
@@ -61,6 +63,7 @@ namespace EventHorizon.MetaXR.Editor
 					{
 						problems.Add(new BoneTrackableIDInUseProblem
 						{
+							component = component,
 							gameObject = component.gameObject,
 							trackableID = trackableID,
 							boneName = fieldName,

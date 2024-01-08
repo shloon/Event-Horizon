@@ -16,8 +16,9 @@ namespace EventHorizon.MetaXR.Editor
 		public string Name { get; }
 	}
 
-	public struct NullBoneIDProblem : IProblem
+	public struct NullPartIDProblem : IProblem
 	{
+		public Component component;
 		public GameObject gameObject;
 		public FieldInfo fieldInfo;
 		public string boneName; // Name of the bone or part
@@ -29,13 +30,14 @@ namespace EventHorizon.MetaXR.Editor
 		public void Fix()
 		{
 			var newId = trackableManager.GenerateId();
-			fieldInfo.SetValue(gameObject, trackableManager.GenerateId());
+			fieldInfo.SetValue(component, new TrackableIDWrapper(trackableManager.GenerateId()));
 			trackableManager.Register(new TemporaryTrackable(newId, $"{gameObject.name} ({boneName})"));
 		}
 	}
 
-	public struct InvalidBoneTrackableIDProblem : IProblem
+	public struct InvalidPartTrackableIDProblem : IProblem
 	{
+		public Component component;
 		public GameObject gameObject;
 		public TrackableIDWrapper trackableID;
 		public string boneName; // Name of the bone or part
@@ -53,6 +55,7 @@ namespace EventHorizon.MetaXR.Editor
 
 	public struct BoneTrackableIDInUseProblem : IProblem
 	{
+		public Component component;
 		public GameObject gameObject;
 		public TrackableIDWrapper trackableID;
 		public string boneName; // Name of the bone or part
