@@ -171,6 +171,8 @@ namespace EventHorizon
 					director.SetGenericBinding(activationTrack, trackableComponent.gameObject);
 					boundGameObjects.Add(trackableComponent.gameObject);
 				}
+				
+				trackableComponent.gameObject.SetActive(false);
 			}
 		}
 
