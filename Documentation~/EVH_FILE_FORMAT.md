@@ -1,211 +1,210 @@
 # EVH file format
-
-Event Horizon recordings are stored in the EVH file format. These are JSON files compressed using Brotli with maximum compression settings, offering a balance of accessibility and efficiency. This document aims to demystify the file format in it's current version.
+Event Horizon recordings are stored in the EVH file format, a packet-based file format. These are JSON Lines files compressed using Brotli with maximum compression settings, offering a balance of accessibility and efficiency. This document aims to demystify the file format in it's current version.
 
 ## Why JSON & Brotli?
+JSON (JavaScript Object Notation) was chosen for its adaptability and extensive support in a multitude of applications and programming languages. Its human-readable structure is a key advantage, simplifying the process of understanding the data. This aspect is crucial in research environments, where there is a frequent need to manually examine and integrate data from diverse sources and formats. To simplify the serialization and the processing of the data, we utilize the json lines format, which stores one json object per line.
 
-JSON (JavaScript Object Notation) was chosen for its adaptability and extensive support in a multitude of applications and programming languages. Its human-readable structure is a key advantage, simplifying the process of understanding the data. This aspect is crucial in research environments, where there is a frequent need to manually examine and integrate data from diverse sources and formats.
+In preliminary tests, we have seen that serializing movement data in plain-text JSON can result in very large files. Taking advantage of the repetitiveness of the plain-text data representation of the serialized data and the packet structure, we were able to minimize the file sizes while retaining familiar formats for researchers. We chose Brotli, a widely used codec on the modern web, as it offers better compression as compared to gzip with minimal impact on decompression.
 
-In preliminary tests, we have seen that serializing movement data in plain-text JSON can result in very large files. Taking advantage of the repetitiveness of the plain-text data representation of the serialized data, we were able to minimize the file sizes while retaining familiar formats for researchers. We chose Brotli, a widely used codec on the modern web, as it offers better compression as compared to gzip with minimal impact on decompression.
+## Overview of the Packet-Based Approach
+The packet-based format represents a fundamental change, focusing on structuring the data into discrete packets. Each packet is prefaced with a header that identifies its type, making it straightforward to parse and process. This method significantly enhances the ability to manage multiple objects and diverse data types within a single file, while also not hampering further extendibility in the future.
 
-## File Structure
-The EVH file format utilizes a JSON-based structure to encapsulate event recording data.
-To facilitate understanding and utilization of this format, and to offer automated understanding of the file format,
-a JSON schema detailing the structure of the currently adopted recording version is available at
-`Documentation~\misc\evh-v1.schema.json` relative to the package root directory.
-
-The following sections offer a detailed breakdown of the format's current (V1) iteration.
-
-### Root Object
-- `version` (Number): Indicates the version of the file format. Currently, the only valid value is `0`, corresponding to `RecordingFormatVersion::V1`.
+The format employs a variety of packet types, representing different data regarding an object. Each packet begins with a header, specifying the type of the packet and making it easy to identify and process the packet appropriately. This is one such packet:
 ```json
-{
-  "version": 0,
-  "metadata": {...},
-  "frames": [...]
-}
+{"type": 2}
+{"frame": 0, "elapsedTime": 0.0}
 ```
+In this packet he first line is the header indicating the packet type (2, or `FramePacket`), followed by the packet's data.
 
-### `RecordingMetadata` Object
-This object provides contextual information about the recording:
-- `sceneName` (String): The name of the scene being recorded.-
-- `fps` (FrameRate Object): The frame rate at which the recording was made, represented as a ratio (numerator/denominator).
+**Important Note:** packets will always be written in the order in which they were emitted.
 
-```json
-"metadata": {
-  "sceneName": "ExampleScene",
-  "fps": {
-    "numerator": 30,
-    "denominator": 1
-  }
-}
-```
+## Processing the Packet data
+### C# API Example
 
-### `FrameRate` Object
-Defines the frame rate as an integer ratio.
-
-- `numerator` (Integer): The numerator of the frame rate ratio.
-- `denominator` (Integer): The denominator of the frame rate ratio.
-
-
-```json
-"fps": {
-  "numerator": 30,
-  "denominator": 1
-}
-```
-
-### `RecordingFrameData` Array
-
-Each element in this array represents data for a single frame:
-
-- `frame` (Integer): The frame number.
-- `timeCode` (Number): The time code of the frame.
-- `trackers` (Array): An array of RecordingTrackerData objects, representing tracking data for various objects.
-
-```json
-"frames": [
-  {
-    "frame": 1,
-    "timeCode": 0.033,
-    "trackers": [...]
-  },
-  ...
-]
-```
-### `RecordingTrackerData` Object
-
-Contains tracking data for a single object:
-
-- `id` (TrackableID Object): A unique identifier for the tracked object.
-- `transform` (TransformData Object): The transform data for the object.
-
-```json
-"trackers": [
-  {
-    "id": {"internal": 123},
-    "transform": {...}
-  },
-  ...
-]
-```
-
-### `TrackableID` Object
-
-Represents a unique identifier for a trackable object:
-
-- `internal` (Integer): An internal identifier. Required due to the use of the Unity serializer.
-
-```json
-"id": {
-  "internal": 123
-}
-```
-
-### TransformData Object
-
-Describes the position, rotation, and scale of an object:
-
-- `position` (Vector3 Object): The position of the object in 3D space.
-- `rotation` (Quaternion Object): The rotation of the object.
-- `scale` (Vector3 Object): The scale of the object.
-
-```json
-"transform": {
-  "position": {"x": 1.0, "y": 2.0, "z": 3.0},
-  "rotation": {"x": 0.0, "y": 0.0, "z": 0.0, "w": 1.0},
-  "scale": {"x": 1.0, "y": 1.0, "z": 1.0}
-}
-```
-
-### `Vector3` and `Quaternion` Objects
-
-Represent 3D vectors and rotations:
-- `Vector3` includes x, y, and z fields (Numbers) representing the coordinates.
-- `Quaternion` includes x, y, z, and w fields (Numbers) representing the quaternion rotation.
-
-```json
-"position": {"x": 1.0, "y": 2.0, "z": 3.0},
-"rotation": {"x": 0.0, "y": 0.7071, "z": 0.0, "w": 0.7071},
-```
-
-## Working with the file format
-This section provides guidance on how to work with the EVH file format effectively, offering insights into various methods and tools available for interacting with this data format.
-
-### Using the C# API
-For those operating within the Unity framework, the Event Horizon assembly provides a straightforward API to interact with the EVH file format. To use this API, include the `EventHorizon` namespace in your C# script as follows:
+For C# users, the packet-based format can be handled as follows:
 
 ```csharp
 using EventHorizon;
 
 class Program {
   void Main() {
-    // Load the EVH recording using the provided utility function
-    RecordingData recording = RecordingDataUtilities.Load("path/to/recording.evh");
+    // Load the EVH recording and parse packets
+    using var fs = File.Open(ctxAssetPath, FileMode.Open);
+    using var reader = new FormatReader(fs);
 
-    // Proceed with processing the loaded recording data
-    // ...
-  }
+    var metadataPacket = reader.ReadPacket<MetadataPacket>();
+    while (!reader.IsEndOfFile)
+    {
+      switch (reader.ReadPacket())
+      {
+        case TransformPacket transformPacket:
+           // Process transform packet
+          break;
+        case ActivationPacket activationPacket:
+          // Process activation packet
+          break;
+        // Additional cases for other packet types
+      }
+    }
+	}
 }
 ```
 
-This approach enables seamless integration and manipulation of recording data within Unity projects. However, usage outside the Unity environment is currently not verified and may not be supported. This is primarily due to the reliance on Unity's JsonUtility API for implementation. While the data classes are standard .NET code, they utilize the SerializeField attribute, which is specific to Unity. For non-Unity contexts, this attribute might require replacement with an alternative or a custom implementation to ensure compatibility.
+This approach enables seamless integration and manipulation of recording data within Unity projects. However, usage outside the Unity environment is currently not verified and may not be supported. This is primarily due to the reliance on Unity's `JsonUtility` API for implementing serializing/deserializing and the `SerializeField` attribute. While the data classes are standard .NET code, they utilize the `SerializeField` attribute, which is specific to Unity. For non-Unity contexts, this attribute might require replacement with an alternative or a custom implementation to ensure compatibility.
 
-### Python
+### Python example
 
-Since EVH files encapsulate JSON data compressed with Brotli, the following example code illustrates a straightforward and minimal method to decompress and read EVH files:
+Since EVH files encapsulate JSON Lines data compressed with Brotli, the following example code illustrates a straightforward and minimal method to decompress and read EVH files:
 
 ```python
-
-import brotli # pip install brotli
+import brotli  # pip install brotli
 import json
 
 with open("path/to/recording_file.evh", "br") as file:
-    print(json.loads(brotli.decompress(file.read())))
+    decompressed = brotli.decompress(file.read()).decode('utf-8')
+
+    # Split the decompressed data into lines
+    lines = decompressed.splitlines()
+
+    # Iterate through the lines in pairs (header, packet)
+    for i in range(0, len(lines), 2):
+        header_line = lines[i]
+        packet_line = lines[i + 1]
+
+        # Parse and print each header and packet
+        if header_line and packet_line:  # Check if lines are not empty
+            header = json.loads(header_line)
+            packet = json.loads(packet_line)
+            print(header)
+            print(packet)
 ```
-
-To make integration easier for researchers, we wrote a small python package, `event_horizon_py`, that massages the data to better match the needs of data researchers.
-Below is an example for using `event_horizon_py` to get the total distances for each tracker (using pandas):
-
-```python
-import event_horizon_py as evh
-import os
-import pandas as pd
-import numpy as np
-
-def calculate_distance(pos1, pos2):
-    return np.sqrt(
-        (pos2[0] - pos1[0]) ** 2 + (pos2[1] - pos1[1]) ** 2 + (pos2[2] - pos1[2]) ** 2
-    )
-
-
-def total_distances(recording: evh.Recording) -> pd.Series:
-    temp_df = recording.create_tracker_pandas_view().copy()
-    temp_df[['X', 'Y', 'Z']] = pd.DataFrame(temp_df['Position'].tolist(), index=temp_df.index)
-
-    # Sort by TrackerID and Frame
-    temp_df.sort_values(by=['TrackerID', 'Frame'], inplace=True)
-
-    # Calculate the positional differences
-    temp_df[['Next_X', 'Next_Y', 'Next_Z']] = temp_df.groupby('TrackerID')[['X', 'Y', 'Z']].shift(-1)
-    temp_df.dropna(subset=['Next_X', 'Next_Y', 'Next_Z'], inplace=True)
-
-    # Calculate distance moved in each frame
-    temp_df['Distance'] = temp_df.apply(lambda row: calculate_distance((row['X'], row['Y'], row['Z']), (row['Next_X'], row['Next_Y'], row['Next_Z'])), axis=1)
-
-    # Calculate total distance for each tracker
-    total_distances = temp_df.groupby('TrackerID')['Distance'].sum()
-
-    return total_distances
-
-
-data = evh.Recording.from_file("path/to/recording_file.evh")
-avg_speeds = total_distances(data)
-print(avg_speeds)
-```
-
-For more information about `event_horizon_py`, visit [its dedicated repository page](https://github.com/shloon/Event-Horizon-Py).
 
 ### Other languages
+Assuming you have a brotli decompressor and a json parser, you can use the provided information to parse (or discard) the packets, at your discretion.
 
-Assuming you have a brotli decompressor, you can use the provided JSON schema to generate code for parsing the EVH file format.
+## Detailed overview of packet types
+
+### Metadata Packet
+
+Contains essential metadata about the recording.
+
+- `version`: Recording format version.
+- `sceneName`: Name of the scene being recorded.
+- `fps`: Frame rate at which the recording was made.
+- `timestamp`: The date and time when the recording was made.
+
+**Example:**
+```json
+{"type": 1}
+{
+    "version": 2,
+    "sceneName": "ExampleScene",
+    "fps":
+    {
+        "numerator": 30,
+        "denominator": 1
+    },
+    "timestamp": "2024-01-08T12:00:00Z"
+}
+```
+
+### VR Metadata Packet
+
+Contains metadata specific to Virtual Reality environments. This might be extended in the future.
+
+- `headsetType`: Type of VR headset used.
+- `interactionProfile`: Interaction profile for the VR setup.
+
+**Example (expanded for readability):**
+```json
+{"type": 5}
+{
+    "headsetType": "Model X",
+    "interactionProfile": "Profile Y"
+}
+```
+
+### Frame Packet
+
+Marker packet for the start of a new frame. Currently has no use internally, and is meant for users.
+
+- `frame`: Frame number.
+- `elapsedTime`: Time elapsed since the beginning of the recording.
+
+**Example (expanded for readability):**
+```json
+{"type": 2}
+{
+    "frame": 123,
+    "elapsedTime": 1.033
+}
+```
+
+### Transform Packet
+
+Describes the transformation (position, rotation, scale) of an object at a specific frame.
+
+- `frame`: Frame number.
+- `id`: Unique identifier for the object.
+- `isLocal`: Boolean indicating if the transformation is local.
+- `translation`: Object's position in 3D space.
+- `rotation`: Object's rotation represented as a quaternion.
+- `scale`: Object's scale in 3D space.
+
+**Example (expanded for readability):**
+```json
+{"type": 3}
+{
+    "frame": 123,
+    "id": 1,
+    "isLocal": true,
+    "translation": {
+        "x": 1.0,
+        "y": 2.0,
+        "z": 3.0
+    },
+    "rotation": {
+        "x": 0.0,
+        "y": 0.7071,
+        "z": 0.0,
+        "w": 0.7071
+    },
+    "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+```
+
+### Generic Data Packet
+
+For storing arbitrary data related to a specific frame.
+
+- `frame`: Frame number.
+- `data`: A string containing the generic data.
+
+**Example (expanded for readability):**
+```json
+{"type": 4}
+{
+    "frame": 123,
+    "data": "Custom data here"
+}
+```
+
+### Activation Packet
+
+Used to mark the activation of certain game objects. Given ActivationTrackable, when this packet will appear, the game object with the given trackable will be enabled, and otherwise it would be disabled.
+
+- `frame`: Frame number at which the activation occurs.
+- `id`: Identifier for the activation event.
+
+**Example (expanded for readability):**
+```json
+{"type": 6}
+{
+    "frame": 123,
+    "id": 2
+}
+```
