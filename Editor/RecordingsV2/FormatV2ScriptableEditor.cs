@@ -11,7 +11,7 @@ namespace EventHorizon.Editor.RecordingsV2
 	{
 		public override VisualElement CreateInspectorGUI()
 		{
-			var scriptable = (FormatV2Scriptable) target;
+			var scriptable = (FormatV2Scriptable)target;
 			var container = new VisualElement();
 
 			var playButton = new Button { text = "Start Playback" };
@@ -25,14 +25,18 @@ namespace EventHorizon.Editor.RecordingsV2
 
 			var sceneNameField = new TextField
 			{
-				label = "Scene Name", isReadOnly = true, value = scriptable.metadataPacket.sceneName
+				label = "Scene Name",
+				isReadOnly = true,
+				value = scriptable.metadataPacket.sceneName
 			};
 			sceneNameField.AddToClassList("unity-base-field__aligned");
 			container.Add(sceneNameField);
 
 			var fpsField = new TextField
 			{
-				label = "Frame Rate", isReadOnly = true, value = scriptable.metadataPacket.fps.ToString()
+				label = "Frame Rate",
+				isReadOnly = true,
+				value = scriptable.metadataPacket.fps.ToString()
 			};
 			fpsField.AddToClassList("unity-base-field__aligned");
 			container.Add(fpsField);
@@ -48,30 +52,30 @@ namespace EventHorizon.Editor.RecordingsV2
 
 			var framesLengthField = new IntegerField
 			{
-				label = "Number of Frames", value = scriptable.framePackets.Count, isReadOnly = true
+				label = "Number of Frames",
+				value = scriptable.framePackets.Count,
+				isReadOnly = true
 			};
 			framesLengthField.AddToClassList("unity-base-field__aligned");
 			container.Add(framesLengthField);
 
-			#endregion
+			var headsetNameField = new TextField
+			{
+				label = "Headset Name",
+				value = string.IsNullOrEmpty(scriptable.vrMetadataPacket.headsetType) ? "None" : scriptable.vrMetadataPacket.headsetType,
+				isReadOnly = true
+			};
+			headsetNameField.AddToClassList("unity-base-field__aligned");
+			container.Add(headsetNameField);
 
-
-			#region Raw Data
-
-			var rawDataHeader = UIHelpers.CreateHeader("Raw Data");
-			container.Add(rawDataHeader);
-
-			var framePacketsField = new PropertyField(serializedObject.FindProperty("framePackets"));
-			container.Add(framePacketsField);
-
-			var genericDataPacketField = new PropertyField(serializedObject.FindProperty("genericDataPackets"));
-			container.Add(genericDataPacketField);
-
-			var transformPacketsField = new PropertyField(serializedObject.FindProperty("transformPackets"));
-			container.Add(transformPacketsField);
-
-			var activationPacketsField = new PropertyField(serializedObject.FindProperty("activationPackets"));
-			container.Add(activationPacketsField);
+			var interactionProfileField = new TextField
+			{
+				label = "Interaction Profile",
+				value = string.IsNullOrEmpty(scriptable.vrMetadataPacket.interactionProfile) ? "None" : scriptable.vrMetadataPacket.headsetType,
+				isReadOnly = true
+			};
+			interactionProfileField.AddToClassList("unity-base-field__aligned");
+			container.Add(interactionProfileField);
 
 			#endregion
 

@@ -3,6 +3,9 @@ using System;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace EventHorizon
 {
@@ -50,8 +53,7 @@ namespace EventHorizon
 			{
 				var framePacket = new FramePacket
 				{
-					frame = elapsedFrames,
-					elapsedTime = frameDuration * elapsedFrames
+					frame = elapsedFrames, elapsedTime = frameDuration * elapsedFrames
 				};
 				writer.WritePacket(framePacket);
 				GetTrackablePackets(elapsedFrames);
@@ -63,9 +65,19 @@ namespace EventHorizon
 
 		private void OnApplicationQuit()
 		{
+#if UNITY_EDITOR
+			var progress = Progress.Start("Finishing up recording", options: Progress.Options.Indefinite);
+#endif
+
 			writer?.Close();
 			fileStream?.Close();
+
+#if UNITY_EDITOR
+			Progress.Remove(progress);
+#endif
 		}
+
+		public void WriteCustomPacket<T>(in T packet) where T : IPacket => writer.WritePacket(packet);
 
 		private void GetTrackablePackets(ulong frame)
 		{
