@@ -55,7 +55,8 @@ namespace EventHorizon
 			{
 				var framePacket = new FramePacket
 				{
-					frame = elapsedFrames, elapsedTime = frameDuration * elapsedFrames
+					frame = elapsedFrames,
+					elapsedTime = frameDuration * elapsedFrames
 				};
 				writer.WritePacket(framePacket);
 				GetTrackablePackets(elapsedFrames);
@@ -82,7 +83,7 @@ namespace EventHorizon
 
 		public string ResolveOutputFileName(string fileName, string sceneName, DateTime timestamp) => fileName
 			.Replace("{scene}", sceneName).Replace("{timestamp}",
-				timestamp.ToString("YYYY-MM-DD HHmmss", CultureInfo.InvariantCulture));
+				timestamp.ToString("yyyy-mm-dd--HH-MM-ss", CultureInfo.InvariantCulture));
 
 		public void WriteCustomPacket<T>(in T packet) where T : IPacket => writer.WritePacket(packet);
 
