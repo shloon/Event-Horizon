@@ -15,3 +15,4 @@ Below are the currently known limitations of Event Horizon.
 - Currently only Oculus Quest 2 Controllers and hand tracking are tested and fully supported. Other controllers may work
 - Only supports platform native controller, meaning e.g. no support for Pro controllers on Quest 2.
 - No support for custom hand prefabs
+- Currently does not support interactions
