@@ -1,4 +1,4 @@
-﻿using System;
+﻿using EventHorizon.FormatV2;
 using UnityEngine;
 
 namespace EventHorizon.MetaXR
@@ -24,27 +24,16 @@ namespace EventHorizon.MetaXR
 		public TrackableIDWrapper leftControllerAnchorID;
 		public TrackableIDWrapper rightControllerAnchorID;
 		public TrackableIDWrapper trackerAnchorID;
-		public OVRScreenFade ovrScreenFade { get; private set; }
 
 		private OVRCameraRig rig;
 
 		public void Awake()
 		{
 			rig = GetComponent<OVRCameraRig>();
-			ovrScreenFade = rig.centerEyeAnchor.GetComponent<OVRScreenFade>();
-			if (ovrScreenFade != null)
-			{
-				ovrScreenFade.fadeOnStart = false;
-			}
 		}
 
 		public void Start()
 		{
-			if (ovrScreenFade != null)
-			{
-				ovrScreenFade.FadeIn();
-			}
-
 			Utils.AddTrackableToGameObject(gameObject, cameraID.value);
 
 			Utils.AddTrackableToGameObject(rig.trackingSpace.gameObject, trackingSpaceID.value, true);
@@ -67,6 +56,17 @@ namespace EventHorizon.MetaXR
 			Utils.AddTrackableToGameObject(rig.leftControllerAnchor.gameObject, leftControllerAnchorID.value, true);
 			Utils.AddTrackableToGameObject(rig.rightControllerAnchor.gameObject, rightControllerAnchorID.value, true);
 			Utils.AddTrackableToGameObject(rig.trackerAnchor.gameObject, trackerAnchorID.value, true);
+			
+			// find recorder
+			var recorder = FindObjectOfType<RecorderComponent>();
+			if (recorder != null && recorder.isActiveAndEnabled)
+			{
+				recorder.WriteCustomPacket(new VRMetadataPacket
+				{
+					headsetType = OVRManager.systemHeadsetType.ToString(),
+					interactionProfile = OVRPlugin.GetCurrentInteractionProfile(OVRPlugin.Hand.HandLeft).ToString()
+				});
+			}
 		}
 	}
 }

@@ -92,5 +92,19 @@ namespace EventHorizon.Tests
 			Assert.AreEqual(PacketType.Activation, deserializedPacket.Type);
 			Assert.AreEqual(activationPacket, (ActivationPacket) deserializedPacket);
 		}
+
+		[Test]
+		public void VRMetadataPacket_RoundTrip()
+		{
+			var vrMetadataPacket = new VRMetadataPacket { headsetType = "Unknown", interactionProfile = "Unknown" };
+
+			var serializedPacket = PacketUtils.SerializePacket(vrMetadataPacket);
+			var deserializedPacket = PacketUtils.DeserializePacket(serializedPacket.header, serializedPacket.contents);
+
+			Debug.Log(serializedPacket.contents);
+
+			Assert.AreEqual(PacketType.VRMetadata, deserializedPacket.Type);
+			Assert.AreEqual(vrMetadataPacket, (VRMetadataPacket) deserializedPacket);
+		}
 	}
 }

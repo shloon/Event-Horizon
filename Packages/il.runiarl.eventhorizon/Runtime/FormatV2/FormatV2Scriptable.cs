@@ -1,5 +1,6 @@
 ﻿using EventHorizon.FormatV2;
 using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace EventHorizon.Editor.RecordingsV2
 	public class FormatV2Scriptable : ScriptableObject
 	{
 		public MetadataPacket metadataPacket;
+		public VRMetadataPacket vrMetadataPacket;
 
 		public List<FramePacket> framePackets = new();
 		public List<GenericDataPacket> genericDataPackets = new();

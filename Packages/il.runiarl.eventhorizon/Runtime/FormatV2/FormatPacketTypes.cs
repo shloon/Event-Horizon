@@ -11,6 +11,7 @@ namespace EventHorizon.FormatV2
 		Frame,
 		Transform,
 		Generic,
+		VRMetadata,
 		Activation
 	}
 
@@ -50,6 +51,14 @@ namespace EventHorizon.FormatV2
 		public string timestamp;
 
 		public PacketType Type => PacketType.Metadata;
+	}
+
+	[Serializable]
+	public struct VRMetadataPacket : IPacket
+	{
+		public string headsetType;
+		public string interactionProfile;
+		public PacketType Type => PacketType.VRMetadata;
 	}
 
 	[Serializable]
@@ -97,6 +106,7 @@ namespace EventHorizon.FormatV2
 				PacketType.Generic => JsonUtility.FromJson<GenericDataPacket>(contents),
 				PacketType.Frame => JsonUtility.FromJson<FramePacket>(contents),
 				PacketType.Activation => JsonUtility.FromJson<ActivationPacket>(contents),
+				PacketType.VRMetadata => JsonUtility.FromJson<VRMetadataPacket>(contents),
 				PacketType.Undefined => null,
 				_ => null
 			};

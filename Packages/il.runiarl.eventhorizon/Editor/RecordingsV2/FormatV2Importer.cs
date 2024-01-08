@@ -31,6 +31,9 @@ namespace EventHorizon.Editor.RecordingsV2
 						case GenericDataPacket genericDataPacket:
 							dataScriptable.genericDataPackets.Add(genericDataPacket);
 							break;
+						case VRMetadataPacket vrMetadataPacket:
+							dataScriptable.vrMetadataPacket = vrMetadataPacket;
+							break;
 						case FramePacket framePacket:
 							dataScriptable.framePackets.Add(framePacket);
 							break;
