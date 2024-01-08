@@ -85,9 +85,8 @@ namespace EventHorizon.MetaXR.Editor
 
 		public static void InspectionHook_MetaRuntimeControllerHook()
 		{
-			// TODO actually get this from somewhere
-			var currentHeadset = OVRPlugin.SystemHeadset.Meta_Link_Quest_Pro;
-			var interactionProfile = OVRPlugin.InteractionProfile.TouchPro;
+			var currentHeadset = Enum.Parse<OVRPlugin.SystemHeadset>(InspectionModeHook.FormatData.vrMetadataPacket.headsetType);
+			var interactionProfile = Enum.Parse<OVRPlugin.InteractionProfile>(InspectionModeHook.FormatData.vrMetadataPacket.interactionProfile);
 			var controllerType = GetControllerType(currentHeadset, interactionProfile);
 			var (leftController, rightController) = GetControllerMeshes(controllerType);
 

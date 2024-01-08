@@ -28,6 +28,8 @@ namespace EventHorizon.Editor
 				recorder.enabled = shouldRecord;
 			}
 		}
+		
+		public static FormatV2Scriptable FormatData { get; private set; }
 
 		private static void OnEnteredPlayMode()
 		{
@@ -39,6 +41,7 @@ namespace EventHorizon.Editor
 				Debug.LogError("No recording selected, aborting...");
 				return;
 			}
+			FormatData = serializedFormatV2;
 
 			var recorder = TrackableManagerComponent.Instance.GetComponent<RecorderComponent>();
 			if (recorder)
@@ -71,6 +74,7 @@ namespace EventHorizon.Editor
 		{
 			Debug.Log("Stopping EVH file playback mode...");
 			ToggleRecorder(true);
+			FormatData = null;
 		}
 
 		#region Playmode Toggle Logic
