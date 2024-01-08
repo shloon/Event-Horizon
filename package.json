@@ -1,0 +1,3 @@
+{
+  "workspaces": ["packages/il.runiarl.eventhorizon", "packages/il.runiarl.eventhorizon.metaxr"]
+}
