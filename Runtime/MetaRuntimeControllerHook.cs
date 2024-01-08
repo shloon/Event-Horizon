@@ -1,3 +1,4 @@
+using EventHorizon.FormatV2;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -20,6 +21,7 @@ namespace EventHorizon.MetaXR
 
 		// TODO: test this on controllers other than Quest 2 Touch Controllers
 		public TrackableIDWrapper controllerID;
+		public TrackableIDWrapper controllerActivationID;
 		public TrackableIDWrapper skeletonID;
 		public TrackableIDWrapper controllerButton0ID;
 		public TrackableIDWrapper controllerButton1ID;
@@ -66,6 +68,8 @@ namespace EventHorizon.MetaXR
 			}
 
 			Utils.AddTransformTrackable(gameObject, controllerID.value);
+			Utils.AddTrackable<ActivationTrackableComponent, ActivationPacket>(controllerGameObject,
+					controllerActivationID.value);
 			
 			var skeletonGO = GetComponentsInChildren<Transform>().FirstOrDefault(x => x.name.Contains("skeleton"));
 			if (skeletonGO != null)

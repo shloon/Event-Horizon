@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+﻿using EventHorizon.FormatV2;
+using UnityEngine;
 
 namespace EventHorizon.MetaXR
 {
 	public class MetaOVRInspectionModeController : MonoBehaviour
 	{
 		public TrackableIDWrapper controllerID = new();
+		public TrackableIDWrapper controllerActivationID = new();
 		public TrackableIDWrapper skeletonID = new();
 		public TrackableIDWrapper controllerButton0ID = new();
 		public TrackableIDWrapper controllerButton1ID = new();
@@ -16,6 +18,8 @@ namespace EventHorizon.MetaXR
 		private void OnEnable()
 		{
 			Utils.AddTransformTrackable(gameObject, controllerID.value);
+			var childPrefab = gameObject.transform.GetChild(0).gameObject;
+			Utils.AddTrackable<ActivationTrackableComponent, ActivationPacket>(childPrefab, controllerActivationID.value);
 
 			foreach (var childTransform in GetComponentsInChildren<Transform>())
 			{
