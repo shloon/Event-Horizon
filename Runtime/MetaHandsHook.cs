@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using EventHorizon.FormatV2;
+using UnityEngine;
 
 namespace EventHorizon.MetaXR
 {
@@ -8,6 +9,7 @@ namespace EventHorizon.MetaXR
 	public class MetaHandsHook : MonoBehaviour
 	{
 		public TrackableIDWrapper handID;
+		public TrackableIDWrapper handActivationID;
 
 		public TrackableIDWrapper wristRoot_BoneId;
 		public TrackableIDWrapper forearmStub_BoneId;
@@ -41,16 +43,26 @@ namespace EventHorizon.MetaXR
 			if (!initialized)
 			{
 				if (skeleton.IsInitialized)
+				{
 					AssignTrackablesToBones();
+				}
 			}
 		}
 
 		public void AssignTrackablesToBones()
 		{
-			void AddTrackableToBone(OVRSkeleton.BoneId boneId, TrackableIDWrapper boneID) =>
+			void AddTrackableToBone(OVRSkeleton.BoneId boneId, TrackableIDWrapper boneID)
+			{
 				Utils.AddTransformTrackable(skeleton.Bones[(int) boneId].Transform.gameObject, boneID.value);
+			}
 
 			Utils.AddTransformTrackable(gameObject, handID.value);
+
+			var geometryGO = gameObject.transform.GetChild(0).gameObject;
+			if (geometryGO != null)
+			{
+				Utils.AddTrackable<ActivationTrackableComponent, ActivationPacket>(geometryGO, handActivationID.value);
+			}
 
 			AddTrackableToBone(OVRSkeleton.BoneId.Hand_WristRoot, wristRoot_BoneId);
 			AddTrackableToBone(OVRSkeleton.BoneId.Hand_ForearmStub, forearmStub_BoneId);

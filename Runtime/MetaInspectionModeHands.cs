@@ -5,8 +5,9 @@ namespace EventHorizon.MetaXR
 	[RequireComponent(typeof(OVRHand))]
 	public class MetaInspectionModeHands : MonoBehaviour
 	{
-		[Header("Trackable IDs")]
-		public TrackableIDWrapper handID;
+		[Header("Trackable IDs")] public TrackableIDWrapper handID;
+
+		public TrackableIDWrapper handActivationID;
 		public TrackableIDWrapper wristRoot_BoneId;
 		public TrackableIDWrapper forearmStub_BoneId;
 		public TrackableIDWrapper thumb0_BoneId;
@@ -27,8 +28,8 @@ namespace EventHorizon.MetaXR
 		public TrackableIDWrapper pinky2_BoneId;
 		public TrackableIDWrapper pinky3_BoneId;
 
-		[Header("Bones")]
-		public Transform wristRootBone;
+		[Header("Bones")] public Transform wristRootBone;
+
 		public Transform forearmStubBone;
 		public Transform thumb0Bone;
 		public Transform thumb1Bone;
@@ -52,9 +53,13 @@ namespace EventHorizon.MetaXR
 
 		public void OnEnable()
 		{
-			if (initialized) return;
+			if (initialized)
+			{
+				return;
+			}
 
 			Utils.AddTransformTrackable(gameObject, handID.value);
+			Utils.AddActivationTrackable(gameObject, handActivationID.value);
 
 			Utils.AddTransformTrackable(wristRootBone.gameObject, wristRoot_BoneId.value);
 			Utils.AddTransformTrackable(forearmStubBone.gameObject, forearmStub_BoneId.value);
