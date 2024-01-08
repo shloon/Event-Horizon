@@ -180,10 +180,10 @@ namespace EventHorizon.MetaXR.Editor
 		public static void InspectionHook_MetaHandsHook()
 		{
 			var leftHandPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(
-				"Packages/com.meta.xr.sdk.core/Prefabs/OVRCustomHandPrefab_R.prefab");
+				"Packages/il.runiarl.eventhorizon.metaxr/Prefabs/MetaHand_L.prefab");
 			var rightHandPrefab =
 				AssetDatabase.LoadAssetAtPath<GameObject>(
-					"Packages/com.meta.xr.sdk.core/Prefabs/OVRCustomHandPrefab_R.prefab");
+					"Packages/il.runiarl.eventhorizon.metaxr/Prefabs/MetaHand_R.prefab");
 
 			foreach (var handsHook in Object.FindObjectsOfType<MetaHandsHook>())
 			{
@@ -208,11 +208,35 @@ namespace EventHorizon.MetaXR.Editor
 				{
 					continue;
 				}
+				
+				// disable old hands hook to un-register the associated IDs
+				handsHook.enabled = false;
 
-				// enable hand prefab
-				newGO.SetActive(false);
-				UnityComponentHelpers.CopyComponent(handsHook, newGO);
-				newGO.SetActive(true);
+				// enable hand prefab. no need to disable the game object since the component is initially disabled
+				var inspectionModeHand = newGO.GetComponent<MetaInspectionModeHands>();
+				inspectionModeHand.handID = handsHook.handID;
+				inspectionModeHand.wristRoot_BoneId = handsHook.wristRoot_BoneId;
+				inspectionModeHand.forearmStub_BoneId = handsHook.forearmStub_BoneId;
+				inspectionModeHand.thumb0_BoneId = handsHook.thumb0_BoneId;
+				inspectionModeHand.thumb1_BoneId = handsHook.thumb1_BoneId;
+				inspectionModeHand.thumb2_BoneId = handsHook.thumb2_BoneId;
+				inspectionModeHand.thumb3_BoneId = handsHook.thumb3_BoneId;
+				inspectionModeHand.index1_BoneId = handsHook.index1_BoneId;
+				inspectionModeHand.index2_BoneId = handsHook.index2_BoneId;
+				inspectionModeHand.index3_BoneId = handsHook.index3_BoneId;
+				inspectionModeHand.middle1_BoneId = handsHook.middle1_BoneId;
+				inspectionModeHand.middle2_BoneId = handsHook.middle2_BoneId;
+				inspectionModeHand.middle3_BoneId = handsHook.middle3_BoneId;
+				inspectionModeHand.ring1_BoneId = handsHook.ring1_BoneId;
+				inspectionModeHand.ring2_BoneId = handsHook.ring2_BoneId;
+				inspectionModeHand.ring3_BoneId = handsHook.ring3_BoneId;
+				inspectionModeHand.pinky0_BoneId = handsHook.pinky0_BoneId;
+				inspectionModeHand.pinky1_BoneId = handsHook.pinky1_BoneId;
+				inspectionModeHand.pinky2_BoneId = handsHook.pinky2_BoneId;
+				inspectionModeHand.pinky3_BoneId = handsHook.pinky3_BoneId;
+				inspectionModeHand.enabled = true;
+				
+				// delete old hand prefab
 				Object.DestroyImmediate(handsHook.gameObject);
 			}
 		}
