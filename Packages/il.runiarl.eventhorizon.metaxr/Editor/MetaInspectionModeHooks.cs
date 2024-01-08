@@ -226,6 +226,7 @@ namespace EventHorizon.MetaXR.Editor
 				// enable hand prefab. no need to disable the game object since the component is initially disabled
 				var inspectionModeHand = newGO.GetComponent<MetaInspectionModeHands>();
 				inspectionModeHand.handID = handsHook.handID;
+				inspectionModeHand.handActivationID = handsHook.handActivationID;
 				inspectionModeHand.wristRoot_BoneId = handsHook.wristRoot_BoneId;
 				inspectionModeHand.forearmStub_BoneId = handsHook.forearmStub_BoneId;
 				inspectionModeHand.thumb0_BoneId = handsHook.thumb0_BoneId;
