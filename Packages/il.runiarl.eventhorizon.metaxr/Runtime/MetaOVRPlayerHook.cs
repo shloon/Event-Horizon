@@ -12,7 +12,7 @@ namespace EventHorizon.MetaXR
 
 		public void Start()
 		{
-			Utils.AddTrackableToGameObject(gameObject, trackableID.value);
+			Utils.AddTransformTrackable(gameObject, trackableID.value);
 			cameraRig = GetCameraRig();
 		}
 
