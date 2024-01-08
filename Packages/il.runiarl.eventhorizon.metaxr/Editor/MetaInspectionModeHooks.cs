@@ -114,10 +114,11 @@ namespace EventHorizon.MetaXR.Editor
 				{
 					continue;
 				}
-				
+
 				runtimeControllerHook.gameObject.SetActive(false);
 				var inspectionModeController = runtimeControllerHook.gameObject.AddComponent<MetaOVRInspectionModeController>();
 				inspectionModeController.controllerID = runtimeControllerHook.controllerID;
+				inspectionModeController.controllerActivationID = runtimeControllerHook.controllerActivationID;
 				inspectionModeController.skeletonID = runtimeControllerHook.skeletonID;
 				inspectionModeController.controllerButton0ID = runtimeControllerHook.controllerButton0ID;
 				inspectionModeController.controllerButton1ID = runtimeControllerHook.controllerButton1ID;
