@@ -85,8 +85,18 @@ namespace EventHorizon.MetaXR.Editor
 
 		public static void InspectionHook_MetaRuntimeControllerHook()
 		{
-			var currentHeadset = Enum.Parse<OVRPlugin.SystemHeadset>(InspectionModeHook.FormatData.vrMetadataPacket.headsetType);
-			var interactionProfile = Enum.Parse<OVRPlugin.InteractionProfile>(InspectionModeHook.FormatData.vrMetadataPacket.interactionProfile);
+			if (!Enum.TryParse<OVRPlugin.SystemHeadset>(InspectionModeHook.FormatData.vrMetadataPacket.headsetType,
+				    out var currentHeadset))
+			{
+				currentHeadset = OVRPlugin.SystemHeadset.None;
+			}
+
+			if (!Enum.TryParse<OVRPlugin.InteractionProfile>(
+				    InspectionModeHook.FormatData.vrMetadataPacket.interactionProfile, out var interactionProfile))
+			{
+				interactionProfile = OVRPlugin.InteractionProfile.None;
+			}
+
 			var controllerType = GetControllerType(currentHeadset, interactionProfile);
 			var (leftController, rightController) = GetControllerMeshes(controllerType);
 
@@ -116,7 +126,8 @@ namespace EventHorizon.MetaXR.Editor
 				}
 
 				runtimeControllerHook.gameObject.SetActive(false);
-				var inspectionModeController = runtimeControllerHook.gameObject.AddComponent<MetaOVRInspectionModeController>();
+				var inspectionModeController =
+					runtimeControllerHook.gameObject.AddComponent<MetaOVRInspectionModeController>();
 				inspectionModeController.controllerID = runtimeControllerHook.controllerID;
 				inspectionModeController.controllerActivationID = runtimeControllerHook.controllerActivationID;
 				inspectionModeController.skeletonID = runtimeControllerHook.skeletonID;
@@ -208,7 +219,7 @@ namespace EventHorizon.MetaXR.Editor
 				{
 					continue;
 				}
-				
+
 				// disable old hands hook to un-register the associated IDs
 				handsHook.enabled = false;
 
@@ -235,7 +246,7 @@ namespace EventHorizon.MetaXR.Editor
 				inspectionModeHand.pinky2_BoneId = handsHook.pinky2_BoneId;
 				inspectionModeHand.pinky3_BoneId = handsHook.pinky3_BoneId;
 				inspectionModeHand.enabled = true;
-				
+
 				// delete old hand prefab
 				Object.DestroyImmediate(handsHook.gameObject);
 			}
