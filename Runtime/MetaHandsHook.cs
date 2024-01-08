@@ -66,11 +66,11 @@ namespace EventHorizon.MetaXR
 		{
 			void AddTrackableToBone(OVRSkeleton.BoneId boneId, TrackableIDWrapper boneID, TrackableIDWrapper bindPoseID)
 			{
-				Utils.AddTrackableToGameObject(skeleton.Bones[(int)boneId].Transform.gameObject, boneID.value);
-				Utils.AddTrackableToGameObject(skeleton.BindPoses[(int)boneId].Transform.gameObject, bindPoseID.value);
+				Utils.AddTransformTrackable(skeleton.Bones[(int)boneId].Transform.gameObject, boneID.value);
+				Utils.AddTransformTrackable(skeleton.BindPoses[(int)boneId].Transform.gameObject, bindPoseID.value);
 			}
 
-			Utils.AddTrackableToGameObject(gameObject, handID.value);
+			Utils.AddTransformTrackable(gameObject, handID.value);
 
 			// assumes bones are ordered
 			AddTrackableToBone(OVRSkeleton.BoneId.Hand_WristRoot, wristRoot_BoneId, wristRoot_BindPoseId);

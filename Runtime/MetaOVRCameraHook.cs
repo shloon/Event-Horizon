@@ -34,28 +34,28 @@ namespace EventHorizon.MetaXR
 
 		public void Start()
 		{
-			Utils.AddTrackableToGameObject(gameObject, cameraID.value);
+			Utils.AddTransformTrackable(gameObject, cameraID.value);
 
-			Utils.AddTrackableToGameObject(rig.trackingSpace.gameObject, trackingSpaceID.value, true);
-			Utils.AddTrackableToGameObject(rig.leftEyeAnchor.gameObject, leftEyeAnchorID.value, true);
-			Utils.AddTrackableToGameObject(rig.centerEyeAnchor.gameObject, centerEyeAnchorID.value, true);
-			Utils.AddTrackableToGameObject(rig.rightEyeAnchor.gameObject, rightEyeAnchorID.value, true);
-			Utils.AddTrackableToGameObject(rig.leftHandAnchor.gameObject, leftHandAnchorID.value, true);
-			Utils.AddTrackableToGameObject(rig.rightHandAnchor.gameObject, rightHandAnchorID.value, true);
-			Utils.AddTrackableToGameObject(rig.leftHandAnchorDetached.gameObject, leftHandAnchorDetachedID.value, true);
-			Utils.AddTrackableToGameObject(rig.rightHandAnchorDetached.gameObject, rightHandAnchorDetachedID.value,
+			Utils.AddTransformTrackable(rig.trackingSpace.gameObject, trackingSpaceID.value, true);
+			Utils.AddTransformTrackable(rig.leftEyeAnchor.gameObject, leftEyeAnchorID.value, true);
+			Utils.AddTransformTrackable(rig.centerEyeAnchor.gameObject, centerEyeAnchorID.value, true);
+			Utils.AddTransformTrackable(rig.rightEyeAnchor.gameObject, rightEyeAnchorID.value, true);
+			Utils.AddTransformTrackable(rig.leftHandAnchor.gameObject, leftHandAnchorID.value, true);
+			Utils.AddTransformTrackable(rig.rightHandAnchor.gameObject, rightHandAnchorID.value, true);
+			Utils.AddTransformTrackable(rig.leftHandAnchorDetached.gameObject, leftHandAnchorDetachedID.value, true);
+			Utils.AddTransformTrackable(rig.rightHandAnchorDetached.gameObject, rightHandAnchorDetachedID.value,
 				true);
-			Utils.AddTrackableToGameObject(rig.leftControllerInHandAnchor.gameObject,
+			Utils.AddTransformTrackable(rig.leftControllerInHandAnchor.gameObject,
 				leftControllerInHandAnchorID.value, true);
-			Utils.AddTrackableToGameObject(rig.leftHandOnControllerAnchor.gameObject,
+			Utils.AddTransformTrackable(rig.leftHandOnControllerAnchor.gameObject,
 				leftHandOnControllerAnchorID.value, true);
-			Utils.AddTrackableToGameObject(rig.rightControllerInHandAnchor.gameObject,
+			Utils.AddTransformTrackable(rig.rightControllerInHandAnchor.gameObject,
 				rightControllerInHandAnchorID.value, true);
-			Utils.AddTrackableToGameObject(rig.rightHandOnControllerAnchor.gameObject,
+			Utils.AddTransformTrackable(rig.rightHandOnControllerAnchor.gameObject,
 				rightHandOnControllerAnchorID.value, true);
-			Utils.AddTrackableToGameObject(rig.leftControllerAnchor.gameObject, leftControllerAnchorID.value, true);
-			Utils.AddTrackableToGameObject(rig.rightControllerAnchor.gameObject, rightControllerAnchorID.value, true);
-			Utils.AddTrackableToGameObject(rig.trackerAnchor.gameObject, trackerAnchorID.value, true);
+			Utils.AddTransformTrackable(rig.leftControllerAnchor.gameObject, leftControllerAnchorID.value, true);
+			Utils.AddTransformTrackable(rig.rightControllerAnchor.gameObject, rightControllerAnchorID.value, true);
+			Utils.AddTransformTrackable(rig.trackerAnchor.gameObject, trackerAnchorID.value, true);
 			
 			// find recorder
 			var recorder = FindObjectOfType<RecorderComponent>();
