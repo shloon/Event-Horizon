@@ -52,7 +52,7 @@ This method requires manual management of package versions. Check the Event Hori
 
 ## Getting started
 
-See the [GETTING_STARTED.md file in the project's documentation.](Packages/il.runiarl.eventhorizon/Documentation~/LIMITATIONS.md).
+See the [GETTING_STARTED.md file in the project's documentation.](Packages/il.runiarl.eventhorizon/Documentation~/LIMITATIONS.md). Alternatively, you can checkout our video tutorials: [Part 1](https://www.youtube.com/watch?v=Y-a6nUdYZCs), [Part 2](https://www.youtube.com/watch?v=Dtpcvc3PMVg).
 
 ## Packages
 This repository serves as a comprehensive collection of all packages necessary for the Event Horizon suite. Below is an overview of the primary packages and their purposes.
