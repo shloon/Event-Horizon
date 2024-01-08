@@ -1,4 +1,3 @@
-using EventHorizon.FormatV2;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -35,10 +34,7 @@ namespace EventHorizon.MetaXR
 		private bool initialized;
 		private OVRRuntimeController runtimeController;
 
-		private void Start()
-		{
-			runtimeController = GetComponent<OVRRuntimeController>();
-		}
+		private void Start() => runtimeController = GetComponent<OVRRuntimeController>();
 
 		private void Update()
 		{
@@ -51,7 +47,7 @@ namespace EventHorizon.MetaXR
 				animationNodes =
 					(Dictionary<OVRGLTFInputNode, OVRGLTFAnimatinonNode>) m_animationNodesField.GetValue(
 						runtimeController);
-			
+
 				if (!(controllerGameObject is null || animationNodes is null))
 				{
 					AddTrackers();
@@ -68,9 +64,8 @@ namespace EventHorizon.MetaXR
 			}
 
 			Utils.AddTransformTrackable(gameObject, controllerID.value);
-			Utils.AddTrackable<ActivationTrackableComponent, ActivationPacket>(controllerGameObject,
-					controllerActivationID.value);
-			
+			Utils.AddActivationTrackable(controllerGameObject, controllerActivationID.value);
+
 			var skeletonGO = GetComponentsInChildren<Transform>().FirstOrDefault(x => x.name.Contains("skeleton"));
 			if (skeletonGO != null)
 			{
@@ -81,7 +76,7 @@ namespace EventHorizon.MetaXR
 			// this assumes that we won't change to a different kind of controllers in the middle of the experiment.
 			if (animationNodes.TryGetValue(OVRGLTFInputNode.Button_A_X, out var button0))
 			{
-				var controllerButton0GO = (GameObject)m_gameObjField.GetValue(button0);
+				var controllerButton0GO = (GameObject) m_gameObjField.GetValue(button0);
 				var trackable = Utils.AddTransformTrackable(controllerButton0GO, controllerButton0ID.value, true);
 				trackable.translationMultiply = new Vector3(1, -1, -1);
 				trackable.rotationMultiply = new Vector3(1, -1, -1);
@@ -89,7 +84,7 @@ namespace EventHorizon.MetaXR
 
 			if (animationNodes.TryGetValue(OVRGLTFInputNode.Button_B_Y, out var button1))
 			{
-				var controllerButton1GO = (GameObject)m_gameObjField.GetValue(button1);
+				var controllerButton1GO = (GameObject) m_gameObjField.GetValue(button1);
 				var trackable = Utils.AddTransformTrackable(controllerButton1GO, controllerButton1ID.value, true);
 				trackable.translationMultiply = new Vector3(1, -1, -1);
 				trackable.rotationMultiply = new Vector3(1, -1, -1);
@@ -97,7 +92,7 @@ namespace EventHorizon.MetaXR
 
 			if (animationNodes.TryGetValue(OVRGLTFInputNode.Button_Oculus_Menu, out var button2))
 			{
-				var controllerButton2GO = (GameObject)m_gameObjField.GetValue(button2);
+				var controllerButton2GO = (GameObject) m_gameObjField.GetValue(button2);
 				var trackable = Utils.AddTransformTrackable(controllerButton2GO, controllerButton2ID.value, true);
 				trackable.translationMultiply = new Vector3(1, -1, -1);
 				trackable.rotationMultiply = new Vector3(1, -1, -1);
@@ -105,7 +100,7 @@ namespace EventHorizon.MetaXR
 
 			if (animationNodes.TryGetValue(OVRGLTFInputNode.Trigger_Grip, out var button3))
 			{
-				var controllerButton3GO = (GameObject)m_gameObjField.GetValue(button3);
+				var controllerButton3GO = (GameObject) m_gameObjField.GetValue(button3);
 				var trackable = Utils.AddTransformTrackable(controllerButton3GO, controllerButton3ID.value, true);
 				trackable.translationMultiply = new Vector3(1, -1, -1);
 				trackable.rotationMultiply = new Vector3(1, -1, -1);
@@ -113,7 +108,7 @@ namespace EventHorizon.MetaXR
 
 			if (animationNodes.TryGetValue(OVRGLTFInputNode.Trigger_Front, out var button4))
 			{
-				var controllerButton4GO = (GameObject)m_gameObjField.GetValue(button4);
+				var controllerButton4GO = (GameObject) m_gameObjField.GetValue(button4);
 				var trackable = Utils.AddTransformTrackable(controllerButton4GO, controllerButton4ID.value, true);
 				trackable.translationMultiply = new Vector3(1, -1, -1);
 				trackable.rotationMultiply = new Vector3(1, -1, -1);
@@ -121,7 +116,7 @@ namespace EventHorizon.MetaXR
 
 			if (animationNodes.TryGetValue(OVRGLTFInputNode.ThumbStick, out var button5))
 			{
-				var controllerButton5GO = (GameObject)m_gameObjField.GetValue(button5);
+				var controllerButton5GO = (GameObject) m_gameObjField.GetValue(button5);
 				var trackable = Utils.AddTransformTrackable(controllerButton5GO, controllerButton5ID.value, true);
 				trackable.translationMultiply = new Vector3(1, -1, -1);
 				trackable.rotationMultiply = new Vector3(1, -1, -1);
