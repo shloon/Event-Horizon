@@ -149,7 +149,7 @@
       "source": "embedded",
       "dependencies": {
         "com.meta.xr.sdk.core": "60.0.0",
-        "il.runiarl.eventhorizon": "0.1.0-preview.1"
+        "il.runiarl.eventhorizon": "0.1.0"
       }
     },
     "nuget.castle-core": {
