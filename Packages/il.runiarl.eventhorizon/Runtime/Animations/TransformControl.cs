@@ -66,6 +66,7 @@ namespace EventHorizon
 			{
 				transform.SetPositionAndRotation(packet.translation, packet.rotation);
 			}
+
 			transform.localScale = packet.scale;
 		}
 	}

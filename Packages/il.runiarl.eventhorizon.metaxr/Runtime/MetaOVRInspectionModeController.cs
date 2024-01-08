@@ -62,7 +62,7 @@ namespace EventHorizon.MetaXR
 
 				if (gameObjectName.Contains("controller_world"))
 				{
-					Utils.AddTransformTrackable(childTransformGameObject, skeletonID.value, false);
+					Utils.AddTransformTrackable(childTransformGameObject, skeletonID.value);
 				}
 			}
 

@@ -16,7 +16,7 @@ namespace EventHorizon
 
 			// handle edge case of no actual data
 			if (formatV2Data.framePackets.Count == 0 && formatV2Data.transformPackets.Count == 0 &&
-				formatV2Data.genericDataPackets.Count == 0 && formatV2Data.activationPackets.Count == 0)
+			    formatV2Data.genericDataPackets.Count == 0 && formatV2Data.activationPackets.Count == 0)
 			{
 				return null;
 			}
@@ -46,7 +46,7 @@ namespace EventHorizon
 		{
 			timelineData.genericDataTrack = timelineData.timelineAsset.CreateTrack<GenericDataControlTrack>();
 			var genericDataClip = timelineData.genericDataTrack.CreateClip<GenericDataControlAsset>();
-			((GenericDataControlAsset)genericDataClip.asset).frameDuration = frameDuration;
+			((GenericDataControlAsset) genericDataClip.asset).frameDuration = frameDuration;
 
 			// TODO, currently not on MVP
 		}
@@ -65,7 +65,7 @@ namespace EventHorizon
 
 				// Create a new clip if it doesn't exist or there is a gap of at least one frame
 				if (!transformClips.TryGetValue(trackableID, out var clip) ||
-					packet.frame > transformClipsFrames[trackableID] + 1)
+				    packet.frame > transformClipsFrames[trackableID] + 1)
 				{
 					if (!timelineData.transformTracks.TryGetValue(trackableID, out var track))
 					{
@@ -80,7 +80,7 @@ namespace EventHorizon
 					clip.start = packetTime;
 					transformClips[trackableID] = clip;
 
-					transformAssets[trackableID] = (TransformControlAsset)clip.asset;
+					transformAssets[trackableID] = (TransformControlAsset) clip.asset;
 					transformAssets[trackableID].frameDuration = frameDuration;
 				}
 
@@ -106,7 +106,7 @@ namespace EventHorizon
 
 				// Create a new clip if it doesn't exist or there is a gap of at least one frame
 				if (!activationClips.TryGetValue(trackableID, out var clip) ||
-					packet.frame > activationClipFrames[trackableID] + 1)
+				    packet.frame > activationClipFrames[trackableID] + 1)
 				{
 					if (!timelineData.activationTracks.TryGetValue(trackableID, out var track))
 					{
@@ -156,7 +156,8 @@ namespace EventHorizon
 				}
 				else
 				{
-					Debug.LogWarning($"Could not find transform tracker data for \"{trackableComponent.gameObject.name}\" ({trackableComponent.Id})");
+					Debug.LogWarning(
+						$"Could not find transform tracker data for \"{trackableComponent.gameObject.name}\" ({trackableComponent.Id})");
 				}
 			}
 
@@ -171,7 +172,7 @@ namespace EventHorizon
 					director.SetGenericBinding(activationTrack, trackableComponent.gameObject);
 					boundGameObjects.Add(trackableComponent.gameObject);
 				}
-				
+
 				trackableComponent.gameObject.SetActive(false);
 			}
 		}

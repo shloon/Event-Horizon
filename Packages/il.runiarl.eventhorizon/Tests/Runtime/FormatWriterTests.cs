@@ -24,7 +24,7 @@ namespace EventHorizon.Tests
 		public void Constructor_Defaults()
 		{
 			writer = new FormatWriter(memoryStream);
-			
+
 			Assert.IsTrue(writer.IsCompressed);
 			Assert.IsFalse(writer.LeaveOpen);
 		}
@@ -117,7 +117,7 @@ namespace EventHorizon.Tests
 			memoryStream.Position = 0;
 			Assert.IsNotEmpty(memoryStream.ToArray());
 		}
-		
+
 		[Test]
 		public void Dispose_ReleasesResources()
 		{
@@ -128,5 +128,4 @@ namespace EventHorizon.Tests
 				"Disposed stream should throw ObjectDisposedException");
 		}
 	}
-	
 }

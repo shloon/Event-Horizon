@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using UnityEditor;
-using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
 namespace EventHorizon.Editor.RecordingsV2
@@ -11,7 +10,7 @@ namespace EventHorizon.Editor.RecordingsV2
 	{
 		public override VisualElement CreateInspectorGUI()
 		{
-			var scriptable = (FormatV2Scriptable)target;
+			var scriptable = (FormatV2Scriptable) target;
 			var container = new VisualElement();
 
 			var playButton = new Button { text = "Start Playback" };
@@ -25,18 +24,14 @@ namespace EventHorizon.Editor.RecordingsV2
 
 			var sceneNameField = new TextField
 			{
-				label = "Scene Name",
-				isReadOnly = true,
-				value = scriptable.metadataPacket.sceneName
+				label = "Scene Name", isReadOnly = true, value = scriptable.metadataPacket.sceneName
 			};
 			sceneNameField.AddToClassList("unity-base-field__aligned");
 			container.Add(sceneNameField);
 
 			var fpsField = new TextField
 			{
-				label = "Frame Rate",
-				isReadOnly = true,
-				value = scriptable.metadataPacket.fps.ToString()
+				label = "Frame Rate", isReadOnly = true, value = scriptable.metadataPacket.fps.ToString()
 			};
 			fpsField.AddToClassList("unity-base-field__aligned");
 			container.Add(fpsField);
@@ -52,9 +47,7 @@ namespace EventHorizon.Editor.RecordingsV2
 
 			var framesLengthField = new IntegerField
 			{
-				label = "Number of Frames",
-				value = scriptable.framePackets.Count,
-				isReadOnly = true
+				label = "Number of Frames", value = scriptable.framePackets.Count, isReadOnly = true
 			};
 			framesLengthField.AddToClassList("unity-base-field__aligned");
 			container.Add(framesLengthField);
@@ -62,7 +55,9 @@ namespace EventHorizon.Editor.RecordingsV2
 			var headsetNameField = new TextField
 			{
 				label = "Headset Name",
-				value = string.IsNullOrEmpty(scriptable.vrMetadataPacket.headsetType) ? "None" : scriptable.vrMetadataPacket.headsetType,
+				value = string.IsNullOrEmpty(scriptable.vrMetadataPacket.headsetType)
+					? "None"
+					: scriptable.vrMetadataPacket.headsetType,
 				isReadOnly = true
 			};
 			headsetNameField.AddToClassList("unity-base-field__aligned");
@@ -71,7 +66,9 @@ namespace EventHorizon.Editor.RecordingsV2
 			var interactionProfileField = new TextField
 			{
 				label = "Interaction Profile",
-				value = string.IsNullOrEmpty(scriptable.vrMetadataPacket.interactionProfile) ? "None" : scriptable.vrMetadataPacket.headsetType,
+				value = string.IsNullOrEmpty(scriptable.vrMetadataPacket.interactionProfile)
+					? "None"
+					: scriptable.vrMetadataPacket.headsetType,
 				isReadOnly = true
 			};
 			interactionProfileField.AddToClassList("unity-base-field__aligned");

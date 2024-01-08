@@ -31,19 +31,16 @@ namespace EventHorizon.Editor.ProblemSolver
 				{
 					problems.Add(new InvalidTrackableIDProblem
 					{
-						trackable = trackable,
-						trackableManager = trackableManager
+						trackable = trackable, trackableManager = trackableManager
 					});
 				}
 				// Tracker's ID is already being used by another
 				else if (trackableManager.RegisteredTrackables.TryGetValue(trackable.Id, out var other) &&
-						 !trackable.Equals(other))
+				         !trackable.Equals(other))
 				{
 					problems.Add(new TwoTrackablesWithSameIDProblem
 					{
-						trackable = trackable,
-						otherTrackable = other,
-						trackableManager = trackableManager
+						trackable = trackable, otherTrackable = other, trackableManager = trackableManager
 					});
 				}
 				// Tracker is valid, so let's register it. We do this in one go since it's more efficient;
