@@ -1,5 +1,6 @@
 using EventHorizon.FormatV2;
 using System;
+using System.Globalization;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -14,7 +15,7 @@ namespace EventHorizon
 	[DefaultExecutionOrder(-100)]
 	public class RecorderComponent : MonoBehaviour
 	{
-		public string outputFileName = "Assets/Recordings/recording.evh2";
+		public string outputFileName = "Assets/Recordings/recording-{scene}-{timestamp}.evh";
 		public FrameRate frameRate = new(60);
 		private ulong elapsedFrames;
 
@@ -36,12 +37,13 @@ namespace EventHorizon
 			}
 
 			// create filestream
-			fileStream = File.Create(outputFileName);
+			var sceneName = SceneManager.GetActiveScene().name;
+			var timestamp = DateTime.Now;
+			fileStream = File.Create(ResolveOutputFileName(outputFileName, sceneName, timestamp));
 
 			// initialize writer
 			writer = new FormatWriter(fileStream);
-			writer.WritePacket(PacketUtils.GenerateMetadataPacket(SceneManager.GetActiveScene().name, frameRate,
-				DateTime.Now));
+			writer.WritePacket(PacketUtils.GenerateMetadataPacket(sceneName, frameRate, timestamp));
 		}
 
 		private void Update()
@@ -77,6 +79,10 @@ namespace EventHorizon
 			EditorUtility.ClearProgressBar();
 #endif
 		}
+
+		public string ResolveOutputFileName(string fileName, string sceneName, DateTime timestamp) => fileName
+			.Replace("{scene}", sceneName).Replace("{timestamp}",
+				timestamp.ToString("YYYY-MM-DD HHmmss", CultureInfo.InvariantCulture));
 
 		public void WriteCustomPacket<T>(in T packet) where T : IPacket => writer.WritePacket(packet);
 
