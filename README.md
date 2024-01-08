@@ -6,7 +6,7 @@
 </h1>
 
 <p align="center">
-    Utilities for recording, reproducing, and visualizing VR experiments in <a href="https://unity.com">Unity</a>. <br/> Full documentation TBD.
+    Utilities for recording, reproducing, and visualizing VR experiments in <a href="https://unity.com">Unity</a>. <br/> <a href="Packages/il.runiarl.eventhorizon/Documentation~/">See documentation on Github</a>.
 </p>
 
 <p align="center">
@@ -52,7 +52,7 @@ This method requires manual management of package versions. Check the Event Hori
 
 ## Getting started
 
-TODO. We currently plan to let users experiment on a MetaXR-Based repository that we'll add in the future.
+See the [GETTING_STARTED.md file in the project's documentation.](Packages/il.runiarl.eventhorizon/Documentation~/LIMITATIONS.md).
 
 ## Packages
 This repository serves as a comprehensive collection of all packages necessary for the Event Horizon suite. Below is an overview of the primary packages and their purposes.
