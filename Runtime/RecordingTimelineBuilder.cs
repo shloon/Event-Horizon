@@ -74,6 +74,8 @@ namespace EventHorizon
 					}
 
 					clip = track.CreateClip<TransformControlAsset>();
+					clip.displayName = $"Transform ({trackableID.Internal})";
+
 					clip.duration = 0;
 					clip.start = packetTime;
 					transformClips[trackableID] = clip;
@@ -114,6 +116,7 @@ namespace EventHorizon
 					}
 
 					clip = track.CreateDefaultClip();
+					clip.displayName = $"Activation ({trackableID.Internal})";
 					clip.duration = 0;
 					clip.start = packetTime;
 					activationClips[trackableID] = clip;
@@ -150,6 +153,10 @@ namespace EventHorizon
 				{
 					director.SetGenericBinding(transformControlTrack, animator);
 					boundGameObjects.Add(trackableComponent.gameObject);
+				}
+				else
+				{
+					Debug.LogWarning($"Could not find transform tracker data for \"{trackableComponent.gameObject.name}\" ({trackableComponent.Id})");
 				}
 			}
 
