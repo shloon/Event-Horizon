@@ -11,6 +11,8 @@ namespace EventHorizon
 	{
 		public bool isLocal;
 		private Transform selfTransform;
+		public Vector3 translationMultiply = new Vector3(1, 1, 1);
+		public Vector3 rotationMultiply = new Vector3(1, 1, 1);
 
 		public void Start() => selfTransform = transform;
 
@@ -27,13 +29,23 @@ namespace EventHorizon
 				transform.GetPositionAndRotation(out translation, out rotation);
 			}
 
+			var finalTranslation = new Vector3(translation.x * translationMultiply.x,
+				translation.y * translationMultiply.y,
+				translation.z * translationMultiply.y);
+
+			var rotationEulerAngles = rotation.eulerAngles;
+			var finalRotation = Quaternion.Euler(rotationEulerAngles.x * rotationMultiply.x,
+				rotationEulerAngles.y * rotationMultiply.y,
+				rotationEulerAngles.z * rotationMultiply.z);
+
 			return new TransformPacket
 			{
 				frame = frame,
 				id = Id.Internal,
 				isLocal = isLocal,
-				translation = translation,
-				rotation = rotation,
+				translation =
+					finalTranslation,
+				rotation = finalRotation,
 				scale = selfTransform.localScale
 			};
 		}
