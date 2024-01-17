@@ -23,5 +23,12 @@
   },
   "dependencies": {
     "com.unity.timeline": "1.7.6"
-  }
+  },
+  "samples": [
+    {
+      "displayName": "Cubes",
+      "description": "Sample scene in which you track multiple cubes falling and hitting each other.",
+      "path": "Samples~/Cubes"
+    }
+  ]
 }

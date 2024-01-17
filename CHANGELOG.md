@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Added `Cubes` sample to core package.
+
 ### Changed
 - Enabled CI on multiple unity versions.
 - Changed projects settings to conform to Meta XR SDK recommendations.
