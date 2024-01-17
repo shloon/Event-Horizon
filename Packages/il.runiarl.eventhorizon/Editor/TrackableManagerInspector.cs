@@ -7,7 +7,7 @@ using Object = UnityEngine.Object;
 namespace EventHorizon.Editor
 {
 	[CustomEditor(typeof(TrackableManagerComponent))]
-	public class ListViewExample : UnityEditor.Editor
+	public class TrackableManagerInspector : UnityEditor.Editor
 	{
 		private List<KeyValuePair<TrackableID, ITrackable>> items;
 		private ListView listView;

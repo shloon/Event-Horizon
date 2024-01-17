@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Added `Cubes` sample to core package.
 
+### Fixed
+- Changed `ListViewExample` to `TrackableManagerInspector` as filename dictates.
+
 ### Changed
 - Enabled CI on multiple unity versions.
 - Changed projects settings to conform to Meta XR SDK recommendations.
