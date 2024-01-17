@@ -14,4 +14,5 @@ EditorBuildSettings:
   - enabled: 1
     path: Packages/il.runiarl.eventhorizon/Tests/Runtime/Scenes/EmptyScene.unity
     guid: a0a4a47e983daa44ba4567572fd73f71
-  m_configObjects: {}
+  m_configObjects:
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: f606377b1b7c82244b0e4f6d18bf8724, type: 2}
