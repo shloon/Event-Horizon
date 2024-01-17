@@ -8,10 +8,17 @@ on:
 
 jobs:
   test:
-    permissions:
-      checks: write
     name: Test
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        unity_version:
+          - "2022.3.0f1" # base LTS revision
+          - "2022.3.12f1" # development revision
+          - "2022.3.17f1" # current LTS revision
+    permissions:
+      checks: write
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -20,7 +27,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: Library
-          key: Library-EventHorizon-TargetPlatform
+          key: Library-EventHorizon-${{ matrix.unity_version }}
           restore-keys: |
             Library-EventHorizon-
             Library-
@@ -33,6 +40,7 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
+          unityVersion: ${{ matrix.unity_version }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload test results

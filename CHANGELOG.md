@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Enabled CI on multiple unity versions.
+
 ## [0.1.1] - 2024.01.09
 
 ### Fixed
