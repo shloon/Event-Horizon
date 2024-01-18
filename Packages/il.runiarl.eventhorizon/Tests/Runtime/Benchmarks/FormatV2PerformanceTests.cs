@@ -70,11 +70,11 @@ namespace EventHorizon.Tests.Benchmarks
 		public void MetadataPacket_Deserialization()
 		{
 			var metadata = new MetadataPacket();
-			var packet = PacketUtils.SerializePacket(metadata);
+			var jsonPacketData = PacketUtils.SerializePacket(metadata);
 
 			Measure.Method(() =>
 				{
-					PacketUtils.DeserializePacket(packet.header, packet.contents);
+					PacketUtils.DeserializePacket(jsonPacketData.header, jsonPacketData.contents);
 				})
 				.WarmupCount(100)
 				.MeasurementCount(1000)
@@ -120,11 +120,11 @@ namespace EventHorizon.Tests.Benchmarks
 		public void TransformPacket_Deserialization()
 		{
 			var transformPacket = new TransformPacket();
-			var packet = PacketUtils.SerializePacket(transformPacket);
+			var jsonPacketData = PacketUtils.SerializePacket(transformPacket);
 
 			Measure.Method(() =>
 				{
-					PacketUtils.DeserializePacket(packet.header, packet.contents);
+					PacketUtils.DeserializePacket(jsonPacketData.header, jsonPacketData.contents);
 				})
 				.WarmupCount(100)
 				.MeasurementCount(1000)
@@ -133,5 +133,206 @@ namespace EventHorizon.Tests.Benchmarks
 		}
 
 		#endregion
+		
+		#region Frame Packet
+		
+		[Test]
+		[Performance]
+		public void FramePacket_Construction() =>
+			Measure.Method(() =>
+				{
+					_ = new FramePacket();
+				})
+				.WarmupCount(100)
+				.MeasurementCount(1000)
+				.SampleGroup(new SampleGroup("FramePacket Constructor", SampleUnit.Microsecond))
+				.Run();
+
+
+		[Test]
+		[Performance]
+		public void FramePacket_Serialization()
+		{
+			var framePacket = new FramePacket();
+
+			Measure.Method(() =>
+				{
+					PacketUtils.SerializePacket(framePacket);
+				})
+				.WarmupCount(100)
+				.MeasurementCount(1000)
+				.SampleGroup(new SampleGroup("FramePacket Serialization", SampleUnit.Microsecond))
+				.Run();
+		}
+
+		[Test]
+		[Performance]
+		public void FramePacket_Deserialization()
+		{
+			var framePacket = new FramePacket();
+			var jsonPacketData = PacketUtils.SerializePacket(framePacket);
+
+			Measure.Method(() =>
+				{
+					PacketUtils.DeserializePacket(jsonPacketData.header, jsonPacketData.contents);
+				})
+				.WarmupCount(100)
+				.MeasurementCount(1000)
+				.SampleGroup(new SampleGroup("FramePacket Deserialization", SampleUnit.Microsecond))
+				.Run();
+		}
+
+		#endregion
+		
+		#region Generic Data Packet
+
+		[Test]
+		[Performance]
+		public void GenericDataPacket_Construction() =>
+			Measure.Method(() =>
+				{
+					_ = new GenericDataPacket();
+				})
+				.WarmupCount(100)
+				.MeasurementCount(1000)
+				.SampleGroup(new SampleGroup("GenericDataPacket Constructor", SampleUnit.Microsecond))
+				.Run();
+
+
+		[Test]
+		[Performance]
+		public void GenericDataPacket_Serialization()
+		{
+			var genericDataPacket = new GenericDataPacket();
+
+			Measure.Method(() =>
+				{
+					PacketUtils.SerializePacket(genericDataPacket);
+				})
+				.WarmupCount(100)
+				.MeasurementCount(1000)
+				.SampleGroup(new SampleGroup("GenericDataPacket Serialization", SampleUnit.Microsecond))
+				.Run();
+		}
+
+		[Test]
+		[Performance]
+		public void GenericDataPacket_Deserialization()
+		{
+			var genericDataPacket = new GenericDataPacket();
+			var jsonPacketData = PacketUtils.SerializePacket(genericDataPacket);
+
+			Measure.Method(() =>
+				{
+					PacketUtils.DeserializePacket(jsonPacketData.header, jsonPacketData.contents);
+				})
+				.WarmupCount(100)
+				.MeasurementCount(1000)
+				.SampleGroup(new SampleGroup("GenericDataPacket Deserialization", SampleUnit.Microsecond))
+				.Run();
+		}
+
+		#endregion
+		
+		#region Activation Packet
+
+		[Test]
+		[Performance]
+		public void ActivationPacket_Construction() =>
+			Measure.Method(() =>
+				{
+					_ = new ActivationPacket();
+				})
+				.WarmupCount(100)
+				.MeasurementCount(1000)
+				.SampleGroup(new SampleGroup("ActivationPacket Constructor", SampleUnit.Microsecond))
+				.Run();
+
+
+		[Test]
+		[Performance]
+		public void ActivationPacket_Serialization()
+		{
+			var activationPacket = new ActivationPacket();
+
+			Measure.Method(() =>
+				{
+					PacketUtils.SerializePacket(activationPacket);
+				})
+				.WarmupCount(100)
+				.MeasurementCount(1000)
+				.SampleGroup(new SampleGroup("ActivationPacket Serialization", SampleUnit.Microsecond))
+				.Run();
+		}
+
+		[Test]
+		[Performance]
+		public void ActivationPacket_Deserialization()
+		{
+			var activationPacket = new ActivationPacket();
+			var jsonPacketData = PacketUtils.SerializePacket(activationPacket);
+
+			Measure.Method(() =>
+				{
+					PacketUtils.DeserializePacket(jsonPacketData.header, jsonPacketData.contents);
+				})
+				.WarmupCount(100)
+				.MeasurementCount(1000)
+				.SampleGroup(new SampleGroup("ActivationPacket Deserialization", SampleUnit.Microsecond))
+				.Run();
+		}
+
+		#endregion
+		
+		#region VRMetadata Packet
+
+		[Test]
+		[Performance]
+		public void VRMetadataPacket_Construction() =>
+			Measure.Method(() =>
+				{
+					_ = new VRMetadataPacket();
+				})
+				.WarmupCount(100)
+				.MeasurementCount(1000)
+				.SampleGroup(new SampleGroup("VRMetadataPacket Constructor", SampleUnit.Microsecond))
+				.Run();
+
+
+		[Test]
+		[Performance]
+		public void VRMetadataPacket_Serialization()
+		{
+			var vrMetadataPacket = new VRMetadataPacket();
+
+			Measure.Method(() =>
+				{
+					PacketUtils.SerializePacket(vrMetadataPacket);
+				})
+				.WarmupCount(100)
+				.MeasurementCount(1000)
+				.SampleGroup(new SampleGroup("VRMetadataPacket Serialization", SampleUnit.Microsecond))
+				.Run();
+		}
+
+		[Test]
+		[Performance]
+		public void VRMetadataPacket_Deserialization()
+		{
+			var vrMetadataPacket = new VRMetadataPacket();
+			var jsonPacketData = PacketUtils.SerializePacket(vrMetadataPacket);
+
+			Measure.Method(() =>
+				{
+					PacketUtils.DeserializePacket(jsonPacketData.header, jsonPacketData.contents);
+				})
+				.WarmupCount(100)
+				.MeasurementCount(1000)
+				.SampleGroup(new SampleGroup("VRMetadataPacket Deserialization", SampleUnit.Microsecond))
+				.Run();
+		}
+
+		#endregion
+
 	}
 }

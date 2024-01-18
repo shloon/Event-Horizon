@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Added `Cubes` sample to core package.
 - Added more unit tests to core (for `TrackableTransformComponent`)
+- Added de/ser benchmarks for all packet types.
 
 ### Fixed
 - Fixed self-caching of `transform` in `TrackableTransformComponent`.
