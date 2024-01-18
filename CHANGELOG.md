@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added more unit tests to core (for `TrackableTransformComponent`)
 
 ### Fixed
+- Fixed self-caching of `transform` in `TrackableTransformComponent`.
+- Use self-cached transform in `TrackableTransformComponent`.
 - Fixed bug in `TrackableTransformComponent` where `translationMultiply` didn't apply correctly.
 - Changed `ListViewExample` to `TrackableManagerInspector` as filename dictates.
 

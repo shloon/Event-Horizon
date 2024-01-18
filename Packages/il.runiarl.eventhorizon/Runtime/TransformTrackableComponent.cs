@@ -14,19 +14,20 @@ namespace EventHorizon
 		public Vector3 rotationMultiply = new(1, 1, 1);
 		private Transform selfTransform;
 
-		public void Start() => selfTransform = transform;
+		private void Awake() => selfTransform = transform;
 
 		public override TransformPacket GetPacketForFrame(ulong frame)
 		{
 			Vector3 translation;
 			Quaternion rotation;
+
 			if (isLocal)
 			{
-				transform.GetLocalPositionAndRotation(out translation, out rotation);
+				selfTransform.GetLocalPositionAndRotation(out translation, out rotation);
 			}
 			else
 			{
-				transform.GetPositionAndRotation(out translation, out rotation);
+				selfTransform.GetPositionAndRotation(out translation, out rotation);
 			}
 
 			var finalTranslation = new Vector3(translation.x * translationMultiply.x,
