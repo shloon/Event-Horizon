@@ -31,7 +31,7 @@ namespace EventHorizon
 
 			var finalTranslation = new Vector3(translation.x * translationMultiply.x,
 				translation.y * translationMultiply.y,
-				translation.z * translationMultiply.y);
+				translation.z * translationMultiply.z);
 
 			var rotationEulerAngles = rotation.eulerAngles;
 			var finalRotation = Quaternion.Euler(rotationEulerAngles.x * rotationMultiply.x,
