@@ -9,8 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Added `Cubes` sample to core package.
+- Added more unit tests to core (for `TrackableTransformComponent`)
 
 ### Fixed
+- Fixed bug in `TrackableTransformComponent` where `translationMultiply` didn't apply correctly.
 - Changed `ListViewExample` to `TrackableManagerInspector` as filename dictates.
 
 ### Changed
