@@ -16,6 +16,16 @@
     <img alt="GitHub issues" src="https://img.shields.io/github/issues/Shloon/Event-Horizon?style=for-the-badge" />
 </p>
 
+## Getting started
+See [GETTING_STARTED.md file in the project's documentation.](Packages/il.runiarl.eventhorizon/Documentation~/LIMITATIONS.md).
+
+Alternatively, you can checkout our video tutorials:
+
+<p align="center">
+    <a href="https://www.youtube.com/watch?v=Y-a6nUdYZCs"><img alt="Part 1 Thumbnail" src="https://img.youtube.com/vi/Y-a6nUdYZCs/maxresdefault.jpg" width="350"/></a>
+    <a href="https://www.youtube.com/watch?v=Dtpcvc3PMVg"><img alt="Part 2 Thumbnail" src="https://img.youtube.com/vi/Dtpcvc3PMVg/maxresdefault.jpg"  width="350"/></a>
+</p>
+
 ## Installation
 
 ### Via Official Scoped Repository
@@ -49,10 +59,6 @@ Alternatively, you can add `Packages/manifest.json` with your favorite text edit
 ```
 
 This method requires manual management of package versions. Check the Event Horizon GitHub repository for the latest compatible releases. For more information, read the Packages section below.
-
-## Getting started
-
-See the [GETTING_STARTED.md file in the project's documentation.](Packages/il.runiarl.eventhorizon/Documentation~/LIMITATIONS.md). Alternatively, you can checkout our video tutorials: [Part 1](https://www.youtube.com/watch?v=Y-a6nUdYZCs), [Part 2](https://www.youtube.com/watch?v=Dtpcvc3PMVg).
 
 ## Packages
 This repository serves as a comprehensive collection of all packages necessary for the Event Horizon suite. Below is an overview of the primary packages and their purposes.
