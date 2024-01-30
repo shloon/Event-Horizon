@@ -1,4 +1,4 @@
-using EventHorizon.Editor.RecordingsV2;
+using EventHorizon.FileFormat;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -8,7 +8,7 @@ namespace EventHorizon
 {
 	public static class RecordingTimelineUtilities
 	{
-		public static TimelineData BuildTimeline(FormatV2Scriptable formatV2Data)
+		public static TimelineData BuildTimeline(EvhFileScriptable formatV2Data)
 		{
 			var timelineData = new TimelineData { timelineAsset = ScriptableObject.CreateInstance<TimelineAsset>() };
 			var frameDuration = formatV2Data.metadataPacket.fps.GetFrameDuration();
@@ -51,7 +51,7 @@ namespace EventHorizon
 			// TODO, currently not on MVP
 		}
 
-		private static void BuildTransformTracks(FormatV2Scriptable formatV2Data, double frameDuration,
+		private static void BuildTransformTracks(EvhFileScriptable formatV2Data, double frameDuration,
 			TimelineData timelineData)
 		{
 			Dictionary<TrackableID, TimelineClip> transformClips = new();
@@ -93,7 +93,7 @@ namespace EventHorizon
 			}
 		}
 
-		private static void BuildActivationTracks(FormatV2Scriptable formatV2Data, double frameDuration,
+		private static void BuildActivationTracks(EvhFileScriptable formatV2Data, double frameDuration,
 			TimelineData timelineData)
 		{
 			Dictionary<TrackableID, TimelineClip> activationClips = new();

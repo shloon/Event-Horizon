@@ -1,4 +1,4 @@
-﻿using EventHorizon.FormatV2;
+﻿using EventHorizon.FileFormat;
 using NUnit.Framework;
 using System.IO;
 

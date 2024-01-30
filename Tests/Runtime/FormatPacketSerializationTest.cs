@@ -1,4 +1,4 @@
-﻿using EventHorizon.FormatV2;
+﻿using EventHorizon.FileFormat;
 using NUnit.Framework;
 using System;
 using System.Globalization;
@@ -13,7 +13,7 @@ namespace EventHorizon.Tests
 		{
 			var metadataPacket = new MetadataPacket
 			{
-				version = RecordingFormatVersion.V2,
+				version = RecordingFormatVersion.V1,
 				fps = new FrameRate(24000, 1001),
 				sceneName = "TestScene",
 				timestamp = DateTime.Now.ToString(

@@ -1,10 +1,10 @@
-﻿using EventHorizon.FormatV2;
+﻿using EventHorizon.FileFormat;
 using NUnit.Framework;
 using Unity.PerformanceTesting;
 
 namespace EventHorizon.Tests.Benchmarks
 {
-	public class FormatV2PerformanceTests
+	public class FileFormatPerformanceTests
 	{
 		[Test]
 		[Performance]

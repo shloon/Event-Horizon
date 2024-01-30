@@ -4,7 +4,7 @@ using System.IO.Compression;
 using System.Text;
 using UnityEngine;
 
-namespace EventHorizon.FormatV2
+namespace EventHorizon.FileFormat
 {
 	public class FormatReader : IDisposable
 	{
