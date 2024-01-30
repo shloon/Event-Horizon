@@ -1,4 +1,4 @@
-﻿using EventHorizon.FormatV2;
+﻿using EventHorizon.FileFormat;
 using System.IO;
 using UnityEditor.AssetImporters;
 using UnityEngine;
@@ -10,7 +10,7 @@ namespace EventHorizon.Editor.RecordingsV2
 	{
 		public void ProcessImport(IAssetImportContext ctx, string ctxAssetPath)
 		{
-			var dataScriptable = ScriptableObject.CreateInstance<FormatV2Scriptable>();
+			var dataScriptable = ScriptableObject.CreateInstance<EvhFileScriptable>();
 
 			{
 				// should not throw an exception since this is only called for existant files

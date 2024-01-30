@@ -1,16 +1,17 @@
-﻿using System;
+﻿using EventHorizon.FileFormat;
+using System;
 using System.Globalization;
 using UnityEditor;
 using UnityEngine.UIElements;
 
 namespace EventHorizon.Editor.RecordingsV2
 {
-	[CustomEditor(typeof(FormatV2Scriptable))]
+	[CustomEditor(typeof(EvhFileScriptable))]
 	public class FormatV2ScriptableEditor : UnityEditor.Editor
 	{
 		public override VisualElement CreateInspectorGUI()
 		{
-			var scriptable = (FormatV2Scriptable) target;
+			var scriptable = (EvhFileScriptable) target;
 			var container = new VisualElement();
 
 			var playButton = new Button { text = "Start Playback" };

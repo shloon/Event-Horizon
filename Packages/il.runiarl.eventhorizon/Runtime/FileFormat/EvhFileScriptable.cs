@@ -1,12 +1,11 @@
-﻿using EventHorizon.FormatV2;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace EventHorizon.Editor.RecordingsV2
+namespace EventHorizon.FileFormat
 {
 	[NoReorder]
-	public class FormatV2Scriptable : ScriptableObject
+	public class EvhFileScriptable : ScriptableObject
 	{
 		public MetadataPacket metadataPacket;
 		public VRMetadataPacket vrMetadataPacket;

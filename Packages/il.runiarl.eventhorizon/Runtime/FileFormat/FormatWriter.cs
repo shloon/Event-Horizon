@@ -5,7 +5,7 @@ using System.IO.Compression;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EventHorizon.FormatV2
+namespace EventHorizon.FileFormat
 {
 	public class FormatWriter : IDisposable
 	{

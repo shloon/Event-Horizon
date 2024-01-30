@@ -1,4 +1,5 @@
 using EventHorizon.Editor.RecordingsV2;
+using EventHorizon.FileFormat;
 using UnityEditor;
 using UnityEditor.Timeline;
 using UnityEngine;
@@ -15,7 +16,7 @@ namespace EventHorizon.Editor
 		// and InitializeOnLoad is called whenever switching to either play or edit mode.
 		private const string ToggleKeyString = "isCurrentlyInspectingEventHorizon";
 
-		public static FormatV2Scriptable FormatData { get; private set; }
+		public static EvhFileScriptable FormatData { get; private set; }
 
 		[MenuItem("Event Horizon/Play Selected Recording")]
 		public static void TogglePlayModeAndSetupCleanup() => TogglePlaymode(true);
@@ -35,7 +36,7 @@ namespace EventHorizon.Editor
 		{
 			Debug.Log("Starting EVH file playback mode...");
 
-			var serializedFormatV2 = Selection.activeObject as FormatV2Scriptable;
+			var serializedFormatV2 = Selection.activeObject as EvhFileScriptable;
 			if (!serializedFormatV2)
 			{
 				Debug.LogError("No recording selected, aborting...");

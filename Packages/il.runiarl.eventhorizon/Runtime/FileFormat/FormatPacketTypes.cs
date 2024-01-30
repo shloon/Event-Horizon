@@ -2,7 +2,7 @@
 using System.Globalization;
 using UnityEngine;
 
-namespace EventHorizon.FormatV2
+namespace EventHorizon.FileFormat
 {
 	public enum PacketType
 	{
@@ -115,7 +115,7 @@ namespace EventHorizon.FormatV2
 		public static MetadataPacket GenerateMetadataPacket(string sceneName, FrameRate fps, DateTime time) =>
 			new()
 			{
-				version = RecordingFormatVersion.V2,
+				version = RecordingFormatVersion.V1,
 				sceneName = sceneName,
 				fps = fps,
 				timestamp = time.ToString("yyyy-MM-dd'T'HH:mm:ss.fffK", CultureInfo.InvariantCulture)
