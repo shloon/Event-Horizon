@@ -1,4 +1,5 @@
 ﻿using EventHorizon.FileFormat;
+using EventHorizon.Trackables;
 using UnityEngine;
 
 namespace EventHorizon.MetaXR

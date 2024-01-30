@@ -1,7 +1,7 @@
 using EventHorizon.FileFormat;
 using UnityEngine;
 
-namespace EventHorizon
+namespace EventHorizon.Trackables
 {
 	[DisallowMultipleComponent]
 	[DefaultExecutionOrder(-99)]

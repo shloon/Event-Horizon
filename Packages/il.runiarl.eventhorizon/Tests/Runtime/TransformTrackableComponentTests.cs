@@ -1,4 +1,5 @@
 ﻿using EventHorizon.Tests.Utilities;
+using EventHorizon.Trackables;
 using NUnit.Framework;
 using UnityEngine;
 
