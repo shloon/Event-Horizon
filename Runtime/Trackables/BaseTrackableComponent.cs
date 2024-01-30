@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace EventHorizon
+namespace EventHorizon.Trackables
 {
 	public abstract class BaseTrackableComponent<T> : MonoBehaviour, ITrackable, IPacketGenerator<T> where T : IPacket
 	{
