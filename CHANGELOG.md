@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added de/ser benchmarks for all packet types.
 - Added tests comparing ser/de output to Unity's internal JSON writer for future consistency.
 - Added empty test assemblies for MetaXR tests
+- Added some miscellaneous tests.
 
 ### Fixed
 - Fixed self-caching of `transform` in `TrackableTransformComponent`.
