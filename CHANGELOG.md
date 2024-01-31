@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed projects settings to conform to Meta XR SDK recommendations.
 - BREAKING: Removed file format v2 distinguishing
 - Moved trackables to their own namespace
+- Split `PacketUtils` to their own file
 
 ## [0.1.1] - 2024.01.09
 
