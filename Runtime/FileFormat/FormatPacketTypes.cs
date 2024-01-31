@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Globalization;
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
 namespace EventHorizon.FileFormat
@@ -21,12 +21,14 @@ namespace EventHorizon.FileFormat
 	}
 
 	[Serializable]
+	[ExcludeFromCodeCoverage]
 	public struct PacketHeader
 	{
 		public PacketType type;
 	}
 
 	[Serializable]
+	[ExcludeFromCodeCoverage]
 	public struct GenericDataPacket : IPacket
 	{
 		public ulong frame;
@@ -35,6 +37,7 @@ namespace EventHorizon.FileFormat
 	}
 
 	[Serializable]
+	[ExcludeFromCodeCoverage]
 	public struct FramePacket : IPacket
 	{
 		public ulong frame;
@@ -43,6 +46,7 @@ namespace EventHorizon.FileFormat
 	}
 
 	[Serializable]
+	[ExcludeFromCodeCoverage]
 	public struct MetadataPacket : IPacket
 	{
 		public RecordingFormatVersion version;
@@ -54,6 +58,7 @@ namespace EventHorizon.FileFormat
 	}
 
 	[Serializable]
+	[ExcludeFromCodeCoverage]
 	public struct VRMetadataPacket : IPacket
 	{
 		public string headsetType;
@@ -62,6 +67,7 @@ namespace EventHorizon.FileFormat
 	}
 
 	[Serializable]
+	[ExcludeFromCodeCoverage]
 	public struct ActivationPacket : IPacket
 	{
 		public ulong frame;
@@ -70,6 +76,7 @@ namespace EventHorizon.FileFormat
 	}
 
 	[Serializable]
+	[ExcludeFromCodeCoverage]
 	public struct TransformPacket : IPacket
 	{
 		public ulong frame;
@@ -82,43 +89,10 @@ namespace EventHorizon.FileFormat
 	}
 
 	[Serializable]
+	[ExcludeFromCodeCoverage]
 	public struct SerializedPacketData
 	{
 		public string header;
 		public string contents;
-	}
-
-	public static class PacketUtils
-	{
-		public static PacketHeader GenerateHeader<T>(in T packet) where T : IPacket => new() { type = packet.Type };
-
-		public static SerializedPacketData SerializePacket<T>(in T packet) where T : IPacket =>
-			new() { header = JsonUtility.ToJson(GenerateHeader(packet)), contents = JsonUtility.ToJson(packet) };
-
-		public static IPacket DeserializePacket(in string header, in string contents)
-		{
-			var packetHeader = JsonUtility.FromJson<PacketHeader>(header);
-
-			return packetHeader.type switch
-			{
-				PacketType.Metadata => JsonUtility.FromJson<MetadataPacket>(contents),
-				PacketType.Transform => JsonUtility.FromJson<TransformPacket>(contents),
-				PacketType.Generic => JsonUtility.FromJson<GenericDataPacket>(contents),
-				PacketType.Frame => JsonUtility.FromJson<FramePacket>(contents),
-				PacketType.Activation => JsonUtility.FromJson<ActivationPacket>(contents),
-				PacketType.VRMetadata => JsonUtility.FromJson<VRMetadataPacket>(contents),
-				PacketType.Undefined => null,
-				_ => null
-			};
-		}
-
-		public static MetadataPacket GenerateMetadataPacket(string sceneName, FrameRate fps, DateTime time) =>
-			new()
-			{
-				version = RecordingFormatVersion.V1,
-				sceneName = sceneName,
-				fps = fps,
-				timestamp = time.ToString("yyyy-MM-dd'T'HH:mm:ss.fffK", CultureInfo.InvariantCulture)
-			};
 	}
 }
