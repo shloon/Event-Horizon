@@ -49,6 +49,22 @@ namespace EventHorizon.Tests
 
 			mockManager.Verify(m => m.Register(trackableComponent), Times.Once());
 		}
+		
+		[Test]
+		public void OnEnable_AfterBeingDisabled_ShouldStillCallRegister()
+		{
+			gameObject.SetActive(false);
+			var trackableComponent = gameObject.AddComponent<DummyTrackableComponent>();
+			trackableComponent.Id = new TrackableID(1234);
+			trackableComponent.manager = mockManager.Object;
+			gameObject.SetActive(true);
+			gameObject.SetActive(false);
+
+			gameObject.SetActive(true);
+			
+			mockManager.Verify(m => m.Unregister(trackableComponent), Times.Once());
+			mockManager.Verify(m => m.Register(trackableComponent), Times.Exactly(2));
+		}
 
 		[Test]
 		public void OnEnable_WithoutManagerSet_ShouldFallbackToSingletonAndCallRegister()
