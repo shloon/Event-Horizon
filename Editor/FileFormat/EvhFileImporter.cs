@@ -6,7 +6,7 @@ using UnityEngine;
 namespace EventHorizon.Editor.RecordingsV2
 {
 	[ScriptedImporter(1, "evh")]
-	public class FormatV2Importer : ScriptedImporter
+	public class EvhFileImporter : ScriptedImporter
 	{
 		public void ProcessImport(IAssetImportContext ctx, string ctxAssetPath)
 		{
