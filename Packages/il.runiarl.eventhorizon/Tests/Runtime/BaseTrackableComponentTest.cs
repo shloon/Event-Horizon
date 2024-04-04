@@ -93,5 +93,17 @@ namespace EventHorizon.Tests
 
 			mockManager.Verify(m => m.Unregister(trackableComponent), Times.Once());
 		}
+
+		[Test]
+		public void Name_ReturnsGameObjectName()
+		{
+			gameObject.SetActive(false);
+			var trackableComponent = gameObject.AddComponent<DummyTrackableComponent>();
+			trackableComponent.Id = new TrackableID(1234);
+			trackableComponent.manager = mockManager.Object;
+			gameObject.SetActive(true);
+
+			Assert.AreEqual(gameObject.name, trackableComponent.Name);
+		}
 	}
 }
