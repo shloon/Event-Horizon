@@ -190,5 +190,31 @@ namespace EventHorizon.Tests
 			Assert.AreEqual(serializedExpected, serializedActual.contents);
 			Assert.AreEqual(deserializedExpected, deserializedActual);
 		}
+
+		[Test]
+		public void UndefinedDeserialize_ReturnsNull()
+		{
+			var packetHeader = JsonUtility.ToJson(new PacketHeader {type = PacketType.Undefined});
+			var packetBody = "{}";
+			
+			var deserializeActual = PacketUtils.DeserializePacket(packetHeader, packetBody);
+			
+			Assert.IsNull(deserializeActual);
+		}
+
+		[Test]
+		public void InvalidPacketDeserialize_ReturnsNull()
+		{
+			// this is an enum, so it is guaranteed to have a backing integral value
+			// thus this would always properly run
+			var rawConstantValue = Enum.GetUnderlyingType(typeof(PacketType)).GetField("MaxValue").GetRawConstantValue(); 
+			
+			var packetHeader = $"{{\"type\": {rawConstantValue} }}";
+			var packetBody = "{}";
+			
+			var deserializeActual = PacketUtils.DeserializePacket(packetHeader, packetBody);
+			
+			Assert.IsNull(deserializeActual);
+		}
 	}
 }
