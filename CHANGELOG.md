@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Use self-cached transform in `TrackableTransformComponent`.
 - Fixed bug in `TrackableTransformComponent` where `translationMultiply` didn't apply correctly.
 - Changed `ListViewExample` to `TrackableManagerInspector` as filename dictates.
+- Fixed `RecorderComponent` to create recording directory only if path is valid.
 
 ### Changed
 - Enabled CI on multiple unity LTS versions.
