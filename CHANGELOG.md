@@ -26,7 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Enabled CI on multiple unity LTS versions.
 - Changed projects settings to conform to Meta XR SDK recommendations.
 - **BREAKING:** Removed file format v2 distinguishing
-- **BREAKING:** Prevent deserialization of `frames` with `TransformControlAsset`.
+- **BREAKING:** Prevent deserialization of `frames` with `TransformControlAsset` and `GenericDataControlAsset`.
 - Moved trackables to their own namespace
 - Split `PacketUtils` to their own file
 - Move trackables' tests to their own directory.
