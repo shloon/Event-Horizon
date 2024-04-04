@@ -10,7 +10,7 @@ namespace EventHorizon
 {
 	public class GenericDataControlAsset : PlayableAsset
 	{
-		[FormerlySerializedAs("frames")] public List<GenericDataPacket> packets = new();
+		public List<GenericDataPacket> packets = new();
 		public double frameDuration;
 
 		public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
