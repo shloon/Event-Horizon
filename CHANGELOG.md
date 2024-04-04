@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **BREAKING:** Prevent deserialization of `frames` with `TransformControlAsset`.
 - Moved trackables to their own namespace
 - Split `PacketUtils` to their own file
+- Move trackables' tests to their own directory.
 
 ## [0.1.1] - 2024.01.09
 
