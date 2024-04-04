@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed `ListViewExample` to `TrackableManagerInspector` as filename dictates.
 
 ### Changed
-- Enabled CI on multiple unity versions.
+- Enabled CI on multiple unity LTS versions.
 - Changed projects settings to conform to Meta XR SDK recommendations.
 - **BREAKING:** Removed file format v2 distinguishing
 - Moved trackables to their own namespace
