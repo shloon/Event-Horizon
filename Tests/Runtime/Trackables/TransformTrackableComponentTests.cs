@@ -5,19 +5,6 @@ using UnityEngine;
 
 namespace EventHorizon.Tests
 {
-	public static class UnityAsserts
-	{
-		private const float DefaultTolerance = 0.00001f;
-
-		public static void AreEqual(Vector3 expected, Vector3 actual, float tolerance = DefaultTolerance) =>
-			Assert.AreEqual(0, Vector3.Distance(expected, actual), tolerance,
-				$"Expected: {expected}, Actual: {actual}");
-
-		public static void AreEqual(Quaternion expected, Quaternion actual, float tolerance = DefaultTolerance) =>
-			Assert.AreEqual(0, Quaternion.Angle(expected, actual), tolerance,
-				$"Expected: {expected}, Actual: {actual}");
-	}
-
 	public class TransformTrackableComponentTests
 	{
 		private GameObject rootGO;
