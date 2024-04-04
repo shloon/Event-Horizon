@@ -10,7 +10,7 @@ namespace EventHorizon
 {
 	public class TransformControlAsset : PlayableAsset
 	{
-		[FormerlySerializedAs("frames")] public List<TransformPacket> packets = new();
+		public List<TransformPacket> packets = new();
 		public double frameDuration;
 
 		public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
