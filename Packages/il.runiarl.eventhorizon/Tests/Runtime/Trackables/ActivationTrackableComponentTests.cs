@@ -10,6 +10,7 @@ namespace EventHorizon.Tests
 	{
 		// note that in actuality, activationTrackableComponent is only used when the GO containing it is active
 		// we test both states regardless
+		[Test]
 		public void GetPacketForFrame_AlwaysReturnsPacket()
 		{
 			var gameObject = new GameObject();

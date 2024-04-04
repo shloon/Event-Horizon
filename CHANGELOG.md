@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Moved trackables to their own namespace
 - Split `PacketUtils` to their own file
 - Move trackables' tests to their own directory.
+- Enabled unmarked test in `ActivationTrackableComponentTests`
 
 ## [0.1.1] - 2024.01.09
 
