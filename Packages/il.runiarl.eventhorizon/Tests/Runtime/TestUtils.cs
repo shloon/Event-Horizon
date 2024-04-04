@@ -1,4 +1,5 @@
 using EventHorizon.Trackables;
+using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,7 +16,20 @@ namespace EventHorizon.Tests.Utilities
 		public TrackableID Id { get; set; }
 		public string Name { get; }
 	}
+	
+	public static class UnityAsserts
+	{
+		private const float DefaultTolerance = 0.00001f;
 
+		public static void AreEqual(Vector3 expected, Vector3 actual, float tolerance = DefaultTolerance) =>
+			Assert.AreEqual(0, Vector3.Distance(expected, actual), tolerance,
+				$"Expected: {expected}, Actual: {actual}");
+
+		public static void AreEqual(Quaternion expected, Quaternion actual, float tolerance = DefaultTolerance) =>
+			Assert.AreEqual(0, Quaternion.Angle(expected, actual), tolerance,
+				$"Expected: {expected}, Actual: {actual}");
+	}
+	
 	public static class TrackableTestUtils
 	{
 		public static TransformTrackableComponent CreateTrackableGameObject(TrackableID id) =>
