@@ -31,7 +31,7 @@ namespace EventHorizon
 
 			// create subfolder
 			var parentDirectory = Path.GetDirectoryName(outputFileName);
-			if (!Directory.Exists(parentDirectory))
+			if (!string.IsNullOrEmpty(parentDirectory) && !Directory.Exists(parentDirectory))
 			{
 				Directory.CreateDirectory(parentDirectory);
 			}
