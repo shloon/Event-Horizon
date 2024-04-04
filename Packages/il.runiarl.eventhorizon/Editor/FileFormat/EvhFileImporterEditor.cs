@@ -4,8 +4,8 @@ using UnityEditor.AssetImporters;
 
 namespace EventHorizon.Editor.RecordingsV2
 {
-	[CustomEditor(typeof(FormatV2Importer))]
-	public class FormatV2ImporterEditor : ScriptedImporterEditor
+	[CustomEditor(typeof(EvhFileImporter))]
+	public class EvhFileImporterEditor : ScriptedImporterEditor
 	{
 		[ExcludeFromCodeCoverage] // unity internal function, cannot really test this
 		public override void OnInspectorGUI() =>

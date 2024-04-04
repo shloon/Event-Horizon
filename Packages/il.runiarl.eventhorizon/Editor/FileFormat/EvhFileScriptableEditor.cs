@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 namespace EventHorizon.Editor.RecordingsV2
 {
 	[CustomEditor(typeof(EvhFileScriptable))]
-	public class FormatV2ScriptableEditor : UnityEditor.Editor
+	public class EvhFileScriptableEditor : UnityEditor.Editor
 	{
 		public override VisualElement CreateInspectorGUI()
 		{
