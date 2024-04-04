@@ -1,3 +1,4 @@
+using EventHorizon.FileFormat;
 using EventHorizon.Trackables;
 using Moq;
 using NUnit.Framework;
@@ -5,6 +6,16 @@ using UnityEngine;
 
 namespace EventHorizon.Tests
 {
+	struct DummyPacket : IPacket
+	{
+		public PacketType Type => PacketType.Undefined;
+	}
+
+	internal class DummyTrackableComponent : BaseTrackableComponent<DummyPacket>
+	{
+		public override DummyPacket GetPacketForFrame(ulong frame) => new DummyPacket();
+	}
+	
 	public class BaseTrackableComponentTest
 	{
 		private GameObject gameObject;
@@ -30,7 +41,7 @@ namespace EventHorizon.Tests
 		public void OnEnable_WithManagerSet_ShouldCallRegister()
 		{
 			gameObject.SetActive(false);
-			var trackableComponent = gameObject.AddComponent<TransformTrackableComponent>();
+			var trackableComponent = gameObject.AddComponent<DummyTrackableComponent>();
 			trackableComponent.Id = new TrackableID(1234);
 			trackableComponent.manager = mockManager.Object;
 
@@ -43,7 +54,7 @@ namespace EventHorizon.Tests
 		public void OnEnable_WithoutManagerSet_ShouldFallbackToSingletonAndCallRegister()
 		{
 			gameObject.SetActive(false);
-			var trackableComponent = gameObject.AddComponent<TransformTrackableComponent>();
+			var trackableComponent = gameObject.AddComponent<DummyTrackableComponent>();
 			trackableComponent.Id = new TrackableID(1234);
 			var singletonManager = new GameObject().AddComponent<TrackableManagerComponent>();
 
@@ -60,7 +71,7 @@ namespace EventHorizon.Tests
 		public void OnDisable_ShouldCallUnregister()
 		{
 			gameObject.SetActive(false);
-			var trackableComponent = gameObject.AddComponent<TransformTrackableComponent>();
+			var trackableComponent = gameObject.AddComponent<DummyTrackableComponent>();
 			trackableComponent.Id = new TrackableID(1234);
 			trackableComponent.manager = mockManager.Object;
 			gameObject.SetActive(true);
@@ -73,7 +84,7 @@ namespace EventHorizon.Tests
 		public void OnDestroy_ShouldCallUnregister()
 		{
 			gameObject.SetActive(false);
-			var trackableComponent = gameObject.AddComponent<TransformTrackableComponent>();
+			var trackableComponent = gameObject.AddComponent<DummyTrackableComponent>();
 			trackableComponent.Id = new TrackableID(1234);
 			trackableComponent.manager = mockManager.Object;
 			gameObject.SetActive(true);
