@@ -1,9 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine.UIElements;
 
 namespace EventHorizon
 {
 	public static class UIHelpers
 	{
+		[ExcludeFromCodeCoverage]
 		public static VisualElement CreateHeader(string headerText)
 		{
 			var decoratorContainer = new VisualElement();
