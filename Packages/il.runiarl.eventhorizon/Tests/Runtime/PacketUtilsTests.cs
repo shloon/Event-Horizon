@@ -4,6 +4,7 @@ using System;
 
 namespace EventHorizon.Tests
 {
+	[Parallelizable]
 	public class PacketUtilsTests
 	{
 		[Test]

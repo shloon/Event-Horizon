@@ -2,6 +2,7 @@ using NUnit.Framework;
 
 namespace EventHorizon.Tests
 {
+	[Parallelizable]
 	public class TrackableIDWrapperTests
 	{
 		[Test]
