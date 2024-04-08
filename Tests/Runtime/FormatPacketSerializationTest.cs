@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace EventHorizon.Tests
 {
+	[Parallelizable]
 	public class FormatPacketSerializationTest
 	{
 		[Test]
