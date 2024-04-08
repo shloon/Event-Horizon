@@ -59,6 +59,7 @@ namespace EventHorizon.Tests
 			var id2 = new TrackableID(123);
 
 			Assert.IsTrue(id1.Equals(id2));
+			Assert.IsTrue(id1.Equals((object)id2));
 		}
 
 		[Test]
@@ -68,6 +69,7 @@ namespace EventHorizon.Tests
 			var id2 = new TrackableID(456);
 
 			Assert.IsFalse(id1.Equals(id2));
+			Assert.IsFalse(id1.Equals((object)id2));
 		}
 
 		[Test]
@@ -96,16 +98,43 @@ namespace EventHorizon.Tests
 
 			Assert.IsTrue(id1 != id2);
 		}
+		
+		[Test]
+		public void CompareTo_BothEqual_ReturnZero()
+		{
+			var id1 = new TrackableID(123);
+			var id2 = new TrackableID(123);
+
+			Assert.AreEqual(0, id1.CompareTo(id2));
+		}
+		
+		[Test]
+		public void CompareTo_LargerThanOther_GreaterThanZero()
+		{
+			var id1 = new TrackableID(456);
+			var id2 = new TrackableID(123);
+
+			Assert.AreEqual(1, id1.CompareTo(id2));
+		}
+		
+		[Test]
+		public void CompareTo_LargerThanOther_LessThanZero()
+		{
+			var id1 = new TrackableID(123);
+			var id2 = new TrackableID(456);
+
+			Assert.AreEqual(-1, id1.CompareTo(id2));
+		}
+
 
 		[Test]
 		public void TrackableID_SerializesAndDeserializesCorrectly()
 		{
 			var original = new TrackableID(123);
+			
 			var json = JsonUtility.ToJson(original);
-			Debug.Log(json);
 			var deserialized = JsonUtility.FromJson<TrackableID>(json);
 
-			// Assert
 			Assert.AreEqual(original, deserialized);
 		}
 	}
